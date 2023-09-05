@@ -9,7 +9,6 @@ enum layers {
   LAYER_LENGTH
 };
 
-
 enum tapdances {
   TD_SBKT,
   TD_CBKT,
@@ -27,7 +26,6 @@ enum my_keycodes {
 };
 
 // begin tapdances
-
 #define KC_SBKT     TD(TD_SBKT)
 #define KC_CBKT     TD(TD_CBKT)
 #define KC_PARN     TD(TD_PARN)
@@ -85,7 +83,8 @@ const uint16_t PROGMEM cho_combo23[] = {TD(TD_CAPS), KC_B, COMBO_END};
 const uint16_t PROGMEM cho_combo24[] = {KC_SPACE, KC_ENTER, COMBO_END};
 const uint16_t PROGMEM cho_combo25[] = {KC_TAB, KC_BSPC, COMBO_END};
 
-combo_t key_combos[] = {  // layer 0 combos
+// layer 0 combos
+combo_t key_combos[] = {  
     COMBO(cho_combo1, KC_LSFT),
     COMBO(cho_combo2, KC_RSFT),
     COMBO(cho_combo3, KC_LCTL),
@@ -112,11 +111,9 @@ combo_t key_combos[] = {  // layer 0 combos
     COMBO(cho_combo24, TO(0)),
     COMBO(cho_combo25, TO(3))
 };
-
 // end combos
 
 // Special behavior code
-
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     return true;
 }
@@ -134,14 +131,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 *  '---------------------------|-------------|-------------|-------------|   |-------------|-------------|-------------|---------------------------'
 *                              | UPLAYER     | SPACE       | TAB         |   | BACKSPACE   | ENTER       | DOWNLAYER   |
 *                              |_____________|_____________|_____________|   |_____________|_____________|_____________|
-*
 */
 
   [_ALPHA] = LAYOUT_split_3x5_3(
-    KC_Q,    KC_W,       KC_E,       KC_R,       KC_T,             KC_Y,       KC_U,       KC_I,       KC_O,       KC_P,
-    KC_A,    KC_S,       KC_D,       KC_F,       KC_G,             KC_H,       KC_J,       KC_K,       KC_L,       KC_SCLN,
-    KC_Z,    KC_X,       KC_C,       TD(TD_CAPS),       KC_B,             KC_N,       KC_M,       KC_COMM,    KC_DOT,     KC_SLSH,
-                        TO(1), KC_SPACE,   KC_TAB,           KC_BSPC,    KC_ENTER,   TO(4)
+    KC_Q,    KC_W,  KC_E,    KC_R,         KC_T,             KC_Y,    KC_U,     KC_I,    KC_O,   KC_P,
+    KC_A,    KC_S,  KC_D,    KC_F,         KC_G,             KC_H,    KC_J,     KC_K,    KC_L,   KC_SCLN,
+    KC_Z,    KC_X,  KC_C,    TD(TD_CAPS),  KC_B,             KC_N,    KC_M,     KC_COMM, KC_DOT, KC_SLSH,
+                        TO(1), KC_SPACE,   KC_TAB,           KC_BSPC, KC_ENTER, TO(4)
   ),
 
 /*  Layer 1 Symbol
@@ -154,16 +150,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 *  '---------------------------|-------------|-------------|-------------|   |-------------|-------------|-------------|---------------------------'
 *                              | UPLAYER     | SPACE       | TAB         |   | BACKSPACE   | ENTER       | DOWNLAYER   |
 *                              |_____________|_____________|_____________|   |_____________|_____________|_____________|
-*
 */
 
   [_NUMBSYM] = LAYOUT_split_3x5_3(
     KC_EXLM,    KC_AT,           KC_HASH,          KC_DLR,       KC_PERC,       KC_CIRC,    KC_AMPR,    KC_ASTR,    KC_LEFT_PAREN, KC_RIGHT_PAREN,
     KC_1,       KC_2,            KC_3,             KC_4,         KC_5,          KC_6,       KC_7,       KC_8,       KC_9,          KC_0,
     KC_SLASH,   KC_LEFT_BRACKET, KC_RIGHT_BRACKET, KC_SEMICOLON, KC_QUOTE,      KC_MINUS,   KC_EQUAL,   KC_COMMA,   KC_DOT,        KC_BACKSLASH,
-                                 TO(2),      KC_SPACE,     KC_TAB,        KC_BSPC,    KC_ENTER,   TO(0)
+                                      TO(2),      KC_SPACE,      KC_TAB,        KC_BSPC,    KC_ENTER,   TO(0)
   ),
-
 
 /*  Layer 2 Function
 *   _____________________________________________________________________     _____________________________________________________________________
@@ -175,56 +169,50 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 *  '---------------------------|-------------|-------------|-------------|   |-------------|-------------|-------------|---------------------------'
 *                              | UPLAYER     | SPACE       | TAB         |   | BACKSPACE   | ENTER       | DOWNLAYER   |
 *                              |_____________|_____________|_____________|   |_____________|_____________|_____________|
-*
 */
 
   [_FUNCTION] = LAYOUT_split_3x5_3(
-    KC_NO,      KC_NO,      KC_LEFT,     KC_RIGHT,   KC_F11,      KC_F12,    KC_UP,      KC_DOWN,    KC_NO,      KC_NO,
-    KC_F1,      KC_F2,      KC_F3,       KC_F4,      KC_F5,       KC_F6,     KC_F7,      KC_F8,      KC_F9,      KC_F10,
-    KC_LGUI,    KC_LALT,    KC_LCTL,    KC_LSFT,    KC_MEH,      KC_HYPR,   KC_RSFT,  KC_RCTL,   KC_RALT,    KC_RGUI,
-                            TO(3), KC_SPACE,   KC_TAB,      KC_BSPC,   KC_ENTER,   TO(1)
+    KC_NO,      KC_NO,     KC_LEFT,    KC_RIGHT,   KC_F11,        KC_F12,    KC_UP,      KC_DOWN,    KC_NO,      KC_NO,
+    KC_F1,      KC_F2,     KC_F3,      KC_F4,      KC_F5,         KC_F6,     KC_F7,      KC_F8,      KC_F9,      KC_F10,
+    KC_LGUI,    KC_LALT,   KC_LCTL,    KC_LSFT,    KC_MEH,        KC_HYPR,   KC_RSFT,  KC_RCTL,   KC_RALT,    KC_RGUI,
+                            TO(3), KC_SPACE,   KC_TAB,            KC_BSPC,   KC_ENTER,   TO(1)
   ),
 
-  /*  Layer 3 Mouse
+/*  Layer 3 Mouse
 *   _____________________________________________________________________     _____________________________________________________________________
-*  |             |             |             |             |             |   |HOME         |END          |MOUSE UP     |             |             |
+*  | WWWBACK     |             | KC_VOLD     | KC_MUTE     | KC_VOLU     |   |HOME         |PGUP         |MOUSE UP     |PGDN         | WWWSEARCH   |
 *  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
-*  |             | LEFT BUTTON | MID BUTTON  | RIGHT BUTTON| UP          |   |PGUP         |MOUSE LEFT   |MOUSE DOWN   |MOUSE RIGHT  |             |
+*  | WWWFWD      | LEFT BUTTON | MID BUTTON  | RIGHT BUTTON| UP          |   |END          |MOUSE LEFT   |MOUSE DOWN   |MOUSE RIGHT  | WWWREFRESH  |
 *  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
-*  |             |             | LEFT        | RIGHT       | DOWN        |   |PGDN         |WHEEL UP     |WHEEL DOWN   |             |             |
+*  | WWWHOME     |             | LEFT        | RIGHT       | DOWN        |   |WHEEL LEFT   |WHEEL UP     |WHEEL DOWN   |WHEEL RIGHT  | KC_WSTP     |
 *  '---------------------------|-------------|-------------|-------------|   |-------------|-------------|-------------|---------------------------'
 *                              | UPLAYER     | SPACE       | TAB         |   | BACKSPACE   | ENTER       | DOWNLAYER   |
 *                              |_____________|_____________|_____________|   |_____________|_____________|_____________|
-*
 */
 
   [_MOUSE] = LAYOUT_split_3x5_3(
-    KC_NO,      KC_NO,      KC_NO,       KC_NO,      KC_NO,         KC_HOME,   KC_END,      KC_MS_UP,      KC_NO,        KC_NO,
-    KC_TAB,     KC_MS_BTN1, KC_MS_BTN2,  KC_MS_BTN3, KC_UP,         KC_NO,     KC_MS_LEFT,  KC_MS_DOWN,    KC_MS_RIGHT,  KC_NO,
-    KC_NO,      KC_NO,      KC_LEFT,     KC_RIGHT,   KC_DOWN,       KC_NO,     KC_MS_WH_UP, KC_MS_WH_DOWN, KC_NO,        KC_NO,
-                            TO(4), KC_SPACE,   KC_TAB,        KC_BSPC,   KC_ENTER,    TO(2)
+    KC_WBAK,   KC_NO,      KC_VOLD,     KC_MUTE,    KC_VOLU,       KC_HOME,       KC_PGUP,     KC_MS_UP,      KC_PGDN,        KC_WSCH,
+    KC_WFWD,   KC_MS_BTN1, KC_MS_BTN2,  KC_MS_BTN3, KC_UP,         KC_END,        KC_MS_LEFT,  KC_MS_DOWN,    KC_MS_RIGHT,    KC_WREF,
+    KC_WHOM,   KC_NO,      KC_LEFT,     KC_RIGHT,   KC_DOWN,       KC_MS_WH_LEFT, KC_MS_WH_UP, KC_MS_WH_DOWN, KC_MS_WH_RIGHT, KC_NO,
+                                 TO(4), KC_SPACE,   KC_TAB,        KC_BSPC,   KC_ENTER,    TO(2)
   ),
 
 /*  Layer 4 APPS AND CONTROL
 *   _____________________________________________________________________     _____________________________________________________________________
 *  |             |             |             |             |             |   |             | QK_BOOT     | QK_REBOOT   |             |             |
 *  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
-*  |             |             |             |             |             |   |             |             |             |             |             |
+*  |             |             |             |             |             |   | KC_CALC     |             |             |             |             |
 *  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
 *  |             |             |             |             |             |   |             |             |             |             |             |
 *  '---------------------------|-------------|-------------|-------------|   |-------------|-------------|-------------|---------------------------'
 *                              | UPLAYER     | SPACE       | TAB         |   | BACKSPACE   | ENTER       | DOWNLAYER   |
 *                              |_____________|_____________|_____________|   |_____________|_____________|_____________|
-*
 */
 
   [_APPCONTROL] = LAYOUT_split_3x5_3(
     KC_NO,      KC_NO,      KC_NO,       KC_NO,      KC_NO,          KC_NO,      QK_BOOT,    QK_REBOOT,  KC_NO,     KC_NO,
+    KC_NO,      KC_NO,      KC_NO,       KC_NO,      KC_NO,          KC_CALC,    KC_NO,      KC_NO,      KC_NO,     KC_NO,
     KC_NO,      KC_NO,      KC_NO,       KC_NO,      KC_NO,          KC_NO,      KC_NO,      KC_NO,      KC_NO,     KC_NO,
-    KC_NO,      KC_NO,      KC_NO,       KC_NO,      KC_NO,          KC_NO,      KC_NO,      KC_NO,      KC_NO,     KC_NO,
-                            TO(0), KC_SPACE,   KC_TAB,         KC_BSPC,    KC_ENTER,   TO(3)
+                                  TO(0), KC_SPACE,   KC_TAB,         KC_BSPC,    KC_ENTER,   TO(3)
   )
 };
-
-
-
