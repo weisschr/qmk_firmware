@@ -10,91 +10,39 @@ enum layers {
 };
 
 enum tapdances {
-  TD_SBKT,
-  TD_CBKT,
-  TD_PARN,
-  TD_LTGT,
   TD_CAPS,
   TD_CAPWORD,
   TAPDANCE_LENGTH
 };
 
-enum my_keycodes {
-  KC_UP_LAYER,
-  KC_DOWN_LAYER,
-  MY_KEYCODES_LENGTH
-};
-
-// begin tapdances
-#define KC_SBKT     TD(TD_SBKT)
-#define KC_CBKT     TD(TD_CBKT)
-#define KC_PARN     TD(TD_PARN)
-#define KC_LTGT     TD(TD_LTGT)
-
-// Custom key codes
-
-#define KC_GUIX     LGUI_T(KC_X)
-#define KC_ALTC     LALT_T(KC_C)
-
-// oneshots
-#define KC_OSFT   OSM(MOD_LSFT)
-#define KC_OALT   OSM(MOD_LALT)
-
-// layer changing
-#define KC_ONUM   LT(_FUNCTION, KC_BSPC)
-
 // tapdances
 tap_dance_action_t tap_dance_actions[] = {
-    [TD_SBKT]   = ACTION_TAP_DANCE_DOUBLE(KC_LBRC, KC_RBRC),
-    [TD_CBKT]   = ACTION_TAP_DANCE_DOUBLE(KC_LCBR, KC_RCBR),
-    [TD_PARN]   = ACTION_TAP_DANCE_DOUBLE(KC_LPRN, KC_RPRN),
-    [TD_LTGT]   = ACTION_TAP_DANCE_DOUBLE(KC_LABK, KC_RABK),
     [TD_CAPS]   = ACTION_TAP_DANCE_DOUBLE(KC_V, KC_CAPS),
-
 };
 // end tapdances
 
 uint16_t COMBO_LEN = 19;
 
 // Layer 0 combos
-const uint16_t PROGMEM cho_combo1[] = {LALT_T(KC_D), LCTL_T(KC_F), COMBO_END};
-const uint16_t PROGMEM cho_combo2[] = {RCTL_T(KC_J), RALT_T(KC_K), COMBO_END};
-const uint16_t PROGMEM cho_combo6[] = {RGUI_T(KC_L), KC_SCLN, COMBO_END};
-const uint16_t PROGMEM cho_combo7[] = {LGUI_T(KC_S),LALT_T(KC_D), LCTL_T(KC_F), COMBO_END};
-const uint16_t PROGMEM cho_combo8[] = {RCTL_T(KC_J), RALT_T(KC_K), RGUI_T(KC_L), COMBO_END};
-const uint16_t PROGMEM cho_combo9[] = {LGUI_T(KC_S), LCTL_T(KC_F), COMBO_END};
-const uint16_t PROGMEM cho_combo10[] = {RCTL_T(KC_J), RGUI_T(KC_L), COMBO_END};
-const uint16_t PROGMEM cho_combo11[] = {KC_A, LGUI_T(KC_S), KC_D, KC_F, COMBO_END};
-const uint16_t PROGMEM cho_combo12[] = {RCTL_T(KC_J), RALT_T(KC_K), RGUI_T(KC_L), KC_SCLN, COMBO_END};
-const uint16_t PROGMEM cho_combo15[] = {KC_X, KC_C, KC_V, COMBO_END};
-const uint16_t PROGMEM cho_combo16[] = {KC_M, KC_COMM, KC_DOT, COMBO_END};
-const uint16_t PROGMEM cho_combo17[] = {KC_Z, KC_X, KC_C, KC_V, COMBO_END};
-const uint16_t PROGMEM cho_combo18[] = {KC_M, KC_COMM, KC_DOT, KC_SLSH, COMBO_END};
-const uint16_t PROGMEM cho_combo19[] = {LCTL_T(KC_F), KC_G, COMBO_END};
-const uint16_t PROGMEM cho_combo20[] = {KC_H, RCTL_T(KC_J), COMBO_END};
-const uint16_t PROGMEM cho_combo21[] = {KC_Y, KC_U, COMBO_END};
-const uint16_t PROGMEM cho_combo22[] = {KC_R, KC_T, COMBO_END};
-const uint16_t PROGMEM cho_combo23[] = {TD(TD_CAPS), KC_B, COMBO_END};
-const uint16_t PROGMEM cho_combo24[] = {KC_SPACE, KC_ENTER, COMBO_END};
-const uint16_t PROGMEM cho_combo25[] = {KC_TAB, KC_BSPC, COMBO_END};
+const uint16_t PROGMEM lshft_combo[] = {LALT_T(KC_D), LCTL_T(KC_F), COMBO_END};
+const uint16_t PROGMEM rshft_combo[] = {RCTL_T(KC_J), RALT_T(KC_K), COMBO_END};
+const uint16_t PROGMEM lesc_combo[] = {LCTL_T(KC_F), RCS_T(KC_G), COMBO_END};
+const uint16_t PROGMEM resc_combo[] = {RCS_T(KC_H), RCTL_T(KC_J), COMBO_END};
+const uint16_t PROGMEM del_combo[] = {MEH_T(KC_Y), RSA_T(KC_U), COMBO_END};
+const uint16_t PROGMEM ins_combo[] = {HYPR_T(KC_N), KC_M, COMBO_END};
+const uint16_t PROGMEM winclose_combo[] = {LSA_T(KC_R), MEH_T(KC_T), COMBO_END};
+const uint16_t PROGMEM appclose_combo[] = {TD(TD_CAPS), HYPR_T(KC_B), COMBO_END};
+const uint16_t PROGMEM layernum_combo24[] = {KC_SPACE, KC_ENTER, COMBO_END};
+const uint16_t PROGMEM layermouse_combo25[] = {KC_TAB, KC_BSPC, COMBO_END};
 
 // layer 0 combos
 combo_t key_combos[] = {  
-    COMBO(cho_combo1, KC_LSFT),
-    COMBO(cho_combo2, KC_RSFT),
-    COMBO(cho_combo7, LSFT(KC_LCTL)),
-    COMBO(cho_combo8, RSFT(KC_RCTL)),
-    COMBO(cho_combo9, LSFT(KC_LALT)),
-    COMBO(cho_combo10, RSFT(KC_RALT)),
-    COMBO(cho_combo11, KC_MEH),
-    COMBO(cho_combo12, KC_MEH),
-    COMBO(cho_combo15, LSFT(KC_LGUI)),
-    COMBO(cho_combo16, RSFT(KC_RGUI)),
-    COMBO(cho_combo17, KC_HYPR),
-    COMBO(cho_combo18, KC_HYPR),
-    COMBO(cho_combo19, KC_ESC),
-    COMBO(cho_combo20, KC_ESC),
-    COMBO(cho_combo21, KC_DEL),
+    COMBO(lshft_combo, KC_LSFT),
+    COMBO(rshft_combo, KC_RSFT),
+    COMBO(lesc_combo, KC_ESC),
+    COMBO(resc_combo, KC_ESC),
+    COMBO(del_combo, KC_DEL),
+    COMBO(ins_combo, KC_INS),
     COMBO(cho_combo22, LCTL(KC_F4)),
     COMBO(cho_combo23, LALT(KC_F4)),
     COMBO(cho_combo24, TO(0)),
@@ -112,21 +60,21 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 /*  Layer 0 Alpha
 *   _____________________________________________________________________     _____________________________________________________________________
-*  |      Q      |      W      |      E      |      R      |      T      |   |      Y      |      U      |      I      |      O      |      P      |
+*  |      Q      |      W      |      E      | R-shiftalt  | T-MEh       |   |      Y-Meh  | U-shiftalt  |      I      |      O      |      P      |
 *  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
-*  |      A      |      S      |      D      |      F      |      G      |   |      H      |      J      |      K      |      L      |      ;      |
+*  |      A      |      S-gui  |   D -alt    |   F-ctrl    | G-ctrlshift |   | H-ctrlshift |      J-ctrl |      K-alt  |      L-gui  |      ;      |
 *  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
-*  |      Z      |      X      |      C      |      V      |      B      |   |      N      |      M      |      ,      |      .      |      /      |
+*  |      Z      |      X      |      C      | V-caplock   |      B-Hypr |   |   N-Hypr    |      M      |      ,      |      .      |      /      |
 *  '---------------------------|-------------|-------------|-------------|   |-------------|-------------|-------------|---------------------------'
-*                              | UPLAYER     | SPACE       | TAB         |   | BACKSPACE   | ENTER       | DOWNLAYER   |
+*                              | UPLAYER-1   | SPACE       | TAB         |   | BACKSPACE   | ENTER       | DOWNLAYER-4 |
 *                              |_____________|_____________|_____________|   |_____________|_____________|_____________|
 */
 
   [_ALPHA] = LAYOUT_split_3x5_3(
-    KC_Q,    KC_W,  KC_E,    KC_R,         KC_T,             KC_Y,    KC_U,     KC_I,    KC_O,   KC_P,
-    KC_A,    LGUI_T(KC_S), LALT_T(KC_D), LCTL_T(KC_F), KC_G, KC_H,    RCTL_T(KC_J), RALT_T(KC_K), RGUI_T(KC_L), KC_SCLN,
-    KC_Z,    KC_X,  KC_C,    TD(TD_CAPS),  KC_B,             KC_N,    KC_M,     KC_COMM, KC_DOT, KC_SLSH,
-                        TO(1), KC_SPACE,   KC_TAB,           KC_BSPC, KC_ENTER, TO(4)
+    KC_Q,        KC_W,            KC_E,         LSA_T(KC_R),  MEH_T(KC_T),      MEH_T(KC_Y),    RSA_T(KC_U),  KC_I,         KC_O,         KC_P,
+    KC_A,        LGUI_T(KC_S),    LALT_T(KC_D), LCTL_T(KC_F), RCS_T(KC_G),      RCS_T(KC_H),    RCTL_T(KC_J), RALT_T(KC_K), RGUI_T(KC_L), KC_SCLN,
+    KC_Z,        KC_X,            KC_C,         TD(TD_CAPS),  HYPR_T(KC_B),     HYPR_T(KC_N),   KC_M,         KC_COMM,      KC_DOT,       KC_SLSH,
+                                  TO(1),        KC_SPACE,     KC_TAB,           KC_BSPC,        KC_ENTER,     TO(4)
   ),
 
 /*  Layer 1 Symbol
