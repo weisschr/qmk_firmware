@@ -54,6 +54,7 @@ LAYERNUM_COMBO,
 LAYERMOUSE_COMBO,
 CAPLOCK_COMBO,
 CAPSWORD_COMBO,
+
 };
 
 const uint16_t PROGMEM lshft_combo[] = {LALT_T(KC_D), LCTL_T(KC_F), COMBO_END};
@@ -68,6 +69,9 @@ const uint16_t PROGMEM layernum_combo[] = {KC_SPACE, KC_ENTER, COMBO_END};
 const uint16_t PROGMEM layermouse_combo[] = {KC_TAB, KC_BSPC, COMBO_END};
 const uint16_t PROGMEM caplock_combo[] = {KC_C, KC_V, COMBO_END};
 const uint16_t PROGMEM capsword_combo[] = {KC_M, KC_COMM, COMBO_END};
+const uint16_t PROGMEM osl_sym_combo[] = {KC_M, KC_COMM, COMBO_END};
+const uint16_t PROGMEM osl_func_combo[] = {KC_C, KC_V, KC_B, COMBO_END};
+const uint16_t PROGMEM osl_aspp_combo[] = {KC_X, KC_C, KC_V, COMBO_END};
 
 // layer 0 combos
 combo_t key_combos[] = {  
@@ -83,6 +87,9 @@ combo_t key_combos[] = {
 [LAYERMOUSE_COMBO] = COMBO(layermouse_combo, TO(3)),
 [CAPLOCK_COMBO] =    COMBO(caplock_combo,KC_CAPS),
 [CAPSWORD_COMBO] =   COMBO_ACTION(capsword_combo),
+[ONESHOT_SYM_COMBO] =    COMBO_ACTION(osl_sym_combo),
+[ONESHOT_FUNC_COMBO] =   COMBO_ACTION(osl_func_combo),
+[ONESHOT_APP_COMBO] =   COMBO_ACTION(osl_aspp_combo),
 };
 // end combos
 
@@ -95,6 +102,22 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
         caps_word_toggle();
       }
       break;
+    case ONESHOT_SYM_COMBO:
+      if (pressed) {
+        caps_word_toggle();
+      }
+      break;
+    case ONESHOT_FUNC_COMBO:
+      if (pressed) {
+        caps_word_toggle();
+      }
+      break;
+    case ONESHOT_APP_COMBO:
+      if (pressed) {
+        caps_word_toggle();
+      }
+      break;
+    
   }
 }
 
