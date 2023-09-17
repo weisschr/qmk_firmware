@@ -25,16 +25,16 @@ enum tapdances {
 
 // tapdances
 tap_dance_action_t tap_dance_actions[] = {
-  [TD_LBRACE]   = ACTION_TAP_DANCE_DOUBLE(KC_LBRC, KC_LCBR),
-  [TD_RBRACE]   = ACTION_TAP_DANCE_DOUBLE(KC_RBRC, KC_RCBR),
-  [TD_QUOTE]   = ACTION_TAP_DANCE_DOUBLE(KC_QUOTE, KC_DQUO),
-  [TD_SEMI]   = ACTION_TAP_DANCE_DOUBLE(KC_SEMICOLON, KC_COLON),
-  [TD_BACKSLASH]   = ACTION_TAP_DANCE_DOUBLE(KC_BACKSLASH, KC_PIPE),
-  [TD_EQUAL]   = ACTION_TAP_DANCE_DOUBLE(KC_EQUAL, KC_PLUS),
-  [TD_MINUS]   = ACTION_TAP_DANCE_DOUBLE(KC_MINUS, KC_UNDERSCORE),
-  [TD_COMMA]   = ACTION_TAP_DANCE_DOUBLE(KC_COMMA, KC_LT),
-  [TD_DOT]   = ACTION_TAP_DANCE_DOUBLE(KC_DOT, KC_GT),
-  [TD_SLASH]   = ACTION_TAP_DANCE_DOUBLE(KC_SLASH, KC_QUES),
+  [TD_LBRACE]    = ACTION_TAP_DANCE_DOUBLE(KC_LBRC, KC_LCBR),
+  [TD_RBRACE]    = ACTION_TAP_DANCE_DOUBLE(KC_RBRC, KC_RCBR),
+  [TD_QUOTE]     = ACTION_TAP_DANCE_DOUBLE(KC_QUOTE, KC_DQUO),
+  [TD_SEMI]      = ACTION_TAP_DANCE_DOUBLE(KC_SEMICOLON, KC_COLON),
+  [TD_BACKSLASH] = ACTION_TAP_DANCE_DOUBLE(KC_BACKSLASH, KC_PIPE),
+  [TD_EQUAL]     = ACTION_TAP_DANCE_DOUBLE(KC_EQUAL, KC_PLUS),
+  [TD_MINUS]     = ACTION_TAP_DANCE_DOUBLE(KC_MINUS, KC_UNDERSCORE),
+  [TD_COMMA]     = ACTION_TAP_DANCE_DOUBLE(KC_COMMA, KC_LT),
+  [TD_DOT]       = ACTION_TAP_DANCE_DOUBLE(KC_DOT, KC_GT),
+  [TD_SLASH]     = ACTION_TAP_DANCE_DOUBLE(KC_SLASH, KC_QUES),
 };
 // end tapdances
 
@@ -43,56 +43,55 @@ uint16_t COMBO_LEN = 19;
 // Layer 0 combos
 enum combos {
     LSHFT_COMBO,			
-RSHFT_COMBO,
-LESC_COMBO,
-RESC_COMBO,
-DEL_COMBO,
-INS_COMBO,
-WINCLOSE_COMBO,
-APPCLOSE_COMBO,
-LAYERNUM_COMBO,
-LAYERMOUSE_COMBO,
-CAPLOCK_COMBO,
-CAPSWORD_COMBO,
-ONESHOT_SYM_COMBO,
-ONESHOT_FUNC_COMBO,
-ONESHOT_APP_COMBO
-
+    RSHFT_COMBO,
+    LESC_COMBO,
+    RESC_COMBO,
+    DEL_COMBO,
+    INS_COMBO,
+    WINCLOSE_COMBO,
+    APPCLOSE_COMBO,
+    LAYERNUM_COMBO,
+    LAYERMOUSE_COMBO,
+    CAPLOCK_COMBO,
+    CAPSWORD_COMBO,
+    ONESHOT_SYM_COMBO,
+    ONESHOT_FUNC_COMBO,
+    ONESHOT_APP_COMBO
 };
 
-const uint16_t PROGMEM lshft_combo[] = {LALT_T(KC_D), LCTL_T(KC_F), COMBO_END};
-const uint16_t PROGMEM rshft_combo[] = {RCTL_T(KC_J), RALT_T(KC_K), COMBO_END};
-const uint16_t PROGMEM lesc_combo[] = {LCTL_T(KC_F), RCS_T(KC_G), COMBO_END};
-const uint16_t PROGMEM resc_combo[] = {RCS_T(KC_H), RCTL_T(KC_J), COMBO_END};
-const uint16_t PROGMEM del_combo[] = {MEH_T(KC_Y), RSA_T(KC_U), COMBO_END};
-const uint16_t PROGMEM ins_combo[] = {HYPR_T(KC_N), KC_M, COMBO_END};
-const uint16_t PROGMEM winclose_combo[] = {LSA_T(KC_R), MEH_T(KC_T), COMBO_END};
-const uint16_t PROGMEM appclose_combo[] = {KC_V, HYPR_T(KC_B), COMBO_END};
-const uint16_t PROGMEM layernum_combo[] = {KC_SPACE, KC_ENTER, COMBO_END};
+const uint16_t PROGMEM lshft_combo[]      = {LALT_T(KC_D), LCTL_T(KC_F), COMBO_END};
+const uint16_t PROGMEM rshft_combo[]      = {RCTL_T(KC_J), RALT_T(KC_K), COMBO_END};
+const uint16_t PROGMEM lesc_combo[]       = {LCTL_T(KC_F), RCS_T(KC_G), COMBO_END};
+const uint16_t PROGMEM resc_combo[]       = {RCS_T(KC_H), RCTL_T(KC_J), COMBO_END};
+const uint16_t PROGMEM del_combo[]        = {MEH_T(KC_Y), RSA_T(KC_U), COMBO_END};
+const uint16_t PROGMEM ins_combo[]        = {HYPR_T(KC_N), KC_M, COMBO_END};
+const uint16_t PROGMEM winclose_combo[]   = {LSA_T(KC_R), MEH_T(KC_T), COMBO_END};
+const uint16_t PROGMEM appclose_combo[]   = {KC_V, HYPR_T(KC_B), COMBO_END};
+const uint16_t PROGMEM layernum_combo[]   = {KC_SPACE, KC_ENTER, COMBO_END};
 const uint16_t PROGMEM layermouse_combo[] = {KC_TAB, KC_BSPC, COMBO_END};
-const uint16_t PROGMEM caplock_combo[] = {KC_C, KC_V, COMBO_END};
-const uint16_t PROGMEM capsword_combo[] = {KC_M, KC_COMM, COMBO_END};
-const uint16_t PROGMEM osl_sym_combo[] = {KC_M, KC_COMM, COMBO_END};
-const uint16_t PROGMEM osl_func_combo[] = {KC_C, KC_V, KC_B, COMBO_END};
-const uint16_t PROGMEM osl_aspp_combo[] = {KC_X, KC_C, KC_V, COMBO_END};
+const uint16_t PROGMEM caplock_combo[]    = {KC_C, KC_V, COMBO_END};
+const uint16_t PROGMEM capsword_combo[]   = {KC_M, KC_COMM, COMBO_END};
+const uint16_t PROGMEM osl_sym_combo[]    = {KC_COMM, KC_DOT, COMBO_END};
+const uint16_t PROGMEM osl_func_combo[]   = {KC_X, KC_C, COMBO_END};
+const uint16_t PROGMEM osl_aspp_combo[]   = {KC_X, KC_V, COMBO_END};
 
 // layer 0 combos
 combo_t key_combos[] = {  
-[LSHFT_COMBO] =	  	 COMBO(lshft_combo, KC_LSFT),
-[RSHFT_COMBO] =      COMBO(rshft_combo, KC_RSFT),
-[LESC_COMBO] =       COMBO(lesc_combo, KC_ESC),
-[RESC_COMBO] =       COMBO(resc_combo, KC_ESC),
-[DEL_COMBO] =        COMBO(del_combo, KC_DEL),
-[INS_COMBO] =        COMBO(ins_combo, KC_INS),
-[WINCLOSE_COMBO] =   COMBO(winclose_combo, LCTL(KC_F4)),
-[APPCLOSE_COMBO] =   COMBO(appclose_combo, LALT(KC_F4)),
-[LAYERNUM_COMBO] =   COMBO(layernum_combo, TO(0)),
-[LAYERMOUSE_COMBO] = COMBO(layermouse_combo, TO(3)),
-[CAPLOCK_COMBO] =    COMBO(caplock_combo,KC_CAPS),
-[CAPSWORD_COMBO] =   COMBO_ACTION(capsword_combo),
-[ONESHOT_SYM_COMBO] =    COMBO_ACTION(osl_sym_combo),
-[ONESHOT_FUNC_COMBO] =   COMBO_ACTION(osl_func_combo),
-[ONESHOT_APP_COMBO] =   COMBO_ACTION(osl_aspp_combo),
+[LSHFT_COMBO] =	  	   COMBO(lshft_combo, KC_LSFT),
+[RSHFT_COMBO] =        COMBO(rshft_combo, KC_RSFT),
+[LESC_COMBO] =         COMBO(lesc_combo, KC_ESC),
+[RESC_COMBO] =         COMBO(resc_combo, KC_ESC),
+[DEL_COMBO] =          COMBO(del_combo, KC_DEL),
+[INS_COMBO] =          COMBO(ins_combo, KC_INS),
+[WINCLOSE_COMBO] =     COMBO(winclose_combo, LCTL(KC_F4)),
+[APPCLOSE_COMBO] =     COMBO(appclose_combo, LALT(KC_F4)),
+[LAYERNUM_COMBO] =     COMBO(layernum_combo, TO(0)),
+[LAYERMOUSE_COMBO] =   COMBO(layermouse_combo, TO(3)),
+[CAPLOCK_COMBO] =      COMBO(caplock_combo,KC_CAPS),
+[CAPSWORD_COMBO] =     COMBO_ACTION(capsword_combo),
+[ONESHOT_SYM_COMBO] =  COMBO(osl_sym_combo, OSL(_NUMBSYM)),
+[ONESHOT_FUNC_COMBO] = COMBO(osl_func_combo, OSL(_FUNCTION)),
+[ONESHOT_APP_COMBO] =  COMBO(osl_aspp_combo, OSL(_APPCONTROL)),
 };
 // end combos
 
@@ -105,22 +104,6 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
         caps_word_toggle();
       }
       break;
-    case ONESHOT_SYM_COMBO:
-      if (pressed) {
-        caps_word_toggle();
-      }
-      break;
-    case ONESHOT_FUNC_COMBO:
-      if (pressed) {
-        caps_word_toggle();
-      }
-      break;
-    case ONESHOT_APP_COMBO:
-      if (pressed) {
-        caps_word_toggle();
-      }
-      break;
-    
   }
 }
 
