@@ -23,6 +23,31 @@ enum tapdances {
   TAPDANCE_LENGTH
 };
 
+enum custom_keycodes {
+  MY_SPACE_SHIFT,
+  MY_ENTER_SHIFT,
+  CUSTOM_KEYCODE_LENGTH
+};
+
+enum combos {
+    //LSHFT_COMBO,			
+    //RSHFT_COMBO,
+    LESC_COMBO,
+    RESC_COMBO,
+    DEL_COMBO,
+    INS_COMBO,
+    WINCLOSE_COMBO,
+    APPCLOSE_COMBO,
+    LAYERNUM_COMBO,
+    LAYERMOUSE_COMBO,
+    CAPLOCK_COMBO,
+    CAPSWORD_COMBO,
+    ONESHOT_SYM_COMBO,
+    ONESHOT_FUNC_COMBO,
+    ONESHOT_APP_COMBO,
+    COMBO_LENGTH
+};
+
 // tapdances
 tap_dance_action_t tap_dance_actions[] = {
   [TD_LBRACE]    = ACTION_TAP_DANCE_DOUBLE(KC_LBRC, KC_LCBR),
@@ -41,33 +66,15 @@ tap_dance_action_t tap_dance_actions[] = {
 uint16_t COMBO_LEN = 19;
 
 // Layer 0 combos
-enum combos {
-    LSHFT_COMBO,			
-    RSHFT_COMBO,
-    LESC_COMBO,
-    RESC_COMBO,
-    DEL_COMBO,
-    INS_COMBO,
-    WINCLOSE_COMBO,
-    APPCLOSE_COMBO,
-    LAYERNUM_COMBO,
-    LAYERMOUSE_COMBO,
-    CAPLOCK_COMBO,
-    CAPSWORD_COMBO,
-    ONESHOT_SYM_COMBO,
-    ONESHOT_FUNC_COMBO,
-    ONESHOT_APP_COMBO
-};
-
-const uint16_t PROGMEM lshft_combo[]      = {LALT_T(KC_D), LCTL_T(KC_F), COMBO_END};
-const uint16_t PROGMEM rshft_combo[]      = {RCTL_T(KC_J), RALT_T(KC_K), COMBO_END};
+//const uint16_t PROGMEM lshft_combo[]      = {LALT_T(KC_D), LCTL_T(KC_F), COMBO_END};
+//const uint16_t PROGMEM rshft_combo[]      = {RCTL_T(KC_J), RALT_T(KC_K), COMBO_END};
 const uint16_t PROGMEM lesc_combo[]       = {LCTL_T(KC_F), RCS_T(KC_G), COMBO_END};
 const uint16_t PROGMEM resc_combo[]       = {RCS_T(KC_H), RCTL_T(KC_J), COMBO_END};
 const uint16_t PROGMEM del_combo[]        = {MEH_T(KC_Y), RSA_T(KC_U), COMBO_END};
 const uint16_t PROGMEM ins_combo[]        = {HYPR_T(KC_N), KC_M, COMBO_END};
 const uint16_t PROGMEM winclose_combo[]   = {LSA_T(KC_R), MEH_T(KC_T), COMBO_END};
 const uint16_t PROGMEM appclose_combo[]   = {KC_V, HYPR_T(KC_B), COMBO_END};
-const uint16_t PROGMEM layernum_combo[]   = {KC_SPACE, KC_ENTER, COMBO_END};
+const uint16_t PROGMEM layernum_combo[]   = {MY_SPACE_SHIFT, MY_ENTER_SHIFT, COMBO_END};
 const uint16_t PROGMEM layermouse_combo[] = {KC_TAB, KC_BSPC, COMBO_END};
 const uint16_t PROGMEM caplock_combo[]    = {KC_C, KC_V, COMBO_END};
 const uint16_t PROGMEM capsword_combo[]   = {KC_M, KC_COMM, COMBO_END};
@@ -77,15 +84,15 @@ const uint16_t PROGMEM osl_aspp_combo[]   = {KC_X, KC_V, COMBO_END};
 
 // layer 0 combos
 combo_t key_combos[] = {  
-[LSHFT_COMBO] =	  	   COMBO(lshft_combo, KC_LSFT),
-[RSHFT_COMBO] =        COMBO(rshft_combo, KC_RSFT),
+//[LSHFT_COMBO] =	  	   COMBO(lshft_combo, KC_LSFT),
+//[RSHFT_COMBO] =        COMBO(rshft_combo, KC_RSFT),
 [LESC_COMBO] =         COMBO(lesc_combo, KC_ESC),
 [RESC_COMBO] =         COMBO(resc_combo, KC_ESC),
 [DEL_COMBO] =          COMBO(del_combo, KC_DEL),
 [INS_COMBO] =          COMBO(ins_combo, KC_INS),
 [WINCLOSE_COMBO] =     COMBO(winclose_combo, LCTL(KC_F4)),
 [APPCLOSE_COMBO] =     COMBO(appclose_combo, LALT(KC_F4)),
-[LAYERNUM_COMBO] =     COMBO(layernum_combo, TO(0)),
+[LAYERNUM_COMBO] =     COMBO(layernum_combo, KC_TRNS),
 [LAYERMOUSE_COMBO] =   COMBO(layermouse_combo, TO(3)),
 [CAPLOCK_COMBO] =      COMBO(caplock_combo,KC_CAPS),
 [CAPSWORD_COMBO] =     COMBO_ACTION(capsword_combo),
@@ -95,8 +102,6 @@ combo_t key_combos[] = {
 };
 // end combos
 
-// Special behavior code
-
 void process_combo_event(uint16_t combo_index, bool pressed) {
   switch(combo_index) {
     case CAPSWORD_COMBO:
@@ -104,11 +109,54 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
         caps_word_toggle();
       }
       break;
+    case LAYERNUM_COMBO:
+      if (pressed) {
+        layer_move(0);  // Switch to layer 0 when the combo is pressed
+      }
+      break;
+  }
+}
+
+static bool space_shift_active = false;
+static bool enter_shift_active = false;
+static bool my_space_shift_held = false;
+static bool my_enter_shift_held = false;
+
+void handle_custom_shift(keyrecord_t *record, bool *custom_shift_held, bool *shift_active, uint16_t kc) {
+  if (record->event.pressed) {
+    *custom_shift_held = true;
+  } else {
+    *custom_shift_held = false;
+    if (*shift_active) {
+      unregister_code(KC_LSFT);
+      *shift_active = false;
+    } else {
+      tap_code(kc);
+    }
   }
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    return true;
+   switch (keycode) {
+    case MY_SPACE_SHIFT:
+      handle_custom_shift(record, &my_space_shift_held, &space_shift_active, KC_SPACE);
+      return false;
+    case MY_ENTER_SHIFT:
+      handle_custom_shift(record, &my_enter_shift_held, &enter_shift_active, KC_ENT);
+      return false;
+    default:
+      if (record->event.pressed) {
+        if (my_space_shift_held && !space_shift_active) {
+          register_code(KC_LSFT);
+          space_shift_active = true;
+        }
+        if (my_enter_shift_held && !enter_shift_active) {
+          register_code(KC_LSFT);
+          enter_shift_active = true;
+        }
+      }
+      return true; // Process all other keycodes normally.
+  }
 }
 
 // begin layers
@@ -130,7 +178,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_Q,        KC_W,            KC_E,         LSA_T(KC_R),  MEH_T(KC_T),      MEH_T(KC_Y),    RSA_T(KC_U),  KC_I,         KC_O,         KC_P,
     KC_A,        LGUI_T(KC_S),    LALT_T(KC_D), LCTL_T(KC_F), RCS_T(KC_G),      RCS_T(KC_H),    RCTL_T(KC_J), RALT_T(KC_K), RGUI_T(KC_L), KC_SCLN,
     KC_Z,        KC_X,            KC_C,         KC_V,         HYPR_T(KC_B),     HYPR_T(KC_N),   KC_M,         KC_COMM,      KC_DOT,       KC_SLSH,
-                                  TO(1),        KC_SPACE,     KC_TAB,           KC_BSPC,        KC_ENTER,     TO(4)
+                                  TO(1),        MY_SPACE_SHIFT,     KC_TAB,           KC_BSPC,        MY_ENTER_SHIFT,     TO(4)
   ),
 
 /*  Layer 1 Symbol
