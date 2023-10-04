@@ -65,8 +65,6 @@ tap_dance_action_t tap_dance_actions[] = {
 };
 // end tapdances
 
-uint16_t COMBO_LEN = 19;
-
 // Layer 0 combos
 
 // Need to test if shift-enter and control-enter still work
@@ -146,9 +144,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case SPACE_SHIFT:
       handle_custom_shift(record, &space_shift_held, &space_shift_active, KC_SPACE);
       return false;
+
     case ENTER_SHIFT:
       handle_custom_shift(record, &enter_shift_held, &enter_shift_active, KC_ENT);
       return false;
+
     case TAB_ALPHA:
       if (record->event.pressed) {
         key_timer_default = timer_read(); // Start the timer on key press.
@@ -160,6 +160,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
       }
       return false;
+
     case BKSPC_MOUSE:
       if (record->event.pressed) {
         key_timer_mouse = timer_read(); // Start the timer when the key is pressed.
@@ -170,7 +171,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           layer_move(_MOUSE);
         }
       }
-      return false; // Skip all further processing of this key.
+      return false;
+
     default:
       if (record->event.pressed) {
         if (space_shift_held && !space_shift_active) {
@@ -182,6 +184,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           enter_shift_active = true;
         }
       }
+
       return true; // Process all other keycodes normally.
   }
 }
@@ -202,10 +205,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 */
 
   [_ALPHA] = LAYOUT_split_3x5_3(
-    KC_Q,        KC_W,            KC_E,         LSA_T(KC_R),     MEH_T(KC_T),      MEH_T(KC_Y),    RSA_T(KC_U),  KC_I,         KC_O,         KC_P,
-    KC_A,        LGUI_T(KC_S),    LALT_T(KC_D), LCTL_T(KC_F),    RCS_T(KC_G),      RCS_T(KC_H),    RCTL_T(KC_J), RALT_T(KC_K), RGUI_T(KC_L), KC_SCLN,
-    KC_Z,        KC_X,            KC_C,         KC_V,            HYPR_T(KC_B),     HYPR_T(KC_N),   KC_M,         KC_COMM,      KC_DOT,       KC_SLSH,
-                                  TO(1),        SPACE_SHIFT,     TAB_ALPHA,        BKSPC_MOUSE,    ENTER_SHIFT,  TO(4)
+    KC_Q,  KC_W,          KC_E,         LSA_T(KC_R),   MEH_T(KC_T),      MEH_T(KC_Y),  RSA_T(KC_U),  KC_I,         KC_O,         KC_P,
+    KC_A,  LGUI_T(KC_S),  LALT_T(KC_D), LCTL_T(KC_F),  RCS_T(KC_G),      RCS_T(KC_H),  RCTL_T(KC_J), RALT_T(KC_K), RGUI_T(KC_L), KC_SCLN,
+    KC_Z,  KC_X,          KC_C,         KC_V,          HYPR_T(KC_B),     HYPR_T(KC_N), KC_M,         KC_COMM,      KC_DOT,       KC_SLSH,
+                          TO(_NUMBSYM),     SPACE_SHIFT,   TAB_ALPHA,        BKSPC_MOUSE,  ENTER_SHIFT,  TO(_APPCONTROL)
   ),
 
 /*  Layer 1 Symbol
@@ -222,10 +225,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 */
 
   [_NUMBSYM] = LAYOUT_split_3x5_3(
-    KC_EXLM,      KC_AT,      KC_HASH,   KC_DLR,    KC_PERC,         KC_CIRC,  KC_AMPR,   KC_ASTR,         KC_LEFT_PAREN,  KC_RIGHT_PAREN,
-    KC_1,         KC_2,       KC_3,      KC_4,      KC_5,            KC_6,     KC_7,      KC_8,             KC_9,          KC_0,
-    TD(TD_GRAVE), KC_PLUS,    KC_EQUAL,  KC_MINUS,  KC_UNDS,         KC_DQUO,  KC_QUOTE,  TD(TD_BACKSLASH), TD(TD_LBRACE), TD(TD_RBRACE),
-                              TO(2),     KC_TRNS,   KC_TRNS,         KC_TRNS,  KC_TRNS,   TO(0)
+    KC_EXLM,      KC_AT,   KC_HASH,   KC_DLR,    KC_PERC,         KC_CIRC,  KC_AMPR,   KC_ASTR,         KC_LEFT_PAREN,  KC_RIGHT_PAREN,
+    KC_1,         KC_2,    KC_3,      KC_4,      KC_5,            KC_6,     KC_7,      KC_8,             KC_9,          KC_0,
+    TD(TD_GRAVE), KC_PLUS, KC_EQUAL,  KC_MINUS,  KC_UNDS,         KC_DQUO,  KC_QUOTE,  TD(TD_BACKSLASH), TD(TD_LBRACE), TD(TD_RBRACE),
+                           TO(_FUNCTION),   KC_TRNS,   KC_TRNS,         KC_TRNS,  KC_TRNS,   TO(_ALPHA)
   ),
 
 /*  Layer 2 Function
@@ -243,10 +246,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 */
 
   [_FUNCTION] = LAYOUT_split_3x5_3(
-    KC_END,     KC_HOME,   KC_LEFT,  KC_RIGHT,  KC_F11,      KC_F12,    KC_UP,    KC_DOWN,   KC_PGUP,   KC_PGDN,
-    KC_F1,      KC_F2,     KC_F3,    KC_F4,     KC_F5,       KC_F6,     KC_F7,    KC_F8,     KC_F9,   KC_F10,
-    KC_LGUI,    KC_LALT,   KC_LCTL,  KC_LSFT,   KC_MEH,      KC_HYPR,   KC_RSFT,  KC_RCTL,   KC_RALT, KC_RGUI,
-                           TO(3),    KC_TRNS,   KC_TRNS,     KC_TRNS,   KC_TRNS,  TO(1)
+    KC_END,  KC_HOME, KC_LEFT,  KC_RIGHT,  KC_F11,      KC_F12,    KC_UP,    KC_DOWN,   KC_PGUP,   KC_PGDN,
+    KC_F1,   KC_F2,   KC_F3,    KC_F4,     KC_F5,       KC_F6,     KC_F7,    KC_F8,     KC_F9,   KC_F10,
+    KC_LGUI, KC_LALT, KC_LCTL,  KC_LSFT,   KC_MEH,      KC_HYPR,   KC_RSFT,  KC_RCTL,   KC_RALT, KC_RGUI,
+                      TO(_MOUSE),  KC_TRNS,   KC_TRNS,     KC_TRNS,   KC_TRNS,  TO(_NUMBSYM)
   ),
 
 /*  Layer 3 Mouse
@@ -265,7 +268,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_WBAK,   C(KC_T),     KC_VOLD,    KC_MUTE,    KC_VOLU,      RSFT_T(KC_HOME), KC_PGUP,     KC_MS_UP,      KC_PGDN,        KC_WSCH,
     KC_WFWD,   KC_MS_BTN1,  KC_MS_BTN3, KC_MS_BTN2, KC_UP,        RCTL_T(KC_END),  KC_MS_LEFT,  KC_MS_DOWN,    KC_MS_RIGHT,    KC_WREF,
     KC_WHOM,   C(KC_N),     KC_LEFT,    KC_RIGHT,   KC_DOWN,      KC_MS_WH_LEFT,   KC_MS_WH_UP, KC_MS_WH_DOWN, KC_MS_WH_RIGHT, KC_WSTP,
-                            TO(4),      KC_TRNS,    KC_TRNS,      KC_TRNS,         KC_TRNS,     TO(2)
+                            TO(_APPCONTROL),    KC_TRNS,    KC_TRNS,      KC_TRNS,         KC_TRNS,     TO(_FUNCTION)
   ),
 
 /*  Layer 4 APPS AND CONTROL
@@ -284,6 +287,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_NO,      KC_NO,   HYPR_T(KC_L), HYPR_T(KC_O),   HYPR_T(KC_T),     RGUI(KC_E),  QK_BOOT,     QK_REBOOT,  KC_NO,     KC_NO,
     KC_NO,      KC_NO,   KC_NO,        HYPR_T(KC_P),   HYPR_T(KC_W),     KC_CALC,     RCS(KC_ESC), RGUI(KC_R), KC_NO,     KC_NO,
     KC_NO,      KC_NO,   KC_NO,        LGUI(KC_DOT),   HYPR_T(KC_X),     SGUI(KC_S),  RGUI(KC_V),  KC_NO,      KC_NO,     KC_NO,
-                         TO(0),        KC_TRNS,        KC_TRNS,          KC_TRNS,     KC_TRNS,     TO(3)
+                         TO(_ALPHA),      KC_TRNS,        KC_TRNS,          KC_TRNS,     KC_TRNS,     TO(_MOUSE)
   )
 };
