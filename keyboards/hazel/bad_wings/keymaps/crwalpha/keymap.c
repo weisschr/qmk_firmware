@@ -25,8 +25,6 @@ enum tapdances {
 };
 
 enum custom_keycodes {
-  SPACE_SHIFT,
-  ENTER_SHIFT,
   TAB_ALPHA,
   BKSPC_MOUSE,
   CUSTOM_KEYCODE_LENGTH
@@ -111,36 +109,23 @@ combo_t key_combos[] = {
 };
 // end combos
 
-static bool space_shift_active = false;
-static bool enter_shift_active = false;
-static bool space_shift_held = false;
-static bool enter_shift_held = false;
 static uint16_t key_timer_default;
 static uint16_t key_timer_mouse;
 
-void handle_custom_shift(keyrecord_t *record, bool *custom_shift_held, bool *shift_active, uint16_t kc) {
-  if (record->event.pressed) {
-    *custom_shift_held = true;
-  } else {
-    *custom_shift_held = false;
-    if (*shift_active) {
-      unregister_code(KC_LSFT);
-      *shift_active = false;
-    } else {
-      tap_code(kc);
+bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case LSFT_T(KC_SPACE):
+        case RSFT_T(KC_ENTER):
+            // Immediately select the hold action when another key is pressed.
+             return true;
+        default:
+            // Do not select the hold action when another key is pressed.
+            return false;
     }
-  }
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
-    case SPACE_SHIFT:
-      handle_custom_shift(record, &space_shift_held, &space_shift_active, KC_SPACE);
-      return false;
-
-    case ENTER_SHIFT:
-      handle_custom_shift(record, &enter_shift_held, &enter_shift_active, KC_ENT);
-      return false;
 
     case TAB_ALPHA:
       if (record->event.pressed) {
@@ -167,17 +152,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       return false;
 
     default:
-      if (record->event.pressed) {
-        if (space_shift_held && !space_shift_active) {
-          register_code(KC_LSFT);
-          space_shift_active = true;
-        }
-        if (enter_shift_held && !enter_shift_active) {
-          register_code(KC_LSFT);
-          enter_shift_active = true;
-        }
-      }
-
       return true; // Process all other keycodes normally.
   }
 }
@@ -198,10 +172,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 */
 
   [_ALPHA] = LAYOUT_split_3x5_3(
-    KC_Q,  KC_W,          KC_E,         LSA_T(KC_R),   MEH_T(KC_T),      MEH_T(KC_Y),  RSA_T(KC_U),  KC_I,         KC_O,         KC_P,
-    KC_A,  LGUI_T(KC_S),  LALT_T(KC_D), LCTL_T(KC_F),  RCS_T(KC_G),      RCS_T(KC_H),  RCTL_T(KC_J), RALT_T(KC_K), RGUI_T(KC_L), KC_SCLN,
-    KC_Z,  KC_X,          KC_C,         KC_V,          HYPR_T(KC_B),     HYPR_T(KC_N), KC_M,         KC_COMM,      KC_DOT,       KC_SLSH,
-                          TO(_NUMBSYM), SPACE_SHIFT,   TAB_ALPHA,        BKSPC_MOUSE,  ENTER_SHIFT,  TO(_APPCONTROL)
+    KC_Q,  KC_W,          KC_E,         LSA_T(KC_R),      MEH_T(KC_T),     MEH_T(KC_Y),  RSA_T(KC_U),      KC_I,         KC_O,         KC_P,
+    KC_A,  LGUI_T(KC_S),  LALT_T(KC_D), LCTL_T(KC_F),     RCS_T(KC_G),     RCS_T(KC_H),  RCTL_T(KC_J),     RALT_T(KC_K), RGUI_T(KC_L), KC_SCLN,
+    KC_Z,  KC_X,          KC_C,         KC_V,             HYPR_T(KC_B),    HYPR_T(KC_N), KC_M,             KC_COMM,      KC_DOT,       KC_SLSH,
+                          TO(_NUMBSYM), LSFT_T(KC_SPACE), TAB_ALPHA,       BKSPC_MOUSE,  RSFT_T(KC_ENTER), TO(_APPCONTROL)
   ),
 
 /*  Layer 1 Symbol
