@@ -84,12 +84,6 @@ const uint16_t PROGMEM osl_sym_combo[]    = {KC_COMM, KC_DOT, COMBO_END};
 const uint16_t PROGMEM osl_func_combo[]   = {KC_X, KC_C, COMBO_END};
 const uint16_t PROGMEM osl_aspp_combo[]   = {KC_X, KC_V, COMBO_END};
 
-/*
-
-Add combos for ' " and arrows
-
-*/
-
 // layer 0 combos
 combo_t key_combos[] = {  
 [LARROW_COMBO] =	  	 COMBO(larrow_combo, KC_LEFT),
@@ -161,18 +155,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 /*  Layer 0 Alpha
 *   _____________________________________________________________________     _____________________________________________________________________
-*  |      Q      |      W      |      E      | R-shiftalt  | T-MEh       |   |      Y-Meh  | U-shiftalt  |      I      |      O      |      P      |
+*  |      Q      |      W      |  E-ctrlalt  | R-shiftalt  | T-MEh       |   |      Y-Meh  | U-shiftalt  | I-ctrlalt   |      O      |      P      |
 *  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
-*  |      A      |      S-gui  |   D -alt    | F-ctrl      | G-ctrlshift |   | H-ctrlshift |      J-ctrl |      K-alt  |      L-gui  |      ;      |
+*  |      A      |      S-gui  |   D -alt    | F-ctrl      | G-ctrlshift |   | H-ctrlshift |      J-ctrl |      K-alt  |      L-gui  |      ;:     |
 *  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
-*  |      Z      |      X      |      C      |      V      | B-Hypr      |   |   N-Hypr    |      M      |      ,      |      .      |      /      |
+*  |      Z      |      X      |      C      |      V      | B-Hypr      |   |   N-Hypr    |      M      |      ,<     |      .>     |      /?     |
 *  '---------------------------|-------------|-------------|-------------|   |-------------|-------------|-------------|---------------------------'
 *                              | UPLAYER-1   | SPACE       | TAB         |   | BACKSPACE   | ENTER       | DOWNLAYER-4 |
 *                              |_____________|_____________|_____________|   |_____________|_____________|_____________|
 */
 
   [_ALPHA] = LAYOUT_split_3x5_3(
-    KC_Q,  KC_W,          KC_E,         LSA_T(KC_R),      MEH_T(KC_T),     MEH_T(KC_Y),  RSA_T(KC_U),      KC_I,         KC_O,         KC_P,
+    KC_Q,  KC_W,          LCA_T(KC_E),  LSA_T(KC_R),      MEH_T(KC_T),     MEH_T(KC_Y),  RSA_T(KC_U),      LCA_T(KC_I),  KC_O,         KC_P,
     KC_A,  LGUI_T(KC_S),  LALT_T(KC_D), LCTL_T(KC_F),     RCS_T(KC_G),     RCS_T(KC_H),  RCTL_T(KC_J),     RALT_T(KC_K), RGUI_T(KC_L), KC_SCLN,
     KC_Z,  KC_X,          KC_C,         KC_V,             HYPR_T(KC_B),    HYPR_T(KC_N), KC_M,             KC_COMM,      KC_DOT,       KC_SLSH,
                           TO(_NUMBSYM), LSFT_T(KC_SPACE), TAB_ALPHA,       BKSPC_MOUSE,  RSFT_T(KC_ENTER), TO(_APPCONTROL)
