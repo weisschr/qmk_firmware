@@ -6,6 +6,7 @@ enum layers {
   _FUNCTION,
   _MOUSE,
   _APPCONTROL,
+  _NAV,
   LAYER_LENGTH
 };
 
@@ -27,14 +28,16 @@ enum tapdances {
 enum custom_keycodes {
   TAB_ALPHA,
   BKSPC_MOUSE,
+  /*PWD1,
+  PWD2,
+  PWD3,*/
   CUSTOM_KEYCODE_LENGTH
 };
 
 enum combos {
-    LARROW_COMBO,
-    RARROW_COMBO,
-    UARROW_COMBO,
-    DARROW_COMBO,
+    DOUBLEQ_COMBO,
+    SINGLEQ_COMBO,
+    NAV_COMBO,
     LESC_COMBO,
     RESC_COMBO,
     DEL_COMBO,
@@ -69,27 +72,25 @@ tap_dance_action_t tap_dance_actions[] = {
 
 // Need to test if shift-enter and control-enter still work
 
-const uint16_t PROGMEM larrow_combo[]      = {LALT_T(KC_D), LCTL_T(KC_F), COMBO_END};
-const uint16_t PROGMEM rarrow_combo[]      = {RCTL_T(KC_J), RALT_T(KC_K), COMBO_END};
-const uint16_t PROGMEM darrow_combo[]      = {LGUI_T(KC_S),  LALT_T(KC_D), COMBO_END};
-const uint16_t PROGMEM uarrow_combo[]      = {RALT_T(KC_K), RGUI_T(KC_L), COMBO_END};
+const uint16_t PROGMEM doubleq_combo[]    = {MEH_T(KC_D), LCTL_T(KC_F), COMBO_END};
+const uint16_t PROGMEM singleq_combo[]    = {RCTL_T(KC_J), MEH_T(KC_K), COMBO_END};
+const uint16_t PROGMEM nav_combo[]        = {KC_S, LCTL_T(KC_F), COMBO_END};
 const uint16_t PROGMEM lesc_combo[]       = {LCTL_T(KC_F), RCS_T(KC_G), COMBO_END};
 const uint16_t PROGMEM resc_combo[]       = {RCS_T(KC_H), RCTL_T(KC_J), COMBO_END};
-const uint16_t PROGMEM del_combo[]        = {MEH_T(KC_Y), RSA_T(KC_U), COMBO_END};
-const uint16_t PROGMEM ins_combo[]        = {HYPR_T(KC_N), KC_M, COMBO_END};
-const uint16_t PROGMEM winclose_combo[]   = {LSA_T(KC_R), MEH_T(KC_T), COMBO_END};
-const uint16_t PROGMEM appclose_combo[]   = {KC_V, HYPR_T(KC_B), COMBO_END};
-const uint16_t PROGMEM caplock_combo[]    = {KC_C, KC_V, COMBO_END};
+const uint16_t PROGMEM del_combo[]        = {RGUI_T(KC_Y), LCA_T(KC_U), COMBO_END};
+const uint16_t PROGMEM ins_combo[]        = {RSA_T(KC_N), RALT_T(KC_M), COMBO_END};
+const uint16_t PROGMEM winclose_combo[]   = {LCA_T(KC_R), LGUI_T(KC_T), COMBO_END};
+const uint16_t PROGMEM appclose_combo[]   = {LALT_T(KC_V), LSA_T(KC_B), COMBO_END};
+const uint16_t PROGMEM caplock_combo[]    = {KC_C, LALT_T(KC_V), COMBO_END};
 const uint16_t PROGMEM osl_sym_combo[]    = {KC_COMM, KC_DOT, COMBO_END};
 const uint16_t PROGMEM osl_func_combo[]   = {KC_X, KC_C, COMBO_END};
-const uint16_t PROGMEM osl_aspp_combo[]   = {KC_X, KC_V, COMBO_END};
+const uint16_t PROGMEM osl_aspp_combo[]   = {KC_X, LALT_T(KC_V), COMBO_END};
 
 // layer 0 combos
 combo_t key_combos[] = {  
-[LARROW_COMBO] =	  	 COMBO(larrow_combo, KC_LEFT),
-[RARROW_COMBO] =       COMBO(rarrow_combo, KC_RIGHT),
-[UARROW_COMBO] =	  	 COMBO(uarrow_combo, KC_UP),
-[DARROW_COMBO] =       COMBO(darrow_combo, KC_DOWN),
+[DOUBLEQ_COMBO] =	  	 COMBO(doubleq_combo, KC_DQUO),
+[SINGLEQ_COMBO] =      COMBO(singleq_combo, KC_QUOT),
+[NAV_COMBO] =	      	 COMBO(nav_combo, TO(_NAV)),
 [LESC_COMBO] =         COMBO(lesc_combo, KC_ESC),
 [RESC_COMBO] =         COMBO(resc_combo, KC_ESC),
 [DEL_COMBO] =          COMBO(del_combo, KC_DEL),
@@ -120,7 +121,7 @@ bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
-
+    
     case TAB_ALPHA:
       if (record->event.pressed) {
         key_timer_default = timer_read(); // Start the timer on key press.
@@ -155,21 +156,21 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 /*  Layer 0 Alpha
 *   _____________________________________________________________________     _____________________________________________________________________
-*  |      Q      |      W      |  E-ctrlalt  | R-shiftalt  | T-MEh       |   |      Y-Meh  | U-shiftalt  | I-ctrlalt   |      O      |      P      |
+*  |      Q      |      W      |  E-HYPR     | R-ctrlalt   | T-gui       |   |  Y-gui      | U-ctrltalt  |   I-HYPR    |      O      |      P      |
 *  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
-*  |      A      |      S-gui  |   D -alt    | F-ctrl      | G-ctrlshift |   | H-ctrlshift |      J-ctrl |      K-alt  |      L-gui  |      ;:     |
+*  |      A      |      S      |  D-MEH      | F-ctrl      | G-ctrlshift |   | H-ctrlshift |  J-ctrl     |   K-MEH     |      L      |      ;:     |
 *  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
-*  |      Z      |      X      |      C      |      V      | B-Hypr      |   |   N-Hypr    |      M      |      ,<     |      .>     |      /?     |
+*  |      Z      |      X      |      C      | V-alt       | B-SHALT     |   |   N-SHALT   |  M-ALT      |      ,<     |      .>     |      /?     |
 *  '---------------------------|-------------|-------------|-------------|   |-------------|-------------|-------------|---------------------------'
 *                              | UPLAYER-1   | SPACE       | TAB         |   | BACKSPACE   | ENTER       | DOWNLAYER-4 |
 *                              |_____________|_____________|_____________|   |_____________|_____________|_____________|
 */
 
   [_ALPHA] = LAYOUT_split_3x5_3(
-    KC_Q,  KC_W,          LCA_T(KC_E),  LSA_T(KC_R),      MEH_T(KC_T),     MEH_T(KC_Y),  RSA_T(KC_U),      LCA_T(KC_I),  KC_O,         KC_P,
-    KC_A,  LGUI_T(KC_S),  LALT_T(KC_D), LCTL_T(KC_F),     RCS_T(KC_G),     RCS_T(KC_H),  RCTL_T(KC_J),     RALT_T(KC_K), RGUI_T(KC_L), KC_SCLN,
-    KC_Z,  KC_X,          KC_C,         KC_V,             HYPR_T(KC_B),    HYPR_T(KC_N), KC_M,             KC_COMM,      KC_DOT,       KC_SLSH,
-                          TO(_NUMBSYM), LSFT_T(KC_SPACE), TAB_ALPHA,       BKSPC_MOUSE,  RSFT_T(KC_ENTER), TO(_APPCONTROL)
+    KC_Q,  KC_W,   HYPR_T(KC_E), LCA_T(KC_R),    LGUI_T(KC_T),   RGUI_T(KC_Y), LCA_T(KC_U),      HYPR_T(KC_I),  KC_O,    KC_P,
+    KC_A,  KC_S,   MEH_T(KC_D),  LCTL_T(KC_F),   RCS_T(KC_G),    RCS_T(KC_H),  RCTL_T(KC_J),     MEH_T(KC_K),   KC_L,    KC_SCLN,
+    KC_Z,  KC_X,   KC_C,         LALT_T(KC_V),   LSA_T(KC_B),    RSA_T(KC_N),  RALT_T(KC_M),     KC_COMM,       KC_DOT,  KC_SLSH,
+            TO(_NUMBSYM),        LSFT_T(KC_SPACE), TAB_ALPHA,    BKSPC_MOUSE,  RSFT_T(KC_ENTER), TO(_APPCONTROL)
   ),
 
 /*  Layer 1 Symbol
@@ -234,20 +235,40 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 /*  Layer 4 APPS AND CONTROL
 *   _____________________________________________________________________     _____________________________________________________________________
-*  |             |             | LINKEDIN    | OUTLOOK     | TEAMS       |   | FILEMNGR    | QK_BOOT     | QK_REBOOT   |             |             |
+*  |             |             | LINKEDIN    | OUTLOOK     | TEAMS       |   | FILEMNGR    | QK_BOOT     | QK_REBOOT   |  WAKEUP     |             |
 *  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
-*  |             |             |             | POWERPOINT  | WORD        |   | KC_CALC     | TASK        | RUN         |             |             |
+*  |             |             |             | POWERPOINT  | WORD        |   | KC_CALC     | TASK        | RUN         |  POWEROFF   |             |
 *  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
-*  |             |             |             | EMOJIS      | EXCEL       |   | SNIP        | CLIPBOARD   |             |             |             |
+*  |             |             |             | EMOJIS      | EXCEL       |   | SNIP        | CLIPBOARD   | MYCOMPUTER  |  SLEEP      |             |
 *  '---------------------------|-------------|-------------|-------------|   |-------------|-------------|-------------|---------------------------'
 *                              | UPLAYER     | KC_TRNS     | KC_TRNS     |   | KC_TRNS     | KC_TRNS     | DOWNLAYER   |
 *                              |_____________|_____________|_____________|   |_____________|_____________|_____________|
 */
 
   [_APPCONTROL] = LAYOUT_split_3x5_3(
-    KC_NO,      KC_NO,   HYPR_T(KC_L), HYPR_T(KC_O),   HYPR_T(KC_T),     RGUI(KC_E),  QK_BOOT,     QK_REBOOT,  KC_NO,     KC_NO,
-    KC_NO,      KC_NO,   KC_NO,        HYPR_T(KC_P),   HYPR_T(KC_W),     KC_CALC,     RCS(KC_ESC), RGUI(KC_R), KC_NO,     KC_NO,
-    KC_NO,      KC_NO,   KC_NO,        LGUI(KC_DOT),   HYPR_T(KC_X),     SGUI(KC_S),  RGUI(KC_V),  KC_NO,      KC_NO,     KC_NO,
+    KC_NO,      KC_NO,   HYPR_T(KC_L), HYPR_T(KC_O),   HYPR_T(KC_T),     RGUI(KC_E),  QK_BOOT,     QK_REBOOT,  KC_WAKE,    KC_NO,
+    KC_NO,      KC_NO,   KC_NO,        HYPR_T(KC_P),   HYPR_T(KC_W),     KC_CALC,     RCS(KC_ESC), RGUI(KC_R), KC_PWR,     KC_NO,
+    KC_NO,      KC_NO,   KC_NO,        LGUI(KC_DOT),   HYPR_T(KC_X),     SGUI(KC_S),  RGUI(KC_V),  KC_MYCM,    KC_SLEP,    KC_NO,
                          TO(_ALPHA),   KC_TRNS,        KC_TRNS,          KC_TRNS,     KC_TRNS,     TO(_MOUSE)
+  ),
+
+/*  Layer 5 Nav
+*   _____________________________________________________________________     _____________________________________________________________________
+*  | KC_NO       | KC_NO       | KC_NO       | KC_NO       | KC_NO       |   | KC_NO       | KC_NO       | KC_NO       | KC_NO       | KC_NO       |
+*  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
+*  | KC_NO       | KC_NO       | KC_NO       | KC_NO       | KC_NO       |   | KC_NO       | KC_NO       | KC_NO       | KC_NO       | KC_NO       |
+*  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
+*  | KC_NO       | KC_NO       | KC_NO       | KC_NO       | KC_NO       |   | KC_NO       | KC_NO       | KC_NO       | KC_NO       | KC_NO       |
+*  '---------------------------|-------------|-------------|-------------|   |-------------|-------------|-------------|---------------------------'
+*                              | UPLAYER     | KC_TRNS     | KC_TRNS     |   | KC_TRNS     | KC_TRNS     | DOWNLAYER   |
+*                              |_____________|_____________|_____________|   |_____________|_____________|_____________|
+*/
+
+ [_NAV] = LAYOUT_split_3x5_3(
+    KC_TRNS,     KC_TRNS,     KC_TRNS,       KC_HOME,     KC_TRNS,       KC_TRNS,     KC_PGUP,     KC_TRNS,     KC_TRNS,     KC_TRNS,    
+    KC_TRNS,     KC_TRNS,     KC_LEFT,       KC_RIGHT,    KC_TRNS,       KC_TRNS,     KC_UP,       KC_DOWN,     KC_TRNS,     KC_TRNS,    
+    KC_TRNS,     KC_TRNS,     KC_TRNS,       KC_END,      KC_TRNS,       KC_TRNS,     KC_PGDN,     KC_TRNS,     KC_TRNS,     KC_TRNS,    
+                              TO(_ALPHA),    KC_TRNS,     KC_TRNS,       KC_TRNS,     KC_TRNS,     TO(_MOUSE)
   )
+
 };
