@@ -28,9 +28,9 @@ enum tapdances {
 enum custom_keycodes {
   TAB_ALPHA,
   BKSPC_MOUSE,
-  /*PWD1,
+  PWD1,
   PWD2,
-  PWD3,*/
+  PWD3,
   CUSTOM_KEYCODE_LENGTH
 };
 
@@ -146,6 +146,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       return false;
 
+      // Macro definitions
+
+    case PWD1:
+        if (record->event.pressed) {
+           SEND_STRING("test_string");
+        } 
+        break;
+
     default:
       return true; // Process all other keycodes normally.
   }
@@ -247,7 +255,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_APPCONTROL] = LAYOUT_split_3x5_3(
     KC_NO,      KC_NO,   HYPR_T(KC_L), HYPR_T(KC_O),   HYPR_T(KC_T),     RGUI(KC_E),  QK_BOOT,     QK_REBOOT,  KC_WAKE,    KC_NO,
-    KC_NO,      KC_NO,   KC_NO,        HYPR_T(KC_P),   HYPR_T(KC_W),     KC_CALC,     RCS(KC_ESC), RGUI(KC_R), KC_PWR,     KC_NO,
+    KC_NO,      KC_NO,   KC_NO,        HYPR_T(KC_P),   HYPR_T(KC_W),     KC_CALC,     RCS(KC_ESC), RGUI(KC_R), KC_PWR,     PWD1,
     KC_NO,      KC_NO,   KC_NO,        LGUI(KC_DOT),   HYPR_T(KC_X),     SGUI(KC_S),  RGUI(KC_V),  KC_MYCM,    KC_SLEP,    KC_NO,
                          TO(_ALPHA),   KC_TRNS,        KC_TRNS,          KC_TRNS,     KC_TRNS,     TO(_MOUSE)
   ),
