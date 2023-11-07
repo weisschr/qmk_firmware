@@ -150,7 +150,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     case PWD1:
         if (record->event.pressed) {
-           SEND_STRING("test_string");
+            SEND_STRING("test_string");
+            SEND_STRING(SS_TAP(KC_ENTER));
+            return false;
         } 
         break;
 
