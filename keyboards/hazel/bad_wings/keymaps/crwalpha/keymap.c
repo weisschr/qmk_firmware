@@ -28,9 +28,6 @@ enum tapdances {
 enum custom_keycodes {
   TAB_ALPHA,
   BKSPC_MOUSE,
-  PWD1,
-  PWD2,
-  PWD3,
   CUSTOM_KEYCODE_LENGTH
 };
 
@@ -61,9 +58,6 @@ tap_dance_action_t tap_dance_actions[] = {
   [TD_BACKSLASH] = ACTION_TAP_DANCE_DOUBLE(KC_BACKSLASH, KC_PIPE),
   [TD_EQUAL]     = ACTION_TAP_DANCE_DOUBLE(KC_EQUAL, KC_PLUS),
   [TD_MINUS]     = ACTION_TAP_DANCE_DOUBLE(KC_MINUS, KC_UNDERSCORE),
-  [TD_COMMA]     = ACTION_TAP_DANCE_DOUBLE(KC_COMMA, KC_LT),
-  [TD_DOT]       = ACTION_TAP_DANCE_DOUBLE(KC_DOT, KC_GT),
-  [TD_SLASH]     = ACTION_TAP_DANCE_DOUBLE(KC_SLASH, KC_QUES),
   [TD_GRAVE]     = ACTION_TAP_DANCE_DOUBLE(KC_GRAVE, KC_TILDE),
 };
 // end tapdances
@@ -145,17 +139,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
       }
       return false;
-
-      // Macro definitions
-
-    case PWD1:
-        if (record->event.pressed) {
-            SEND_STRING("test_string");
-            SEND_STRING(SS_TAP(KC_ENTER));
-            return false;
-        } 
-        break;
-
+        
     default:
       return true; // Process all other keycodes normally.
   }
@@ -177,14 +161,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 */
 
   [_ALPHA] = LAYOUT_split_3x5_3(
-    KC_Q,  KC_W,   HYPR_T(KC_E), LCA_T(KC_R),    LGUI_T(KC_T),   RGUI_T(KC_Y), LCA_T(KC_U),      HYPR_T(KC_I),  KC_O,    KC_P,
-    KC_A,  KC_S,   MEH_T(KC_D),  LCTL_T(KC_F),   RCS_T(KC_G),    RCS_T(KC_H),  RCTL_T(KC_J),     MEH_T(KC_K),   KC_L,    KC_SCLN,
-    KC_Z,  KC_X,   KC_C,         LALT_T(KC_V),   LSA_T(KC_B),    RSA_T(KC_N),  RALT_T(KC_M),     KC_COMM,       KC_DOT,  KC_SLSH,
-            TO(_NUMBSYM),        LSFT_T(KC_SPACE), TAB_ALPHA,    BKSPC_MOUSE,  RSFT_T(KC_ENTER), TO(_APPCONTROL)
+    KC_Q,  KC_W,   HYPR_T(KC_E), LCA_T(KC_R),      LGUI_T(KC_T),    RGUI_T(KC_Y), LCA_T(KC_U),      HYPR_T(KC_I),   KC_O,    KC_P,
+    KC_A,  KC_S,   MEH_T(KC_D),  LCTL_T(KC_F),     RCS_T(KC_G),     RCS_T(KC_H),  RCTL_T(KC_J),     MEH_T(KC_K),    KC_L,    KC_SCLN,
+    KC_Z,  KC_X,   KC_C,         LALT_T(KC_V),     LSA_T(KC_B),     RSA_T(KC_N),  RALT_T(KC_M),     KC_COMM,        KC_DOT,  KC_SLSH,
+                   TO(_NUMBSYM), LSFT_T(KC_SPACE), TAB_ALPHA,       BKSPC_MOUSE,  RSFT_T(KC_ENTER), TO(_APPCONTROL)
   ),
 
 /*  Layer 1 Symbol
-
 *   _____________________________________________________________________     _____________________________________________________________________
 *  |      !      |      @      |      #      |      $      |      %      |   |      ^      |      &      |      *      |      (      |      )      |
 *  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
@@ -197,30 +180,30 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 */
 
   [_NUMBSYM] = LAYOUT_split_3x5_3(
-    KC_EXLM,      KC_AT,   KC_HASH,       KC_DLR,    KC_PERC,         KC_CIRC,  KC_AMPR,   KC_ASTR,         KC_LEFT_PAREN,  KC_RIGHT_PAREN,
-    KC_1,         KC_2,    KC_3,          KC_4,      KC_5,            KC_6,     KC_7,      KC_8,             KC_9,          KC_0,
-    TD(TD_GRAVE), KC_PLUS, KC_EQUAL,      KC_MINUS,  KC_UNDS,         KC_DQUO,  KC_QUOTE,  TD(TD_BACKSLASH), TD(TD_LBRACE), TD(TD_RBRACE),
-                           TO(_FUNCTION), KC_TRNS,   KC_TRNS,         KC_TRNS,  KC_TRNS,   TO(_ALPHA)
+    KC_EXLM,      KC_AT,   KC_HASH,       KC_DLR,        KC_PERC,         KC_CIRC,  KC_AMPR,      KC_ASTR,          KC_LEFT_PAREN,  KC_RIGHT_PAREN,
+    KC_1,         KC_2,    KC_3,          KC_4,          KC_5,            KC_6,     KC_7,         KC_8,             KC_9,          KC_0,
+    TD(TD_GRAVE), KC_PLUS, TD(TD_EQUAL),  TD(TD_MINUS),  KC_UNDS,         KC_DQUO,  TD(TD_QUOTE), TD(TD_BACKSLASH), TD(TD_LBRACE), TD(TD_RBRACE),
+                           TO(_FUNCTION), KC_TRNS,       KC_TRNS,         KC_TRNS,  KC_TRNS,      TO(_ALPHA)
   ),
 
 /*  Layer 2 Function
 
 --- This needs more thought
 *   _____________________________________________________________________     _____________________________________________________________________
-*  |  END        |  HOME       | LEFT        | RIGHT       |      F11    |   |      F12    |  UP         | DOWN        |   PGUP      |  PGDN       |
+*  |             |             |             |             |      F11    |   |      F12    |             |             |             |             |
 *  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
 *  |      F1     |      F2     |      F3     |      F4     |      F5     |   |      F6     |      F7     |      F8     |      F9     |      F10    |
 *  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
-*  |  GUI        | ALT         | CTRL        | SHIFT       |  MEH        |   | HYPER       | SHIFT       | CTRL        | ALT         | GUI  .      |
+*  |             |   GUI       |    ALT      |  CTRL       |  MEH        |   | HYPER       | CTRL        | ALT         | GUI         |             |
 *  '---------------------------|-------------|-------------|-------------|   |-------------|-------------|-------------|---------------------------'
 *                              | UPLAYER     | KC_TRNS     | KC_TRNS     |   | KC_TRNS     | KC_TRNS     | DOWNLAYER   |
 *                              |_____________|_____________|_____________|   |_____________|_____________|_____________|
 */
 
   [_FUNCTION] = LAYOUT_split_3x5_3(
-    KC_END,  KC_HOME, KC_LEFT,    KC_RIGHT,  KC_F11,      KC_F12,    KC_UP,    KC_DOWN,   KC_PGUP,   KC_PGDN,
-    KC_F1,   KC_F2,   KC_F3,      KC_F4,     KC_F5,       KC_F6,     KC_F7,    KC_F8,     KC_F9,   KC_F10,
-    KC_LGUI, KC_LALT, KC_LCTL,    KC_LSFT,   KC_MEH,      KC_HYPR,   KC_RSFT,  KC_RCTL,   KC_RALT, KC_RGUI,
+    KC_NO,   KC_NO,   KC_NO,      KC_NO,     KC_F11,      KC_F12,    KC_NO,    KC_NO,     KC_NO,     KC_NO,
+    KC_F1,   KC_F2,   KC_F3,      KC_F4,     KC_F5,       KC_F6,     KC_F7,    KC_F8,     KC_F9,     KC_F10,
+    KC_NO,   KC_LGUI, KC_LALT,    KC_LCTL,   KC_MEH,      KC_HYPR,   KC_RCTL,  KC_RALT,   KC_RGUI,   KC_NO,
                       TO(_MOUSE), KC_TRNS,   KC_TRNS,     KC_TRNS,   KC_TRNS,  TO(_NUMBSYM)
   ),
 
@@ -245,11 +228,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 /*  Layer 4 APPS AND CONTROL
 *   _____________________________________________________________________     _____________________________________________________________________
-*  |             |             | LINKEDIN    | OUTLOOK     | TEAMS       |   | FILEMNGR    | QK_BOOT     | QK_REBOOT   |  WAKEUP     |             |
+*  |  KC_NO      | KC_NO       | LINKEDIN    | OUTLOOK     | TEAMS       |   | FILEMNGR    | QK_BOOT     | QK_REBOOT   |  WAKEUP     |  KC_NO      |
 *  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
-*  |             |             |             | POWERPOINT  | WORD        |   | KC_CALC     | TASK        | RUN         |  POWEROFF   |             |
+*  |  KC_NO      | KC_NO       | KC_NO       | POWERPOINT  | WORD        |   | KC_CALC     | TASK        | RUN         |  POWEROFF   |  KC_NO      |
 *  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
-*  |             |             |             | EMOJIS      | EXCEL       |   | SNIP        | CLIPBOARD   | MYCOMPUTER  |  SLEEP      |             |
+*  |  KC_NO      | KC_NO       | KC_NO       | EMOJIS      | EXCEL       |   | SNIP        | CLIPBOARD   | MYCOMPUTER  |  SLEEP      |  KC_NO      |
 *  '---------------------------|-------------|-------------|-------------|   |-------------|-------------|-------------|---------------------------'
 *                              | UPLAYER     | KC_TRNS     | KC_TRNS     |   | KC_TRNS     | KC_TRNS     | DOWNLAYER   |
 *                              |_____________|_____________|_____________|   |_____________|_____________|_____________|
@@ -257,20 +240,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_APPCONTROL] = LAYOUT_split_3x5_3(
     KC_NO,      KC_NO,   HYPR_T(KC_L), HYPR_T(KC_O),   HYPR_T(KC_T),     RGUI(KC_E),  QK_BOOT,     QK_REBOOT,  KC_WAKE,    KC_NO,
-    KC_NO,      KC_NO,   KC_NO,        HYPR_T(KC_P),   HYPR_T(KC_W),     KC_CALC,     RCS(KC_ESC), RGUI(KC_R), KC_PWR,     PWD1,
+    KC_NO,      KC_NO,   KC_NO,        HYPR_T(KC_P),   HYPR_T(KC_W),     KC_CALC,     RCS(KC_ESC), RGUI(KC_R), KC_PWR,     KC_NO,
     KC_NO,      KC_NO,   KC_NO,        LGUI(KC_DOT),   HYPR_T(KC_X),     SGUI(KC_S),  RGUI(KC_V),  KC_MYCM,    KC_SLEP,    KC_NO,
                          TO(_ALPHA),   KC_TRNS,        KC_TRNS,          KC_TRNS,     KC_TRNS,     TO(_MOUSE)
   ),
 
 /*  Layer 5 Nav
 *   _____________________________________________________________________     _____________________________________________________________________
-*  | KC_NO       | KC_NO       | KC_NO       | KC_NO       | KC_NO       |   | KC_NO       | KC_NO       | KC_NO       | KC_NO       | KC_NO       |
+*  | KC_TRNS     | KC_TRNS     | KC_TRNS     | HOME        | KC_TRNS     |   | KC_TRNS     | PGUP        | KC_TRNS     | KC_TRNS     | KC_TRNS     |
 *  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
-*  | KC_NO       | KC_NO       | KC_NO       | KC_NO       | KC_NO       |   | KC_NO       | KC_NO       | KC_NO       | KC_NO       | KC_NO       |
+*  | KC_TRNS     | KC_TRNS     | LEFT        | RIGHT       | KC_TRNS     |   | KC_TRNS     | UP          | DOWN        | KC_TRNS     | KC_TRNS     |
 *  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
-*  | KC_NO       | KC_NO       | KC_NO       | KC_NO       | KC_NO       |   | KC_NO       | KC_NO       | KC_NO       | KC_NO       | KC_NO       |
+*  | KC_TRNS     | KC_TRNS     | KC_TRNS     | END         | KC_TRNS     |   | KC_TRNS     | PGDN        | KC_TRNS     | KC_TRNS     | KC_TRNS     |
 *  '---------------------------|-------------|-------------|-------------|   |-------------|-------------|-------------|---------------------------'
-*                              | UPLAYER     | KC_TRNS     | KC_TRNS     |   | KC_TRNS     | KC_TRNS     | DOWNLAYER   |
+*                              | ALPHA       | KC_TRNS     | KC_TRNS     |   | KC_TRNS     | KC_TRNS     | MOUSE       |
 *                              |_____________|_____________|_____________|   |_____________|_____________|_____________|
 */
 
