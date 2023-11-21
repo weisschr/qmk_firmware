@@ -228,11 +228,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 /*  Layer 4 APPS AND CONTROL
 *   _____________________________________________________________________     _____________________________________________________________________
-*  |  KC_NO      | KC_NO       | LINKEDIN    | OUTLOOK     | TEAMS       |   | FILEMNGR    | QK_BOOT     | QK_REBOOT   |  WAKEUP     |  KC_NO      |
+*  |             |             | LINKEDIN    | OUTLOOK     | TEAMS       |   | FILEMNGR    | QK_BOOT     | QK_REBOOT   |  WAKEUP     |             |
 *  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
-*  |  KC_NO      | KC_NO       | KC_NO       | POWERPOINT  | WORD        |   | KC_CALC     | TASK        | RUN         |  POWEROFF   |  KC_NO      |
+*  |             |             |             | POWERPOINT  | WORD        |   | KC_CALC     | TASK        | RUN         |  POWEROFF   |             |
 *  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
-*  |  KC_NO      | KC_NO       | KC_NO       | EMOJIS      | EXCEL       |   | SNIP        | CLIPBOARD   | MYCOMPUTER  |  SLEEP      |  KC_NO      |
+*  |             |             |             | EMOJIS      | EXCEL       |   | SNIP        | CLIPBOARD   | MYCOMPUTER  |  SLEEP      |             |
 *  '---------------------------|-------------|-------------|-------------|   |-------------|-------------|-------------|---------------------------'
 *                              | UPLAYER     | KC_TRNS     | KC_TRNS     |   | KC_TRNS     | KC_TRNS     | DOWNLAYER   |
 *                              |_____________|_____________|_____________|   |_____________|_____________|_____________|
