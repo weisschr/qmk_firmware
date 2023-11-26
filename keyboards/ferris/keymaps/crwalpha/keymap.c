@@ -182,6 +182,32 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       return false;
 
+    // Mod tap modification
+    
+    case KC_Q:
+    case KC_W:
+    case HYPR_T(KC_E):
+    case LCA_T(KC_R):      
+    case LGUI_T(KC_T):
+    case KC_A:  
+    case KC_S:   
+    case MEH_T(KC_D):  
+    case LCTL_T(KC_F):     
+    case RCS_T(KC_G):
+    case KC_Z:
+    case KC_X:
+    case KC_C:
+    case LALT_T(KC_V):
+    case LSA_T(KC_B):
+      if (record->event.pressed) {
+        if (get_mods() & MOD_BIT(KC_LSFT)) {
+          del_mods(MOD_BIT(KC_LSFT)); // Remove Shift
+          tap_code(keycode); // Send unshifted key
+          return false; // Skip default processing
+          }
+      }
+      return true;
+
     default:
       return true; // Process all other keycodes normally.
   }
