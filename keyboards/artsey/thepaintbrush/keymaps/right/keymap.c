@@ -317,7 +317,8 @@ bool oled_task_user()
     }
 
     oled_set_cursor(32,1);
-    oled_write_P(led_state.caps_lock ? PSTR("CAPS ON  ") : PSTR("caps off"),false);
+    oled_write_P(led_state.caps_lock ? PSTR("CAPS ON  \n") : PSTR("caps off\n"),false);
+    oled_write_P(led_state.num_lock ? PSTR("NUMLCK ON  \n") : PSTR("numlck off\n"),false);
     return false;
 }
 
