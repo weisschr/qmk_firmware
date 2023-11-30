@@ -126,7 +126,7 @@ combo_t key_combos[] = {
 static uint16_t key_timer_default;
 static uint16_t key_timer_mouse;
 
-bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
+bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case LSFT_T(KC_SPACE):
         case RSFT_T(KC_ENTER):
