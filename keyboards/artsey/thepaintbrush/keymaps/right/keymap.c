@@ -10,6 +10,8 @@ enum layers {
   _NAV,
   _CUS,
   _MSE,
+  _FUNC1,
+  _FUNC2,
   LAYER_LENGTH
 };
 
@@ -68,6 +70,10 @@ enum combos {
 
     MSE_UN_COMBO,
     NAV_UN_COMBO,
+
+    FUNC_COMBO,
+    FUNC_UN_COMBO,
+
 };
 
 const uint16_t PROGMEM b_combo[]    = {LT(_PAR,KC_E), LT(_CUS,KC_O), COMBO_END};
@@ -118,6 +124,10 @@ const uint16_t PROGMEM nav_combo[]   = {KC_R, LT(_PAR,KC_E), KC_I, COMBO_END};
 const uint16_t PROGMEM mse_un_combo[] = {KC_BTN1, KC_BTN2, KC_MS_DOWN, COMBO_END};
 const uint16_t PROGMEM nav_un_combo[] = {KC_LEFT, KC_UP, KC_RIGHT, COMBO_END};
 
+const uint16_t PROGMEM func_combo[] = {KC_R, KC_T, KC_Y, KC_I,  COMBO_END};
+const uint16_t PROGMEM func_un_combo[] = {KC_F2, KC_F3, KC_F6, KC_F7, COMBO_END};
+ 
+
 combo_t key_combos[] = {  
 [B_COMBO]               = COMBO(b_combo, KC_B),
 [C_COMBO]               = COMBO(c_combo, KC_C),
@@ -165,6 +175,10 @@ combo_t key_combos[] = {
 
 [MSE_UN_COMBO]          = COMBO(mse_un_combo, TO(_BASE)),
 [NAV_UN_COMBO]          = COMBO(nav_un_combo, TO(_BASE)),
+
+[FUNC_COMBO]            = COMBO(func_combo,TO(_FUNC1)),
+[FUNC_UN_COMBO]         = COMBO(func_un_combo,TO(_BASE)),
+
 };
 
 ///////////
@@ -248,6 +262,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [_MSE] = LAYOUT(
     KC_MS_BTN1, KC_MS_UP, KC_MS_BTN2, KC_MS_WH_UP,
     KC_MS_LEFT, KC_MS_DOWN, KC_MS_RIGHT, KC_MS_WH_DOWN
+),
+
+[_FUNC1] = LAYOUT(
+   LT(_FUNC2,KC_F1), KC_F2, KC_F3, KC_F4,
+   KC_F5, KC_F6, KC_F7, KC_F8,
+
+),
+
+[_FUNC2] = LAYOUT(
+   KC_TRNS, KC_F9, KC_F10, KC_F11,
+   KC_F12, LCTL(KC_F4), LALT(KC_F4), KC_NO
+
 )
 
 };
@@ -265,28 +291,28 @@ bool oled_task_user()
     led_t led_state = host_keyboard_led_state();
     switch (get_highest_layer(layer_state)) {
         case _BASE:
-            oled_write("Main Layer      ",false);
+            oled_write("MAIN   ",false);
             break;
         case _CUS:
-            oled_write("Cust Layer     ",false);
+            oled_write("CUSTOM ",false);
             break;
         case _MSE:
-            oled_write("Mse Layer      ",false);
+            oled_write("MOUSE  ",false);
             break;
         case _NAV:
-            oled_write("Nav Layer        ",false);
+            oled_write("NAV    ",false);
             break;
         case _NUM:
-            oled_write("Numbs Layer",false);
+            oled_write("NUMBERS",false);
             break;
         case _PAR:
-            oled_write("Punc Layer",false);
+            oled_write("PUNC   ",false);
             break;
         case _SYM:
-            oled_write("Symb Layer",false);
+            oled_write("SYMBOL ",false);
             break;
         default:
-            oled_write("Unknown Layer",false);
+            oled_write("Unknown",false);
             break;
     }
 
