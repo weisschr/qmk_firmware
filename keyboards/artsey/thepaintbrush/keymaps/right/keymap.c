@@ -266,14 +266,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 [_FUNC1] = LAYOUT(
    LT(_FUNC2,KC_F1), KC_F2, KC_F3, KC_F4,
-   KC_F5, KC_F6, KC_F7, KC_F8,
-
+   KC_F5, KC_F6, KC_F7, KC_F8
 ),
 
 [_FUNC2] = LAYOUT(
    KC_TRNS, KC_F9, KC_F10, KC_F11,
    KC_F12, LCTL(KC_F4), LALT(KC_F4), KC_NO
-
 )
 
 };
@@ -294,7 +292,7 @@ bool oled_task_user()
             oled_write("MAIN   ",false);
             break;
         case _CUS:
-            oled_write("CUSTOM ",false);
+            oled_write("CUSTM ",false);
             break;
         case _MSE:
             oled_write("MOUSE  ",false);
@@ -303,22 +301,29 @@ bool oled_task_user()
             oled_write("NAV    ",false);
             break;
         case _NUM:
-            oled_write("NUMBERS",false);
+            oled_write("NUMBR",false);
             break;
         case _PAR:
-            oled_write("PUNC   ",false);
+            oled_write("PUNC  ",false);
             break;
         case _SYM:
-            oled_write("SYMBOL ",false);
+            oled_write("SYMBL ",false);
             break;
+        case _FUNC1:
+            oled_write("FUNC1  ",false);
+            break;
+        case _FUNC2:
+            oled_write("FUNC2  ",false);
+            break;
+        
         default:
             oled_write("Unknown",false);
             break;
     }
 
     oled_set_cursor(32,1);
-    oled_write_P(led_state.caps_lock ? PSTR("CAPS ON  \n") : PSTR("caps off\n"),false);
-    oled_write_P(led_state.num_lock ? PSTR("NUMLCK ON  \n") : PSTR("numlck off\n"),false);
+    oled_write_P(led_state.caps_lock ? PSTR("CAPS\nON \n\n") : PSTR("caps\noff\n\n"),false);
+    oled_write_P(led_state.num_lock ? PSTR("NMLCKON  \n") : PSTR("nmlckoff\n"),false);
     return false;
 }
 
