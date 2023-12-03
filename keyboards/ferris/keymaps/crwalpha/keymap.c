@@ -42,6 +42,7 @@ enum combos {
     ONESHOT_SYM_COMBO,
     ONESHOT_FUNC_COMBO,
     ONESHOT_APP_COMBO,
+    ONESHOT_NAV_COMBO,
     DEL_COMBO,
     WINCLOSE_COMBO,
     APPCLOSE_COMBO,
@@ -72,14 +73,18 @@ const uint16_t PROGMEM singleq_combo[]    = {RCTL_T(KC_J), MEH_T(KC_K), COMBO_EN
 
 //-------------------------------------------------------------------------------
 
-const uint16_t PROGMEM nav_combo[]        = {RGUI_T(KC_Y), LCA_T(KC_U), COMBO_END};
-const uint16_t PROGMEM numb_combo[]       = {RCS_T(KC_H), RCTL_T(KC_J), COMBO_END};
-const uint16_t PROGMEM func_combo[]       = {RSA_T(KC_N), KC_COMM, COMBO_END};
-const uint16_t PROGMEM apps_combo[]       = {RSA_T(KC_N), RALT_T(KC_M), KC_COMM, COMBO_END};
+const uint16_t PROGMEM nav_combo[]        = {RGUI_T(KC_Y), LCA_T(KC_U),  COMBO_END};
+const uint16_t PROGMEM osl_nav_combo[]    = {RGUI_T(KC_Y), HYPR_T(KC_I), COMBO_END};
 
-const uint16_t PROGMEM osl_sym_combo[]    = {RALT_T(KC_M), KC_DOT, COMBO_END};
-const uint16_t PROGMEM osl_func_combo[]   = {RCTL_T(KC_J), KC_L, COMBO_END};
-const uint16_t PROGMEM osl_apps_combo[]   = {LCA_T(KC_U), KC_O, COMBO_END};
+const uint16_t PROGMEM numb_combo[]       = {RCS_T(KC_H),  RCTL_T(KC_J), COMBO_END};
+const uint16_t PROGMEM osl_numb_combo[]   = {RCS_T(KC_H),  MEH_T(KC_K),  COMBO_END};
+
+const uint16_t PROGMEM func_combo[]       = {RSA_T(KC_N),  RALT_T(KC_M), COMBO_END};
+const uint16_t PROGMEM osl_func_combo[]   = {RSA_T(KC_N),  KC_COMM,      COMBO_END};
+
+const uint16_t PROGMEM apps_combo[]       = {LCA_T(KC_U),  HYPR_T(KC_I), COMBO_END};
+const uint16_t PROGMEM osl_apps_combo[]   = {LCA_T(KC_U),  KC_O,         COMBO_END};
+
 
 //--------------------------------------------------------------------------------
 
@@ -105,9 +110,10 @@ combo_t key_combos[] = {
 [NUMB_COMBO] =         COMBO(numb_combo, TO(_NUMBSYM)),
 [FUNC_COMBO] =         COMBO(func_combo, TO(_FUNCTION)),
 [APP_COMBO]  =         COMBO(apps_combo,TO(_APPCONTROL)),
-[ONESHOT_SYM_COMBO] =  COMBO(osl_sym_combo, OSL(_NUMBSYM)),
+[ONESHOT_SYM_COMBO] =  COMBO(osl_numb_combo, OSL(_NUMBSYM)),
 [ONESHOT_FUNC_COMBO] = COMBO(osl_func_combo, OSL(_FUNCTION)),
-[ONESHOT_APP_COMBO] =  COMBO(osl_apps_combo, OSL(_APPCONTROL)),
+[ONESHOT_APP_COMBO]  = COMBO(osl_apps_combo, OSL(_APPCONTROL)),
+[ONESHOT_NAV_COMBO]  = COMBO(osl_nav_combo, OSL(_NAV)),
 
 //-------------------------------------------------------------------------------
 
@@ -182,7 +188,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       return false;
 
-    // Mod tap modification
+    // Mod tap modification - BILATERAL SHIFT KEYS SET
     
     case KC_Q:
     case KC_W:
@@ -202,6 +208,30 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       if (record->event.pressed) {
         if (get_mods() & MOD_BIT(KC_LSFT)) {
           del_mods(MOD_BIT(KC_LSFT)); // Remove Shift
+          tap_code(keycode); // Send unshifted key
+          return false; // Skip default processing
+          }
+      }
+      return true;
+
+    case RGUI_T(KC_Y):
+    case LCA_T(KC_U):
+    case HYPR_T(KC_I):
+    case KC_O:  
+    case KC_P:   
+    case RCS_T(KC_H):  
+    case RCTL_T(KC_J):     
+    case MEH_T(KC_K):
+    case KC_L:
+    case KC_SCLN:
+    case RSA_T(KC_N):
+    case RALT_T(KC_M):
+    case KC_COMM:
+    case KC_DOT:
+    case KC_SLSH:
+      if (record->event.pressed) {
+        if (get_mods() & MOD_BIT(KC_RSFT)) {
+          del_mods(MOD_BIT(KC_RSFT)); // Remove Shift
           tap_code(keycode); // Send unshifted key
           return false; // Skip default processing
           }
