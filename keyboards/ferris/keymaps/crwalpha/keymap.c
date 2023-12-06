@@ -260,7 +260,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_ALPHA] = LAYOUT_split_3x5_2(
     KC_Q,  KC_W,   HYPR_T(KC_E), LCA_T(KC_R),      LGUI_T(KC_T),    RGUI_T(KC_Y), LCA_T(KC_U),      HYPR_T(KC_I),   KC_O,    KC_P,
-    KC_A,  KC_S,   MEH_T(KC_D),  LCTL_T(KC_F),     RCS_T(KC_G),     RCS_T(KC_H),  RCTL_T(KC_J),     MEH_T(KC_K),    KC_L,    KC_SCLN,
+    KC_A,  KC_S,   MEH_T(KC_D),  LCTL_T(KC_F),     C_S_T(KC_G),     RCS_T(KC_H),  RCTL_T(KC_J),     MEH_T(KC_K),    KC_L,    KC_SCLN,
     KC_Z,  KC_X,   KC_C,         LALT_T(KC_V),     LSA_T(KC_B),     RSA_T(KC_N),  RALT_T(KC_M),     KC_COMM,        KC_DOT,  KC_SLSH,
                                  LSFT_T(KC_SPACE), TAB_ALPHA,       BKSPC_MOUSE,  RSFT_T(KC_ENTER)
   ),
