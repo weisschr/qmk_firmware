@@ -2,6 +2,7 @@
 #pragma once
 
 #define TAPPING_TERM 200
-#define COMBO_TERM 30
+#define COMBO_TERM 50
 
 #define PERMISSIVE_HOLD_PER_KEY
+#define COMBO_TERM_PER_COMBO

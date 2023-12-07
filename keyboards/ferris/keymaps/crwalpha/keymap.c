@@ -144,6 +144,25 @@ bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
     }
 }
 
+uint16_t get_combo_term(uint16_t index, combo_t *combo) {
+
+  switch (index) {
+        case APP_COMBO:
+        case NAV_COMBO:
+        case FUNC_COMBO:
+        case NUMB_COMBO:
+            return 200;
+        case ONESHOT_APP_COMBO:
+        case ONESHOT_FUNC_COMBO:
+        case ONESHOT_NAV_COMBO:
+        case ONESHOT_SYM_COMBO:
+            return 75;
+      default:
+        return COMBO_TERM;
+    }
+
+}
+
 bool caps_word_press_user(uint16_t keycode) {
     switch (keycode) {
         // Keycodes that continue Caps Word, with shift applied.
