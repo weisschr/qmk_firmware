@@ -106,36 +106,36 @@ tap_dance_action_t tap_dance_actions[] = {
 
 // Quotes
 
-const uint16_t PROGMEM doubleq_combo[]    = {MEH_T(KC_D), LCTL_T(KC_F), COMBO_END};
-const uint16_t PROGMEM singleq_combo[]    = {RCTL_T(KC_J), MEH_T(KC_K), COMBO_END};
+const uint16_t PROGMEM doubleq_combo[]    = {KC_LMEH_D, KC_LCTRL_F, COMBO_END};
+const uint16_t PROGMEM singleq_combo[]    = {KC_RCTRL_J, KC_RMEH_K, COMBO_END};
 
 //-------------------------------------------------------------------------------
 // Layer control combos
 
-const uint16_t PROGMEM nav_combo[]        = {RGUI_T(KC_Y), LCA_T(KC_U),  COMBO_END};
-const uint16_t PROGMEM osl_nav_combo[]    = {RGUI_T(KC_Y), HYPR_T(KC_I), COMBO_END};
+const uint16_t PROGMEM nav_combo[]        = {KC_RGUI_Y, KC_RCTRLALT_U,  COMBO_END};
+const uint16_t PROGMEM osl_nav_combo[]    = {KC_RGUI_Y, HYPR_T(KC_I), COMBO_END};
 
-const uint16_t PROGMEM numb_combo[]       = {RCS_T(KC_H),  RCTL_T(KC_J), COMBO_END};
-const uint16_t PROGMEM osl_numb_combo[]   = {RCS_T(KC_H),  MEH_T(KC_K),  COMBO_END};
+const uint16_t PROGMEM numb_combo[]       = {KC_RSHCTRL_H,  KC_RCTRL_J, COMBO_END};
+const uint16_t PROGMEM osl_numb_combo[]   = {KC_RSHCTRL_H,  KC_RMEH_K,  COMBO_END};
 
-const uint16_t PROGMEM func_combo[]       = {RSA_T(KC_N),  RALT_T(KC_M), COMBO_END};
-const uint16_t PROGMEM osl_func_combo[]   = {RSA_T(KC_N),  KC_COMM,      COMBO_END};
+const uint16_t PROGMEM func_combo[]       = {KC_RSHALT_N,  KC_RALT_M, COMBO_END};
+const uint16_t PROGMEM osl_func_combo[]   = {KC_RSHALT_N,  KC_COMM,      COMBO_END};
 
-const uint16_t PROGMEM apps_combo[]       = {LCA_T(KC_U),  HYPR_T(KC_I), COMBO_END};
-const uint16_t PROGMEM osl_apps_combo[]   = {LCA_T(KC_U),  KC_O,         COMBO_END};
+const uint16_t PROGMEM apps_combo[]       = {KC_RCTRLALT_U,  HYPR_T(KC_I), COMBO_END};
+const uint16_t PROGMEM osl_apps_combo[]   = {KC_RCTRLALT_U,  KC_O,         COMBO_END};
 
 //--------------------------------------------------------------------------------
 // Behavioral combos
 
-const uint16_t PROGMEM lesc_combo[]       = {LCTL_T(KC_F), RCS_T(KC_G), COMBO_END};
-const uint16_t PROGMEM winclose_combo[]   = {LCA_T(KC_R), LGUI_T(KC_T), COMBO_END};
-const uint16_t PROGMEM appclose_combo[]   = {LALT_T(KC_V), LSA_T(KC_B), COMBO_END};
+const uint16_t PROGMEM lesc_combo[]       = {KC_LCTRL_F, RCS_T(KC_G), COMBO_END};
+const uint16_t PROGMEM winclose_combo[]   = {KC_LCTRLALT_R, KC_LGUI_T, COMBO_END};
+const uint16_t PROGMEM appclose_combo[]   = {KC_LALT_V, KC_LSHALT_B, COMBO_END};
 
-const uint16_t PROGMEM del_combo[]        = {MEH_T(KC_D), RCS_T(KC_G), COMBO_END};
-const uint16_t PROGMEM ins_combo[]        = {KC_C, LSA_T(KC_B), COMBO_END};
+const uint16_t PROGMEM del_combo[]        = {KC_LMEH_D, RCS_T(KC_G), COMBO_END};
+const uint16_t PROGMEM ins_combo[]        = {KC_C, KC_LSHALT_B, COMBO_END};
 
-const uint16_t PROGMEM caplock_combo[]    = {KC_C, LALT_T(KC_V), COMBO_END};
-const uint16_t PROGMEM capsword_combo[]   = {KC_X, LALT_T(KC_V), COMBO_END};
+const uint16_t PROGMEM caplock_combo[]    = {KC_C, KC_LALT_V, COMBO_END};
+const uint16_t PROGMEM capsword_combo[]   = {KC_X, KC_LALT_V, COMBO_END};
 
 // End layer 0 combo definitions
 //--------------------------------------------------------------------------------
@@ -257,47 +257,47 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     
     case KC_Q:
     case KC_W:
-    case HYPR_T(KC_E):
-    case LCA_T(KC_R):      
-    case LGUI_T(KC_T):
+    case KC_LHYPR_E:
+    case KC_LCTRLALT_R:      
+    case KC_LGUI_T:
     case KC_A:  
     case KC_S:   
-    case MEH_T(KC_D):  
-    case LCTL_T(KC_F):     
+    case KC_LMEH_D:  
+    case KC_LCTRL_F:     
     case RCS_T(KC_G):
     case KC_Z:
     case KC_X:
     case KC_C:
-    case LALT_T(KC_V):
-    case LSA_T(KC_B):
+    case KC_LALT_V:
+    case KC_LSHALT_B:
       if (record->event.pressed) {
-        if (get_mods() & MOD_BIT(KC_LSFT)) {
-          del_mods(MOD_BIT(KC_LSFT)); // Remove Shift
-          tap_code(keycode); // Send unshifted key
+        if (get_mods() & (MOD_BIT(KC_LSFT) | MOD_BIT(KC_LCTL) | MOD_BIT(KC_LALT) | MOD_BIT(KC_LGUI) ) ) {
+          clear_mods(); // Remove MODS
+          tap_code(keycode); // Send UN-MOD key
           return false; // Skip default processing
           }
       }
       return true;
 
-    case RGUI_T(KC_Y):
-    case LCA_T(KC_U):
+    case KC_RGUI_Y:
+    case KC_RCTRLALT_U:
     case HYPR_T(KC_I):
     case KC_O:  
     case KC_P:   
-    case RCS_T(KC_H):  
-    case RCTL_T(KC_J):     
-    case MEH_T(KC_K):
+    case KC_RSHCTRL_H:  
+    case KC_RCTRL_J:     
+    case KC_RMEH_K:
     case KC_L:
     case KC_SCLN:
-    case RSA_T(KC_N):
-    case RALT_T(KC_M):
+    case KC_RSHALT_N:
+    case KC_RALT_M:
     case KC_COMM:
     case KC_DOT:
     case KC_SLSH:
       if (record->event.pressed) {
-        if (get_mods() & MOD_BIT(KC_RSFT)) {
-          del_mods(MOD_BIT(KC_RSFT)); // Remove Shift
-          tap_code(keycode); // Send unshifted key
+        if (get_mods() & (MOD_BIT(KC_RSFT) | MOD_BIT(KC_RCTL) | MOD_BIT(KC_RALT) | MOD_BIT(KC_RGUI) ) ) {
+          clear_mods(); // Remove MODS
+          tap_code(keycode); // Send UN-MOD key
           return false; // Skip default processing
           }
       }
@@ -326,10 +326,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 */
 
   [_ALPHA] = LAYOUT_split_3x5_2(
-    KC_Q,  KC_W,   HYPR_T(KC_E), LCA_T(KC_R),      LGUI_T(KC_T),    RGUI_T(KC_Y), LCA_T(KC_U),      HYPR_T(KC_I),   KC_O,    KC_P,
-    KC_A,  KC_S,   MEH_T(KC_D),  LCTL_T(KC_F),     C_S_T(KC_G),     RCS_T(KC_H),  RCTL_T(KC_J),     MEH_T(KC_K),    KC_L,    KC_SCLN,
-    KC_Z,  KC_X,   KC_C,         LALT_T(KC_V),     LSA_T(KC_B),     RSA_T(KC_N),  RALT_T(KC_M),     KC_COMM,        KC_DOT,  KC_SLSH,
-                                 LSFT_T(KC_SPACE), TAB_ALPHA,       BKSPC_MOUSE,  RSFT_T(KC_ENTER)
+    KC_Q,  KC_W,   KC_LHYPR_E, KC_LCTRLALT_R,    KC_LGUI_T,        KC_RGUI_Y,     KC_RCTRLALT_U,    KC_RHYPR_I,   KC_O,    KC_P,
+    KC_A,  KC_S,   KC_LMEH_D,  KC_LCTRL_F,       KC_LSHCTRL_G,     KC_RSHCTRL_H,  KC_RCTRL_J,       KC_RMEH_K,    KC_L,    KC_SCLN,
+    KC_Z,  KC_X,   KC_C,       KC_LALT_V,        KC_LSHALT_B,      KC_RSHALT_N,   KC_RALT_M,        KC_COMM,      KC_DOT,  KC_SLSH,
+                               LSFT_T(KC_SPACE), TAB_ALPHA,        BKSPC_MOUSE,   RSFT_T(KC_ENTER)
   ),
 
 /*  Layer 1 Symbol
