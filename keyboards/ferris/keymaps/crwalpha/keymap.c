@@ -113,7 +113,7 @@ const uint16_t PROGMEM singleq_combo[]    = {KC_RCTRL_J, KC_RMEH_K, COMBO_END};
 // Layer control combos
 
 const uint16_t PROGMEM nav_combo[]        = {KC_RGUI_Y, KC_RCTRLALT_U,  COMBO_END};
-const uint16_t PROGMEM osl_nav_combo[]    = {KC_RGUI_Y, HYPR_T(KC_I), COMBO_END};
+const uint16_t PROGMEM osl_nav_combo[]    = {KC_RGUI_Y, KC_RHYPR_I, COMBO_END};
 
 const uint16_t PROGMEM numb_combo[]       = {KC_RSHCTRL_H,  KC_RCTRL_J, COMBO_END};
 const uint16_t PROGMEM osl_numb_combo[]   = {KC_RSHCTRL_H,  KC_RMEH_K,  COMBO_END};
@@ -121,17 +121,17 @@ const uint16_t PROGMEM osl_numb_combo[]   = {KC_RSHCTRL_H,  KC_RMEH_K,  COMBO_EN
 const uint16_t PROGMEM func_combo[]       = {KC_RSHALT_N,  KC_RALT_M, COMBO_END};
 const uint16_t PROGMEM osl_func_combo[]   = {KC_RSHALT_N,  KC_COMM,      COMBO_END};
 
-const uint16_t PROGMEM apps_combo[]       = {KC_RCTRLALT_U,  HYPR_T(KC_I), COMBO_END};
+const uint16_t PROGMEM apps_combo[]       = {KC_RCTRLALT_U,  KC_RHYPR_I, COMBO_END};
 const uint16_t PROGMEM osl_apps_combo[]   = {KC_RCTRLALT_U,  KC_O,         COMBO_END};
 
 //--------------------------------------------------------------------------------
 // Behavioral combos
 
-const uint16_t PROGMEM lesc_combo[]       = {KC_LCTRL_F, RCS_T(KC_G), COMBO_END};
+const uint16_t PROGMEM lesc_combo[]       = {KC_LCTRL_F, KC_LSHCTRL_G, COMBO_END};
 const uint16_t PROGMEM winclose_combo[]   = {KC_LCTRLALT_R, KC_LGUI_T, COMBO_END};
 const uint16_t PROGMEM appclose_combo[]   = {KC_LALT_V, KC_LSHALT_B, COMBO_END};
 
-const uint16_t PROGMEM del_combo[]        = {KC_LMEH_D, RCS_T(KC_G), COMBO_END};
+const uint16_t PROGMEM del_combo[]        = {KC_LMEH_D, KC_LSHCTRL_G, COMBO_END};
 const uint16_t PROGMEM ins_combo[]        = {KC_C, KC_LSHALT_B, COMBO_END};
 
 const uint16_t PROGMEM caplock_combo[]    = {KC_C, KC_LALT_V, COMBO_END};
@@ -264,7 +264,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case KC_S:   
     case KC_LMEH_D:  
     case KC_LCTRL_F:     
-    case RCS_T(KC_G):
+    case KC_LSHCTRL_G:
     case KC_Z:
     case KC_X:
     case KC_C:
@@ -281,7 +281,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     case KC_RGUI_Y:
     case KC_RCTRLALT_U:
-    case HYPR_T(KC_I):
+    case KC_RHYPR_I:
     case KC_O:  
     case KC_P:   
     case KC_RSHCTRL_H:  
