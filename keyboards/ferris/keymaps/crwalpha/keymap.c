@@ -1,5 +1,40 @@
 #include QMK_KEYBOARD_H
 
+//-------------------------------------------------------------------------------
+
+// Modifier defines to simplify mapping and combo references
+
+// BASE
+
+#define KC_LCTRL_F    MT(MOD_LCTL, KC_F)
+#define KC_RCTRL_J    MT(MOD_RCTL, KC_J)
+#define KC_LALT_V     MT(MOD_LALT, KC_V)
+#define KC_RALT_M     MT(MOD_RALT, KC_M)
+#define KC_LGUI_T     MT(MOD_LGUI, KC_T)
+#define KC_RGUI_Y     MT(MOD_RGUI, KC_Y)
+
+// DUO
+
+#define KC_LSHCTRL_G  MT(MOD_LCTL | MOD_LSFT, KC_G)
+#define KC_RSHCTRL_H  MT(MOD_RCTL | MOD_RSFT, KC_H)
+#define KC_LSHALT_B   MT(MOD_LALT | MOD_LSFT, KC_B)
+#define KC_RSHALT_N   MT(MOD_RALT | MOD_RSFT, KC_N)
+
+#define KC_LCTRLALT_R MT(MOD_LCTL | MOD_LALT, KC_R)
+#define KC_RCTRLALT_U MT(MOD_RCTL | MOD_RALT, KC_U)
+
+// MEH
+
+#define KC_LMEH_D     MT(MOD_LCTL | MOD_LALT | MOD_LSFT, KC_D)
+#define KC_RMEH_K     MT(MOD_RCTL | MOD_RALT | MOD_RSFT, KC_K)
+
+// HYPER
+
+#define KC_LHYPR_E    MT(MOD_LCTL | MOD_LALT | MOD_LSFT | MOD_LGUI, KC_E)
+#define KC_RHYPR_I    MT(MOD_RCTL | MOD_RALT | MOD_RSFT | MOD_RGUI, KC_I)
+
+//-------------------------------------------------------------------------------
+
 enum layers {
   _ALPHA,
   _NUMBSYM,
@@ -51,7 +86,9 @@ enum combos {
     COMBO_LENGTH
 };
 
+//-------------------------------------------------------------------------------
 // tapdances
+
 tap_dance_action_t tap_dance_actions[] = {
   [TD_LBRACE]     = ACTION_TAP_DANCE_DOUBLE(KC_LBRC, KC_LCBR),
   [TD_RBRACE]     = ACTION_TAP_DANCE_DOUBLE(KC_RBRC, KC_RCBR),
@@ -62,16 +99,18 @@ tap_dance_action_t tap_dance_actions[] = {
   [TD_MINUS]      = ACTION_TAP_DANCE_DOUBLE(KC_MINUS, KC_UNDERSCORE),
   [TD_GRAVE]      = ACTION_TAP_DANCE_DOUBLE(KC_GRAVE, KC_TILDE),
 };
+
 // end tapdances
-
-// combos
-
 //-------------------------------------------------------------------------------
+// Layer 0 combos
+
+// Quotes
 
 const uint16_t PROGMEM doubleq_combo[]    = {MEH_T(KC_D), LCTL_T(KC_F), COMBO_END};
 const uint16_t PROGMEM singleq_combo[]    = {RCTL_T(KC_J), MEH_T(KC_K), COMBO_END};
 
 //-------------------------------------------------------------------------------
+// Layer control combos
 
 const uint16_t PROGMEM nav_combo[]        = {RGUI_T(KC_Y), LCA_T(KC_U),  COMBO_END};
 const uint16_t PROGMEM osl_nav_combo[]    = {RGUI_T(KC_Y), HYPR_T(KC_I), COMBO_END};
@@ -85,8 +124,8 @@ const uint16_t PROGMEM osl_func_combo[]   = {RSA_T(KC_N),  KC_COMM,      COMBO_E
 const uint16_t PROGMEM apps_combo[]       = {LCA_T(KC_U),  HYPR_T(KC_I), COMBO_END};
 const uint16_t PROGMEM osl_apps_combo[]   = {LCA_T(KC_U),  KC_O,         COMBO_END};
 
-
 //--------------------------------------------------------------------------------
+// Behavioral combos
 
 const uint16_t PROGMEM lesc_combo[]       = {LCTL_T(KC_F), RCS_T(KC_G), COMBO_END};
 const uint16_t PROGMEM winclose_combo[]   = {LCA_T(KC_R), LGUI_T(KC_T), COMBO_END};
@@ -98,36 +137,43 @@ const uint16_t PROGMEM ins_combo[]        = {KC_C, LSA_T(KC_B), COMBO_END};
 const uint16_t PROGMEM caplock_combo[]    = {KC_C, LALT_T(KC_V), COMBO_END};
 const uint16_t PROGMEM capsword_combo[]   = {KC_X, LALT_T(KC_V), COMBO_END};
 
-// layer 0 combos
+// End layer 0 combo definitions
+//--------------------------------------------------------------------------------
+// Combo assignments
+
 combo_t key_combos[] = {
 
-[DOUBLEQ_COMBO] =	  	 COMBO(doubleq_combo, KC_DQUO),
-[SINGLEQ_COMBO] =      COMBO(singleq_combo, KC_QUOT),
+[DOUBLEQ_COMBO]      = COMBO(doubleq_combo, KC_DQUO),
+[SINGLEQ_COMBO]      = COMBO(singleq_combo, KC_QUOT),
 
 //-------------------------------------------------------------------------------
 
-[NAV_COMBO] =	      	 COMBO(nav_combo, TO(_NAV)),
-[NUMB_COMBO] =         COMBO(numb_combo, TO(_NUMBSYM)),
-[FUNC_COMBO] =         COMBO(func_combo, TO(_FUNCTION)),
-[APP_COMBO]  =         COMBO(apps_combo,TO(_APPCONTROL)),
-[ONESHOT_SYM_COMBO] =  COMBO(osl_numb_combo, OSL(_NUMBSYM)),
+[NAV_COMBO]          = COMBO(nav_combo, TO(_NAV)),
+[NUMB_COMBO]         = COMBO(numb_combo, TO(_NUMBSYM)),
+[FUNC_COMBO]         = COMBO(func_combo, TO(_FUNCTION)),
+[APP_COMBO]          = COMBO(apps_combo, TO(_APPCONTROL)),
+[ONESHOT_SYM_COMBO]  = COMBO(osl_numb_combo, OSL(_NUMBSYM)),
 [ONESHOT_FUNC_COMBO] = COMBO(osl_func_combo, OSL(_FUNCTION)),
 [ONESHOT_APP_COMBO]  = COMBO(osl_apps_combo, OSL(_APPCONTROL)),
 [ONESHOT_NAV_COMBO]  = COMBO(osl_nav_combo, OSL(_NAV)),
 
 //-------------------------------------------------------------------------------
 
-[LESC_COMBO] =         COMBO(lesc_combo, KC_ESC),
-[DEL_COMBO] =          COMBO(del_combo, KC_DEL),
-[WINCLOSE_COMBO] =     COMBO(winclose_combo, LCTL(KC_F4)),
-[APPCLOSE_COMBO] =     COMBO(appclose_combo, LALT(KC_F4)),
+[LESC_COMBO]         = COMBO(lesc_combo, KC_ESC),
+[DEL_COMBO]          = COMBO(del_combo, KC_DEL),
+[WINCLOSE_COMBO]     = COMBO(winclose_combo, LCTL(KC_F4)),
+[APPCLOSE_COMBO]     = COMBO(appclose_combo, LALT(KC_F4)),
 
 //-------------------------------------------------------------------------------
 
-[CAPLOCK_COMBO] =      COMBO(caplock_combo,KC_CAPS),
-[CAPSWORD_COMBO] =     COMBO(capsword_combo,CW_TOGG),
+[CAPLOCK_COMBO]      = COMBO(caplock_combo,KC_CAPS),
+[CAPSWORD_COMBO]     = COMBO(capsword_combo,CW_TOGG),
 };
+
 // end combos
+//-------------------------------------------------------------------------------
+
+// Functions
 
 static uint16_t key_timer_default;
 static uint16_t key_timer_mouse;
@@ -207,7 +253,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       return false;
 
-    // Mod tap modification - BILATERAL SHIFT KEYS SET
+    // Mod tap modification - BILATERAL MODIFIER KEYS SET
     
     case KC_Q:
     case KC_W:
@@ -262,7 +308,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   }
 }
 
+//-------------------------------------------------------------------------------
 // begin layers
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 /*  Layer 0 Alpha
@@ -279,7 +327,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_ALPHA] = LAYOUT_split_3x5_2(
     KC_Q,  KC_W,   HYPR_T(KC_E), LCA_T(KC_R),      LGUI_T(KC_T),    RGUI_T(KC_Y), LCA_T(KC_U),      HYPR_T(KC_I),   KC_O,    KC_P,
-    KC_A,  KC_S,   MEH_T(KC_D),  LCTL_T(KC_F),     RCS_T(KC_G),     RCS_T(KC_H),  RCTL_T(KC_J),     MEH_T(KC_K),    KC_L,    KC_SCLN,
+    KC_A,  KC_S,   MEH_T(KC_D),  LCTL_T(KC_F),     C_S_T(KC_G),     RCS_T(KC_H),  RCTL_T(KC_J),     MEH_T(KC_K),    KC_L,    KC_SCLN,
     KC_Z,  KC_X,   KC_C,         LALT_T(KC_V),     LSA_T(KC_B),     RSA_T(KC_N),  RALT_T(KC_M),     KC_COMM,        KC_DOT,  KC_SLSH,
                                  LSFT_T(KC_SPACE), TAB_ALPHA,       BKSPC_MOUSE,  RSFT_T(KC_ENTER)
   ),
@@ -379,3 +427,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                              KC_TRNS,     KC_TRNS,       KC_TRNS,     KC_TRNS
   )
 };
+
+//-------------------------------------------------------------------------------
+
+
+
