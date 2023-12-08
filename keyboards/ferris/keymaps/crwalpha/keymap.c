@@ -112,17 +112,17 @@ const uint16_t PROGMEM singleq_combo[]    = {KC_RCTRL_J, KC_RMEH_K, COMBO_END};
 //-------------------------------------------------------------------------------
 // Layer control combos
 
-const uint16_t PROGMEM nav_combo[]        = {KC_RGUI_Y, KC_RCTRLALT_U,  COMBO_END};
-const uint16_t PROGMEM osl_nav_combo[]    = {KC_RGUI_Y, KC_RHYPR_I, COMBO_END};
+const uint16_t PROGMEM nav_combo[]      = {KC_RGUI_Y, KC_RCTRLALT_U, COMBO_END};
+const uint16_t PROGMEM osl_nav_combo[]  = {KC_RGUI_Y, KC_RCTRLALT_U, KC_RHYPR_I, COMBO_END};
 
-const uint16_t PROGMEM numb_combo[]       = {KC_RSHCTRL_H,  KC_RCTRL_J, COMBO_END};
-const uint16_t PROGMEM osl_numb_combo[]   = {KC_RSHCTRL_H,  KC_RMEH_K,  COMBO_END};
+const uint16_t PROGMEM numb_combo[]     = {KC_RSHCTRL_H, KC_RCTRL_J, COMBO_END};
+const uint16_t PROGMEM osl_numb_combo[] = {KC_RSHCTRL_H, KC_RCTRL_J, KC_RMEH_K, COMBO_END};
 
-const uint16_t PROGMEM func_combo[]       = {KC_RSHALT_N,  KC_RALT_M, COMBO_END};
-const uint16_t PROGMEM osl_func_combo[]   = {KC_RSHALT_N,  KC_COMM,      COMBO_END};
+const uint16_t PROGMEM func_combo[]     = {KC_RSHALT_N, KC_RALT_M, COMBO_END};
+const uint16_t PROGMEM osl_func_combo[] = {KC_RSHALT_N, KC_RALT_M, KC_COMM, COMBO_END};
 
-const uint16_t PROGMEM apps_combo[]       = {KC_RCTRLALT_U,  KC_RHYPR_I, COMBO_END};
-const uint16_t PROGMEM osl_apps_combo[]   = {KC_RCTRLALT_U,  KC_O,         COMBO_END};
+const uint16_t PROGMEM apps_combo[]     = {KC_RCTRLALT_U, KC_RHYPR_I, COMBO_END};
+const uint16_t PROGMEM osl_apps_combo[] = {KC_RCTRLALT_U, KC_RHYPR_I, KC_O, COMBO_END};
 
 //--------------------------------------------------------------------------------
 // Behavioral combos
