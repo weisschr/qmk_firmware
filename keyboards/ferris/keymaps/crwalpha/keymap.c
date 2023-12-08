@@ -197,12 +197,11 @@ uint16_t get_combo_term(uint16_t index, combo_t *combo) {
         case NAV_COMBO:
         case FUNC_COMBO:
         case NUMB_COMBO:
-            return 200;
         case ONESHOT_APP_COMBO:
         case ONESHOT_FUNC_COMBO:
         case ONESHOT_NAV_COMBO:
         case ONESHOT_SYM_COMBO:
-            return 75;
+            return 350;
       default:
         return COMBO_TERM;
     }
@@ -326,10 +325,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 */
 
   [_ALPHA] = LAYOUT_split_3x5_2(
-    KC_Q,  KC_W,   KC_LHYPR_E, KC_LCTRLALT_R,    KC_LGUI_T,        KC_RGUI_Y,     KC_RCTRLALT_U,    KC_RHYPR_I,   KC_O,    KC_P,
-    KC_A,  KC_S,   KC_LMEH_D,  KC_LCTRL_F,       KC_LSHCTRL_G,     KC_RSHCTRL_H,  KC_RCTRL_J,       KC_RMEH_K,    KC_L,    KC_SCLN,
-    KC_Z,  KC_X,   KC_C,       KC_LALT_V,        KC_LSHALT_B,      KC_RSHALT_N,   KC_RALT_M,        KC_COMM,      KC_DOT,  KC_SLSH,
-                               LSFT_T(KC_SPACE), TAB_ALPHA,        BKSPC_MOUSE,   RSFT_T(KC_ENTER)
+    KC_Q,  KC_W,   KC_LHYPR_E, KC_LCTRLALT_R,    KC_LGUI_T,           KC_RGUI_Y,          KC_RCTRLALT_U,    KC_RHYPR_I,   KC_O,    KC_P,
+    KC_A,  KC_S,   KC_LMEH_D,  KC_LCTRL_F,       KC_LSHCTRL_G,        KC_RSHCTRL_H,       KC_RCTRL_J,       KC_RMEH_K,    KC_L,    KC_SCLN,
+    KC_Z,  KC_X,   KC_C,       KC_LALT_V,        KC_LSHALT_B,         KC_RSHALT_N,        KC_RALT_M,        KC_COMM,      KC_DOT,  KC_SLSH,
+                               TAB_ALPHA,        LSFT_T(KC_SPACE),    RSFT_T(KC_ENTER),   BKSPC_MOUSE
   ),
 
 /*  Layer 1 Symbol
