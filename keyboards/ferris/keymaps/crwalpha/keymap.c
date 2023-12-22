@@ -176,6 +176,8 @@ combo_t key_combos[] = {
 
 static uint16_t key_timer_default;
 static uint16_t key_timer_mouse;
+static bool backpressed = false;
+static bool tabpressed = false;
 
 bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
@@ -243,7 +245,8 @@ bool check_left_mods(uint16_t keycode, keyrecord_t *record){
   static uint8_t mod_state;
   mod_state = get_mods();
   if (record->event.pressed) {
-    if ((mod_state == MOD_BIT(KC_LSFT)) || (mod_state == MOD_BIT(KC_LCTL)) || (mod_state == MOD_BIT(KC_LALT)) || (mod_state == MOD_BIT(KC_LGUI) ) ) {
+    if ((mod_state == MOD_BIT(KC_LSFT)) || (mod_state == MOD_BIT(KC_LCTL)) || (mod_state == MOD_BIT(KC_LALT)) || (mod_state == MOD_BIT(KC_LGUI) ) 
+       || (mod_state == (MOD_LCTL | MOD_LALT | MOD_LSFT | MOD_LGUI))) {
       clear_mods();
       tap_code(keycode);
       return false;
@@ -267,15 +270,15 @@ bool check_right_mods(uint16_t keycode, keyrecord_t *record){
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
-
     case TAB_ALPHA:
       if (record->event.pressed) {
         key_timer_default = timer_read(); 
       } else {
-        if (timer_elapsed(key_timer_default) < TAPPING_TERM) { 
+        if ((timer_elapsed(key_timer_default) < TAPPING_TERM) ) { 
           if (check_left_mods(keycode, record)){
             tap_code(KC_TAB);
           }
+          tabpressed = true;
         } else { 
             layer_move(_ALPHA);
         }
@@ -286,10 +289,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       if (record->event.pressed) {
         key_timer_mouse = timer_read(); // Start the timer when the key is pressed.
       } else {
-        if (timer_elapsed(key_timer_mouse) < TAPPING_TERM) { // The key was tapped.
+        if ((timer_elapsed(key_timer_mouse) < TAPPING_TERM) || (backpressed)) { // The key was tapped or repeated
           if(check_right_mods(keycode, record)){
             tap_code(KC_BSPC);
           }
+          backpressed = true;
         } else { // The key was held.
           layer_move(_MOUSE);
         }
@@ -314,6 +318,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case KC_C:
     case KC_LALT_V:
     case KC_LSHALT_B:
+      backpressed = false;
+      tabpressed = false;
       return check_left_mods(keycode, record);
 
     case RSFT_T(KC_ENTER):
@@ -332,8 +338,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case KC_COMM:
     case KC_DOT:
     case KC_SLSH:
+      backpressed = false;
+      tabpressed = false;
       return check_right_mods(keycode, record);
     default:
+      backpressed = false;
+      tabpressed = false;
       return true; // Process all other keycodes normally.
   }
 }
