@@ -105,8 +105,8 @@ tap_dance_action_t tap_dance_actions[] = {
 
 // Quotes
 
-const uint16_t PROGMEM doubleq_combo[]    = {KC_LMEH_D, KC_LCTRL_F, COMBO_END};
-const uint16_t PROGMEM singleq_combo[]    = {KC_RCTRL_J, KC_RMEH_K, COMBO_END};
+const uint16_t PROGMEM doubleq_combo[]  = {KC_LMEH_D, KC_LCTRL_F, COMBO_END};
+const uint16_t PROGMEM singleq_combo[]  = {KC_RCTRL_J, KC_RMEH_K, COMBO_END};
 
 //-------------------------------------------------------------------------------
 // Layer control combos
@@ -126,15 +126,15 @@ const uint16_t PROGMEM osl_apps_combo[] = {KC_RCTRLALT_U, KC_RHYPR_I, KC_O, COMB
 //--------------------------------------------------------------------------------
 // Behavioral combos
 
-const uint16_t PROGMEM lesc_combo[]       = {KC_LCTRL_F, KC_LSHCTRL_G, COMBO_END};
-const uint16_t PROGMEM winclose_combo[]   = {KC_LCTRLALT_R, KC_LGUI_T, COMBO_END};
-const uint16_t PROGMEM appclose_combo[]   = {KC_LALT_V, KC_LSHALT_B, COMBO_END};
+const uint16_t PROGMEM lesc_combo[]     = {KC_LCTRL_F, KC_LSHCTRL_G, COMBO_END};
+const uint16_t PROGMEM winclose_combo[] = {KC_LCTRLALT_R, KC_LGUI_T, COMBO_END};
+const uint16_t PROGMEM appclose_combo[] = {KC_LALT_V, KC_LSHALT_B, COMBO_END};
 
-const uint16_t PROGMEM del_combo[]        = {KC_LMEH_D, KC_LSHCTRL_G, COMBO_END};
-const uint16_t PROGMEM ins_combo[]        = {KC_C, KC_LSHALT_B, COMBO_END};
+const uint16_t PROGMEM del_combo[]      = {KC_LMEH_D, KC_LSHCTRL_G, COMBO_END};
+const uint16_t PROGMEM ins_combo[]      = {KC_C, KC_LSHALT_B, COMBO_END};
 
-const uint16_t PROGMEM caplock_combo[]    = {KC_C, KC_LALT_V, COMBO_END};
-const uint16_t PROGMEM capsword_combo[]   = {KC_X, KC_LALT_V, COMBO_END};
+const uint16_t PROGMEM caplock_combo[]  = {KC_C, KC_LALT_V, COMBO_END};
+const uint16_t PROGMEM capsword_combo[] = {KC_X, KC_LALT_V, COMBO_END};
 
 // End layer 0 combo definitions
 //--------------------------------------------------------------------------------
@@ -224,17 +224,60 @@ bool caps_word_press_user(uint16_t keycode) {
     }
 }
 
+
+uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case KC_LHYPR_E:
+        case KC_RHYPR_I:
+        case KC_LMEH_D:
+        case KC_RMEH_K:
+        case KC_LGUI_T:
+        case KC_RGUI_Y:
+            return 500;
+        default:
+            return TAPPING_TERM;
+    }
+}
+
+bool check_left_mods(uint16_t keycode, keyrecord_t *record){
+  static uint8_t mod_state;
+  mod_state = get_mods();
+  if (record->event.pressed) {
+    if ((mod_state == MOD_BIT(KC_LSFT)) || (mod_state == MOD_BIT(KC_LCTL)) || (mod_state == MOD_BIT(KC_LALT)) || (mod_state == MOD_BIT(KC_LGUI) ) ) {
+      clear_mods();
+      tap_code(keycode);
+      return false;
+    }
+  }
+  return true;
+}
+
+bool check_right_mods(uint16_t keycode, keyrecord_t *record){
+  static uint8_t r_mod_state;
+  r_mod_state = get_mods();
+  if (record->event.pressed) {
+    if ((r_mod_state == MOD_BIT(KC_RSFT)) || (r_mod_state == MOD_BIT(KC_RCTL)) || (r_mod_state == MOD_BIT(KC_RALT)) || (r_mod_state == MOD_BIT(KC_RGUI) ) ) {
+      clear_mods();
+      tap_code(keycode);
+      return false;
+    }
+  }
+  return true;
+}
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
 
     case TAB_ALPHA:
       if (record->event.pressed) {
-        key_timer_default = timer_read(); // Start the timer on key press.
+        key_timer_default = timer_read(); 
       } else {
-        if (timer_elapsed(key_timer_default) < TAPPING_TERM) { // Key was tapped.
-          tap_code(KC_TAB);
-        } else { // Key was held.
-          layer_move(_ALPHA);
+        if (timer_elapsed(key_timer_default) < TAPPING_TERM) { 
+          if (check_left_mods(keycode, record)){
+            tap_code(KC_TAB);
+          }
+        } else { 
+            layer_move(_ALPHA);
         }
       }
       return false;
@@ -244,7 +287,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         key_timer_mouse = timer_read(); // Start the timer when the key is pressed.
       } else {
         if (timer_elapsed(key_timer_mouse) < TAPPING_TERM) { // The key was tapped.
-          tap_code(KC_BSPC);
+          if(check_right_mods(keycode, record)){
+            tap_code(KC_BSPC);
+          }
         } else { // The key was held.
           layer_move(_MOUSE);
         }
@@ -253,6 +298,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     // Mod tap modification - BILATERAL MODIFIER KEYS SET
     
+    case LSFT_T(KC_SPACE):
     case KC_Q:
     case KC_W:
     case KC_LHYPR_E:
@@ -268,15 +314,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case KC_C:
     case KC_LALT_V:
     case KC_LSHALT_B:
-      if (record->event.pressed) {
-        if (get_mods() & (MOD_BIT(KC_LSFT) | MOD_BIT(KC_LCTL) | MOD_BIT(KC_LALT) | MOD_BIT(KC_LGUI) ) ) {
-          clear_mods(); // Remove MODS
-          tap_code(keycode); // Send UN-MOD key
-          return false; // Skip default processing
-          }
-      }
-      return true;
+      return check_left_mods(keycode, record);
 
+    case RSFT_T(KC_ENTER):
     case KC_RGUI_Y:
     case KC_RCTRLALT_U:
     case KC_RHYPR_I:
@@ -292,15 +332,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case KC_COMM:
     case KC_DOT:
     case KC_SLSH:
-      if (record->event.pressed) {
-        if (get_mods() & (MOD_BIT(KC_RSFT) | MOD_BIT(KC_RCTL) | MOD_BIT(KC_RALT) | MOD_BIT(KC_RGUI) ) ) {
-          clear_mods(); // Remove MODS
-          tap_code(keycode); // Send UN-MOD key
-          return false; // Skip default processing
-          }
-      }
-      return true;
-
+      return check_right_mods(keycode, record);
     default:
       return true; // Process all other keycodes normally.
   }
