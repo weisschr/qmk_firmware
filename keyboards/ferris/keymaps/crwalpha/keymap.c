@@ -45,8 +45,6 @@ enum layers {
 };
 
 enum tapdances {
-  TD_LBRACE,
-  TD_RBRACE,
   TD_QUOTE,
   TD_SEMI,
   TD_BACKSLASH,
@@ -56,6 +54,8 @@ enum tapdances {
   TD_DOT,
   TD_SLASH,
   TD_GRAVE,
+  TD_BRACES,
+  TD_RBRACES,
   TAPDANCE_LENGTH
 };
 
@@ -82,21 +82,66 @@ enum combos {
     APPCLOSE_COMBO,
     CAPLOCK_COMBO,
     CAPSWORD_COMBO,
+    LEFTARROW_COMBO,
+    RIGHTARROW_COMBO,
+    UPARROW_COMBO,
+    DOWNARROW_COMBO,
     COMBO_LENGTH
 };
 
 //-------------------------------------------------------------------------------
 // tapdances
 
+
+void dance_braces_finished(tap_dance_state_t *state, void *user_data) {
+  if (state->count == 1) {
+    register_code16(KC_LPRN); // One tap for Left Parenthesis
+  } else if (state->count == 2) {
+    register_code16(KC_LBRC); // Two taps for Left Bracket
+  } else if (state->count == 3) {
+    register_code16(KC_LCBR); // Three taps for Left Curly Brace
+  }
+}
+
+void dance_braces_reset(tap_dance_state_t *state, void *user_data) {
+  if (state->count == 1) {
+    unregister_code16(KC_LPRN);
+  } else if (state->count == 2) {
+    unregister_code16(KC_LBRC);
+  } else if (state->count == 3) {
+    unregister_code16(KC_LCBR);
+  }
+}
+
+void dance_rbraces_finished(tap_dance_state_t *state, void *user_data) {
+  if (state->count == 1) {
+    register_code16(KC_RPRN); // One tap for Left Parenthesis
+  } else if (state->count == 2) {
+    register_code16(KC_RBRC); // Two taps for Left Bracket
+  } else if (state->count == 3) {
+    register_code16(KC_RCBR); // Three taps for Left Curly Brace
+  }
+}
+
+void dance_rbraces_reset(tap_dance_state_t *state, void *user_data) {
+  if (state->count == 1) {
+    unregister_code16(KC_RPRN);
+  } else if (state->count == 2) {
+    unregister_code16(KC_RBRC);
+  } else if (state->count == 3) {
+    unregister_code16(KC_RCBR);
+  }
+}
+
 tap_dance_action_t tap_dance_actions[] = {
-  [TD_LBRACE]     = ACTION_TAP_DANCE_DOUBLE(KC_LBRC, KC_LCBR),
-  [TD_RBRACE]     = ACTION_TAP_DANCE_DOUBLE(KC_RBRC, KC_RCBR),
   [TD_QUOTE]      = ACTION_TAP_DANCE_DOUBLE(KC_QUOTE, KC_DQUO),
   [TD_SEMI]       = ACTION_TAP_DANCE_DOUBLE(KC_SEMICOLON, KC_COLON),
   [TD_BACKSLASH]  = ACTION_TAP_DANCE_DOUBLE(KC_BACKSLASH, KC_PIPE),
   [TD_EQUAL]      = ACTION_TAP_DANCE_DOUBLE(KC_EQUAL, KC_PLUS),
   [TD_MINUS]      = ACTION_TAP_DANCE_DOUBLE(KC_MINUS, KC_UNDERSCORE),
   [TD_GRAVE]      = ACTION_TAP_DANCE_DOUBLE(KC_GRAVE, KC_TILDE),
+  [TD_BRACES]     = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_braces_finished, dance_braces_reset),
+  [TD_RBRACES]    = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_rbraces_finished, dance_rbraces_reset),
 };
 
 // end tapdances
@@ -126,15 +171,20 @@ const uint16_t PROGMEM osl_apps_combo[] = {KC_RCTRLALT_U, KC_RHYPR_I, KC_O, COMB
 //--------------------------------------------------------------------------------
 // Behavioral combos
 
-const uint16_t PROGMEM lesc_combo[]     = {KC_LCTRL_F, KC_LSHCTRL_G, COMBO_END};
-const uint16_t PROGMEM winclose_combo[] = {KC_LCTRLALT_R, KC_LGUI_T, COMBO_END};
-const uint16_t PROGMEM appclose_combo[] = {KC_LALT_V, KC_LSHALT_B, COMBO_END};
+const uint16_t PROGMEM lesc_combo[]       = {KC_LCTRL_F, KC_LSHCTRL_G, COMBO_END};
+const uint16_t PROGMEM winclose_combo[]   = {KC_LCTRLALT_R, KC_LGUI_T, COMBO_END};
+const uint16_t PROGMEM appclose_combo[]   = {KC_LALT_V, KC_LSHALT_B, COMBO_END};
 
-const uint16_t PROGMEM del_combo[]      = {KC_LMEH_D, KC_LSHCTRL_G, COMBO_END};
-const uint16_t PROGMEM ins_combo[]      = {KC_C, KC_LSHALT_B, COMBO_END};
+const uint16_t PROGMEM del_combo[]        = {KC_LMEH_D, KC_LSHCTRL_G, COMBO_END};
+const uint16_t PROGMEM ins_combo[]        = {KC_C, KC_LSHALT_B, COMBO_END};
 
-const uint16_t PROGMEM caplock_combo[]  = {KC_C, KC_LALT_V, COMBO_END};
-const uint16_t PROGMEM capsword_combo[] = {KC_X, KC_LALT_V, COMBO_END};
+const uint16_t PROGMEM caplock_combo[]    = {KC_C, KC_LALT_V, COMBO_END};
+const uint16_t PROGMEM capsword_combo[]   = {KC_X, KC_LALT_V, COMBO_END};
+
+const uint16_t PROGMEM leftarrow_combo[]  = {KC_LHYPR_E, KC_LCTRLALT_R, KC_LGUI_T, COMBO_END};
+const uint16_t PROGMEM rightarrow_combo[] = {KC_LMEH_D, KC_LCTRL_F, KC_LSHCTRL_G, COMBO_END};
+const uint16_t PROGMEM uparrow_combo[]    = {KC_W, KC_LHYPR_E, KC_LCTRLALT_R, COMBO_END};
+const uint16_t PROGMEM downarrow_combo[]  = {KC_S, KC_LMEH_D, KC_LCTRL_F, COMBO_END};
 
 // End layer 0 combo definitions
 //--------------------------------------------------------------------------------
@@ -162,6 +212,10 @@ combo_t key_combos[] = {
 [DEL_COMBO]          = COMBO(del_combo, KC_DEL),
 [WINCLOSE_COMBO]     = COMBO(winclose_combo, LCTL(KC_F4)),
 [APPCLOSE_COMBO]     = COMBO(appclose_combo, LALT(KC_F4)),
+[LEFTARROW_COMBO]    = COMBO(leftarrow_combo,KC_LEFT),
+[RIGHTARROW_COMBO]   = COMBO(rightarrow_combo,KC_RIGHT),
+[UPARROW_COMBO]      = COMBO(uparrow_combo, KC_UP),
+[DOWNARROW_COMBO]    = COMBO(downarrow_combo, KC_DOWN),
 
 //-------------------------------------------------------------------------------
 
@@ -192,21 +246,20 @@ bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
 }
 
 uint16_t get_combo_term(uint16_t index, combo_t *combo) {
-
   switch (index) {
-        case APP_COMBO:
-        case NAV_COMBO:
-        case FUNC_COMBO:
-        case NUMB_COMBO:
-        case ONESHOT_APP_COMBO:
-        case ONESHOT_FUNC_COMBO:
-        case ONESHOT_NAV_COMBO:
-        case ONESHOT_SYM_COMBO:
-            return 350;
+      case NAV_COMBO:
+      case FUNC_COMBO:
+      case NUMB_COMBO:
+      case ONESHOT_APP_COMBO:
+      case ONESHOT_FUNC_COMBO:
+      case ONESHOT_NAV_COMBO:
+      case ONESHOT_SYM_COMBO:
+        return 350;
+      case APP_COMBO:
+        return 450;
       default:
         return COMBO_TERM;
     }
-
 }
 
 bool caps_word_press_user(uint16_t keycode) {
@@ -226,7 +279,6 @@ bool caps_word_press_user(uint16_t keycode) {
     }
 }
 
-
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case KC_LHYPR_E:
@@ -245,7 +297,7 @@ bool check_left_mods(uint16_t keycode, keyrecord_t *record){
   static uint8_t mod_state;
   mod_state = get_mods();
   if (record->event.pressed) {
-    if ((mod_state == MOD_BIT(KC_LSFT)) || (mod_state == MOD_BIT(KC_LCTL)) || (mod_state == MOD_BIT(KC_LALT)) || (mod_state == MOD_BIT(KC_LGUI) ) 
+    if ((mod_state == MOD_BIT(KC_LSFT)) || (mod_state == MOD_BIT(KC_LCTL)) || (mod_state == MOD_BIT(KC_LALT)) || (mod_state == MOD_BIT(KC_LGUI) )
        || (mod_state == (MOD_LCTL | MOD_LALT | MOD_LSFT | MOD_LGUI))) {
       clear_mods();
       tap_code(keycode);
@@ -272,14 +324,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     case TAB_ALPHA:
       if (record->event.pressed) {
-        key_timer_default = timer_read(); 
+        key_timer_default = timer_read();
       } else {
-        if ((timer_elapsed(key_timer_default) < TAPPING_TERM) ) { 
+        if ((timer_elapsed(key_timer_default) < TAPPING_TERM) ) {
           if (check_left_mods(keycode, record)){
             tap_code(KC_TAB);
           }
           tabpressed = true;
-        } else { 
+        } else {
             layer_move(_ALPHA);
         }
       }
@@ -301,17 +353,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       return false;
 
     // Mod tap modification - BILATERAL MODIFIER KEYS SET
-    
+
     case LSFT_T(KC_SPACE):
     case KC_Q:
     case KC_W:
     case KC_LHYPR_E:
-    case KC_LCTRLALT_R:      
+    case KC_LCTRLALT_R:
     case KC_LGUI_T:
-    case KC_A:  
-    case KC_S:   
-    case KC_LMEH_D:  
-    case KC_LCTRL_F:     
+    case KC_A:
+    case KC_S:
+    case KC_LMEH_D:
+    case KC_LCTRL_F:
     case KC_LSHCTRL_G:
     case KC_Z:
     case KC_X:
@@ -326,10 +378,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case KC_RGUI_Y:
     case KC_RCTRLALT_U:
     case KC_RHYPR_I:
-    case KC_O:  
-    case KC_P:   
-    case KC_RSHCTRL_H:  
-    case KC_RCTRL_J:     
+    case KC_O:
+    case KC_P:
+    case KC_RSHCTRL_H:
+    case KC_RCTRL_J:
     case KC_RMEH_K:
     case KC_L:
     case KC_SCLN:
@@ -366,10 +418,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 */
 
   [_ALPHA] = LAYOUT_split_3x5_2(
-    KC_Q,  KC_W,   KC_LHYPR_E, KC_LCTRLALT_R,    KC_LGUI_T,           KC_RGUI_Y,          KC_RCTRLALT_U,    KC_RHYPR_I,   KC_O,    KC_P,
-    KC_A,  KC_S,   KC_LMEH_D,  KC_LCTRL_F,       KC_LSHCTRL_G,        KC_RSHCTRL_H,       KC_RCTRL_J,       KC_RMEH_K,    KC_L,    KC_SCLN,
-    KC_Z,  KC_X,   KC_C,       KC_LALT_V,        KC_LSHALT_B,         KC_RSHALT_N,        KC_RALT_M,        KC_COMM,      KC_DOT,  KC_SLSH,
-                               TAB_ALPHA,        LSFT_T(KC_SPACE),    RSFT_T(KC_ENTER),   BKSPC_MOUSE
+    KC_Q,  KC_W,   KC_LHYPR_E, KC_LCTRLALT_R, KC_LGUI_T,        /*-*/ KC_RGUI_Y,          KC_RCTRLALT_U,    KC_RHYPR_I,   KC_O,    KC_P,
+    KC_A,  KC_S,   KC_LMEH_D,  KC_LCTRL_F,    KC_LSHCTRL_G,     /*-*/ KC_RSHCTRL_H,       KC_RCTRL_J,       KC_RMEH_K,    KC_L,    KC_SCLN,
+    KC_Z,  KC_X,   KC_C,       KC_LALT_V,     KC_LSHALT_B,      /*-*/ KC_RSHALT_N,        KC_RALT_M,        KC_COMM,      KC_DOT,  KC_SLSH,
+                               TAB_ALPHA,     LSFT_T(KC_SPACE), /*-*/ RSFT_T(KC_ENTER),   BKSPC_MOUSE
   ),
 
 /*  Layer 1 Symbol
@@ -378,36 +430,36 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 *  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
 *  |      1      |      2      |      3      |      4      |      5      |   |      6      |      7      |      8      |      9      |      0      |
 *  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
-*  |      ` ~    |      +      |      =      |      -      |      _      |   |      "      |      '      |      \ |    |      [ {    |     ] }     |
+*  |      ` ~    |      +      |      =      |      -      |      _      |   |     ' "     |      \ |    |      , <    |      . >    |     / ?     |
 *  '---------------------------|-------------|-------------|-------------|   |-------------|-------------|-------------|---------------------------'
 *                                            | KC_TRNS     | KC_TRNS     |   | KC_TRNS     | KC_TRNS     |
 *                                            |_____________|_____________|   |_____________|_____________|
 */
 
   [_NUMBSYM] = LAYOUT_split_3x5_2(
-    KC_EXLM,      KC_AT,   KC_HASH,       KC_DLR,        KC_PERC,         KC_CIRC,  KC_AMPR,      KC_ASTR,          KC_LEFT_PAREN,  KC_RIGHT_PAREN,
-    KC_1,         KC_2,    KC_3,          KC_4,          KC_5,            KC_6,     KC_7,         KC_8,             KC_9,          KC_0,
-    TD(TD_GRAVE), KC_PLUS, TD(TD_EQUAL),  TD(TD_MINUS),  KC_UNDS,         KC_DQUO,  TD(TD_QUOTE), TD(TD_BACKSLASH), TD(TD_LBRACE), TD(TD_RBRACE),
-                                          KC_TRNS,       KC_TRNS,         KC_TRNS,  KC_TRNS
+    KC_EXLM,      KC_AT,   KC_HASH,       KC_DLR,        KC_PERC, /*-*/ KC_CIRC,      KC_AMPR,          KC_ASTR,   TD(TD_BRACES),  TD(TD_RBRACES),
+    KC_1,         KC_2,    KC_3,          KC_4,          KC_5,    /*-*/ KC_6,         KC_7,             KC_8,      KC_9,           KC_0,
+    TD(TD_GRAVE), KC_PLUS, TD(TD_EQUAL),  TD(TD_MINUS),  KC_UNDS, /*-*/ TD(TD_QUOTE), TD(TD_BACKSLASH), KC_TRNS,   KC_TRNS,        KC_TRNS,
+                                          KC_TRNS,       KC_TRNS, /*-*/ KC_TRNS,  KC_TRNS
   ),
 
 /*  Layer 2 Function
 *   _____________________________________________________________________     _____________________________________________________________________
-*  |             |             |             |             |      F11    |   |      F12    |             |             |             |             |
+*  |             |             |             |ctrl-alt-del |      F11    |   |      F12    |             |             |             |             |
 *  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
 *  |      F1     |      F2     |      F3     |      F4     |      F5     |   |      F6     |      F7     |      F8     |      F9     |      F10    |
 *  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
-*  |             |   GUI       |    ALT      |  CTRL       |  MEH        |   | HYPER       | CTRL        | ALT         | GUI         |             |
+*  |             |      GUI    |      ALT    |      CTRL   |      MEH    |   |      HYPER  |      CTRL   |      ALT    |      GUI    |             |
 *  '---------------------------|-------------|-------------|-------------|   |-------------|-------------|-------------|---------------------------'
-*                                            | KC_TRNS     | KC_TRNS     |   | KC_TRNS     | KC_TRNS     |
+*                                            |   KC_TRNS   |   KC_TRNS   |   |   KC_TRNS   |   KC_TRNS   |
 *                                            |_____________|_____________|   |_____________|_____________|
 */
 
   [_FUNCTION] = LAYOUT_split_3x5_2(
-    KC_NO,   KC_NO,   KC_NO,      KC_NO,     KC_F11,      KC_F12,    KC_NO,    KC_NO,     KC_NO,     KC_NO,
-    KC_F1,   KC_F2,   KC_F3,      KC_F4,     KC_F5,       KC_F6,     KC_F7,    KC_F8,     KC_F9,     KC_F10,
-    KC_NO,   KC_LGUI, KC_LALT,    KC_LCTL,   KC_MEH,      KC_HYPR,   KC_RCTL,  KC_RALT,   KC_RGUI,   KC_NO,
-                                  KC_TRNS,   KC_TRNS,     KC_TRNS,   KC_TRNS
+    KC_NO,   KC_NO,   KC_NO,    C(A(KC_DEL)),   KC_F11,  /*-*/  KC_F12,    KC_NO,    KC_NO,     KC_NO,     KC_NO,
+    KC_F1,   KC_F2,   KC_F3,    KC_F4,          KC_F5,   /*-*/  KC_F6,     KC_F7,    KC_F8,     KC_F9,     KC_F10,
+    KC_NO,   KC_LGUI, KC_LALT,  KC_LCTL,        KC_MEH,  /*-*/  KC_HYPR,   KC_RCTL,  KC_RALT,   KC_RGUI,   KC_NO,
+                                KC_TRNS,        KC_TRNS, /*-*/  KC_TRNS,   KC_TRNS
   ),
 
 /*  Layer 3 Mouse
@@ -423,17 +475,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 */
 
   [_MOUSE] = LAYOUT_split_3x5_2(
-    KC_WBAK,   C(KC_T),     KC_VOLD,          KC_MUTE,    KC_VOLU,      RSFT_T(KC_HOME), KC_PGUP,     KC_MS_UP,      KC_PGDN,        KC_WSCH,
-    KC_WFWD,   KC_MS_BTN1,  KC_MS_BTN3,       KC_MS_BTN2, KC_UP,        RCTL_T(KC_END),  KC_MS_LEFT,  KC_MS_DOWN,    KC_MS_RIGHT,    KC_WREF,
-    KC_WHOM,   C(KC_N),     KC_LEFT,          KC_RIGHT,   KC_DOWN,      KC_MS_WH_LEFT,   KC_MS_WH_UP, KC_MS_WH_DOWN, KC_MS_WH_RIGHT, KC_WSTP,
-                                              KC_TRNS,    KC_TRNS,      KC_TRNS,         KC_TRNS
+    KC_WBAK,   C(KC_T),     KC_VOLD,     KC_MUTE,    KC_VOLU, /*-*/ RSFT_T(KC_HOME), KC_PGUP,     KC_MS_UP,      KC_PGDN,        KC_WSCH,
+    KC_WFWD,   KC_MS_BTN1,  KC_MS_BTN3,  KC_MS_BTN2, KC_UP,   /*-*/ RCTL_T(KC_END),  KC_MS_LEFT,  KC_MS_DOWN,    KC_MS_RIGHT,    KC_WREF,
+    KC_WHOM,   C(KC_N),     KC_LEFT,     KC_RIGHT,   KC_DOWN, /*-*/ KC_MS_WH_LEFT,   KC_MS_WH_UP, KC_MS_WH_DOWN, KC_MS_WH_RIGHT, KC_WSTP,
+                                         KC_TRNS,    KC_TRNS, /*-*/ KC_TRNS,         KC_TRNS
   ),
 
 /*  Layer 4 APPS AND CONTROL
 *   _____________________________________________________________________     _____________________________________________________________________
 *  |             |             | LINKEDIN    | OUTLOOK     | TEAMS       |   | FILEMNGR    | QK_BOOT     | QK_REBOOT   |  WAKEUP     |             |
 *  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
-*  |             |             |             | POWERPOINT  | WORD        |   | KC_CALC     | TASK        | RUN         |  POWEROFF   |             |
+*  |             |             | Controlpanel| POWERPOINT  | WORD        |   | KC_CALC     | TASK        | RUN         |  POWEROFF   |             |
 *  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
 *  |             |             |             | EMOJIS      | EXCEL       |   | SNIP        | CLIPBOARD   | MYCOMPUTER  |  SLEEP      |             |
 *  '---------------------------|-------------|-------------|-------------|   |-------------|-------------|-----------------------------------------'
@@ -442,10 +494,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 */
 
   [_APPCONTROL] = LAYOUT_split_3x5_2(
-    KC_NO,      KC_NO,   HYPR_T(KC_L), HYPR_T(KC_O),   HYPR_T(KC_T),     RGUI(KC_E),  QK_BOOT,     QK_REBOOT,  KC_WAKE,    KC_NO,
-    KC_NO,      KC_NO,   KC_NO,        HYPR_T(KC_P),   HYPR_T(KC_W),     KC_CALC,     RCS(KC_ESC), RGUI(KC_R), KC_PWR,     KC_NO,
-    KC_NO,      KC_NO,   KC_NO,        LGUI(KC_DOT),   HYPR_T(KC_X),     SGUI(KC_S),  RGUI(KC_V),  KC_MYCM,    KC_SLEP,    KC_NO,
-                                       KC_TRNS,        KC_TRNS,          KC_TRNS,     KC_TRNS
+    KC_NO,  KC_NO,  HYPR_T(KC_L), HYPR_T(KC_O),  HYPR_T(KC_T), /*-*/ RGUI(KC_E),  QK_BOOT,     QK_REBOOT,  KC_WAKE,    KC_NO,
+    KC_NO,  KC_NO,  KC_CPNL,      HYPR_T(KC_P),  HYPR_T(KC_W), /*-*/ KC_CALC,     RCS(KC_ESC), RGUI(KC_R), KC_PWR,     KC_NO,
+    KC_NO,  KC_NO,  KC_NO,        LGUI(KC_DOT),  HYPR_T(KC_X), /*-*/ SGUI(KC_S),  RGUI(KC_V),  KC_MYCM,    KC_SLEP,    KC_NO,
+                                  KC_TRNS,       KC_TRNS,      /*-*/ KC_TRNS,     KC_TRNS
   ),
 
 /*  Layer 5 Nav
@@ -461,14 +513,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 */
 
  [_NAV] = LAYOUT_split_3x5_2(
-    KC_TRNS,     KC_TRNS,     KC_TRNS,       KC_HOME,     KC_TRNS,       KC_TRNS,     KC_PGUP,     KC_TRNS,     KC_TRNS,     KC_TRNS,
-    KC_TRNS,     KC_TRNS,     KC_LEFT,       KC_RIGHT,    KC_TRNS,       KC_TRNS,     KC_UP,       KC_DOWN,     KC_TRNS,     KC_TRNS,
-    KC_TRNS,     KC_TRNS,     KC_TRNS,       KC_END,      KC_TRNS,       KC_TRNS,     KC_PGDN,     KC_TRNS,     KC_TRNS,     KC_TRNS,
-                                             KC_TRNS,     KC_TRNS,       KC_TRNS,     KC_TRNS
+    KC_TRNS, KC_TRNS,  KC_TRNS,  KC_HOME,  KC_TRNS, /*-*/ KC_TRNS,  KC_PGUP,  KC_TRNS,  KC_TRNS,  KC_TRNS,
+    KC_TRNS, KC_TRNS,  KC_LEFT,  KC_RIGHT, KC_TRNS, /*-*/ KC_TRNS,  KC_UP,    KC_DOWN,  KC_TRNS,  KC_TRNS,
+    KC_TRNS, KC_TRNS,  KC_TRNS,  KC_END,   KC_TRNS, /*-*/ KC_TRNS,  KC_PGDN,  KC_TRNS,  KC_TRNS,  KC_TRNS,
+                                 KC_TRNS,  KC_TRNS, /*-*/ KC_TRNS,  KC_TRNS
   )
 };
 
 //-------------------------------------------------------------------------------
-
-
-
