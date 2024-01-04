@@ -32,6 +32,21 @@
 #define KC_LHYPR_E    MT(MOD_LCTL | MOD_LALT | MOD_LSFT | MOD_LGUI, KC_E)
 #define KC_RHYPR_I    MT(MOD_RCTL | MOD_RALT | MOD_RSFT | MOD_RGUI, KC_I)
 
+// APPS Mapping
+
+#define KA_LINKEDIN HYPR(KC_L)
+#define KA_OUTLOOK  HYPR(KC_O)
+#define KA_TEAMS    HYPR(KC_T)
+#define KA_FILEMGR  RGUI(KC_E)
+#define KA_POWERPT  HYPR(KC_P)
+#define KA_WORD     HYPR(KC_W)
+#define KA_TASKMGR  RCS(KC_ESC)
+#define KA_RUN      RGUI(KC_R)
+#define KA_EMOJIS   LGUI(KC_DOT)
+#define KA_EXCEL    HYPR(KC_X)
+#define KA_SNIP     SGUI(KC_S)
+#define KA_CLIPBRD  RGUI(KC_V)
+
 //-------------------------------------------------------------------------------
 
 enum layers {
@@ -40,7 +55,6 @@ enum layers {
   _FUNCTION,
   _MOUSE,
   _APPCONTROL,
-  _NAV,
   LAYER_LENGTH
 };
 
@@ -69,14 +83,12 @@ enum combos {
     DOUBLEQ_COMBO,
     SINGLEQ_COMBO,
     LESC_COMBO,
-    NAV_COMBO,
     NUMB_COMBO,
     FUNC_COMBO,
     APP_COMBO,
     ONESHOT_SYM_COMBO,
     ONESHOT_FUNC_COMBO,
     ONESHOT_APP_COMBO,
-    ONESHOT_NAV_COMBO,
     DEL_COMBO,
     WINCLOSE_COMBO,
     APPCLOSE_COMBO,
@@ -91,7 +103,6 @@ enum combos {
 
 //-------------------------------------------------------------------------------
 // tapdances
-
 
 void dance_braces_finished(tap_dance_state_t *state, void *user_data) {
   if (state->count == 1) {
@@ -156,17 +167,14 @@ const uint16_t PROGMEM singleq_combo[]  = {KC_RCTRL_J, KC_RMEH_K, COMBO_END};
 //-------------------------------------------------------------------------------
 // Layer control combos
 
-const uint16_t PROGMEM nav_combo[]      = {KC_RGUI_Y, KC_RCTRLALT_U, COMBO_END};
-const uint16_t PROGMEM osl_nav_combo[]  = {KC_RGUI_Y, KC_RCTRLALT_U, KC_RHYPR_I, COMBO_END};
+const uint16_t PROGMEM apps_combo[]     = {KC_RGUI_Y, KC_RCTRLALT_U, COMBO_END};
+const uint16_t PROGMEM osl_apps_combo[] = {KC_RGUI_Y, KC_RCTRLALT_U, KC_RHYPR_I, COMBO_END};
 
 const uint16_t PROGMEM numb_combo[]     = {KC_RSHCTRL_H, KC_RCTRL_J, COMBO_END};
 const uint16_t PROGMEM osl_numb_combo[] = {KC_RSHCTRL_H, KC_RCTRL_J, KC_RMEH_K, COMBO_END};
 
 const uint16_t PROGMEM func_combo[]     = {KC_RSHALT_N, KC_RALT_M, COMBO_END};
 const uint16_t PROGMEM osl_func_combo[] = {KC_RSHALT_N, KC_RALT_M, KC_COMM, COMBO_END};
-
-const uint16_t PROGMEM apps_combo[]     = {KC_RCTRLALT_U, KC_RHYPR_I, COMBO_END};
-const uint16_t PROGMEM osl_apps_combo[] = {KC_RCTRLALT_U, KC_RHYPR_I, KC_O, COMBO_END};
 
 //--------------------------------------------------------------------------------
 // Behavioral combos
@@ -181,8 +189,8 @@ const uint16_t PROGMEM ins_combo[]        = {KC_C, KC_LSHALT_B, COMBO_END};
 const uint16_t PROGMEM caplock_combo[]    = {KC_C, KC_LALT_V, COMBO_END};
 const uint16_t PROGMEM capsword_combo[]   = {KC_X, KC_LALT_V, COMBO_END};
 
-const uint16_t PROGMEM leftarrow_combo[]  = {KC_LHYPR_E, KC_LCTRLALT_R, KC_LGUI_T, COMBO_END};
-const uint16_t PROGMEM rightarrow_combo[] = {KC_LMEH_D, KC_LCTRL_F, KC_LSHCTRL_G, COMBO_END};
+const uint16_t PROGMEM leftarrow_combo[]  = {KC_LMEH_D, KC_LCTRL_F, KC_LSHCTRL_G, COMBO_END};
+const uint16_t PROGMEM rightarrow_combo[] = {KC_LHYPR_E, KC_LCTRLALT_R, KC_LGUI_T, COMBO_END};
 const uint16_t PROGMEM uparrow_combo[]    = {KC_W, KC_LHYPR_E, KC_LCTRLALT_R, COMBO_END};
 const uint16_t PROGMEM downarrow_combo[]  = {KC_S, KC_LMEH_D, KC_LCTRL_F, COMBO_END};
 
@@ -197,14 +205,12 @@ combo_t key_combos[] = {
 
 //-------------------------------------------------------------------------------
 
-[NAV_COMBO]          = COMBO(nav_combo, TO(_NAV)),
+[APP_COMBO]          = COMBO(apps_combo, TO(_APPCONTROL)),
 [NUMB_COMBO]         = COMBO(numb_combo, TO(_NUMBSYM)),
 [FUNC_COMBO]         = COMBO(func_combo, TO(_FUNCTION)),
-[APP_COMBO]          = COMBO(apps_combo, TO(_APPCONTROL)),
 [ONESHOT_SYM_COMBO]  = COMBO(osl_numb_combo, OSL(_NUMBSYM)),
 [ONESHOT_FUNC_COMBO] = COMBO(osl_func_combo, OSL(_FUNCTION)),
 [ONESHOT_APP_COMBO]  = COMBO(osl_apps_combo, OSL(_APPCONTROL)),
-[ONESHOT_NAV_COMBO]  = COMBO(osl_nav_combo, OSL(_NAV)),
 
 //-------------------------------------------------------------------------------
 
@@ -230,8 +236,8 @@ combo_t key_combos[] = {
 
 static uint16_t key_timer_default;
 static uint16_t key_timer_mouse;
-static bool backpressed = false;
-static bool tabpressed = false;
+static bool backpressed   = false;
+static bool tabpressed    = false;
 
 bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
@@ -247,16 +253,13 @@ bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
 
 uint16_t get_combo_term(uint16_t index, combo_t *combo) {
   switch (index) {
-      case NAV_COMBO:
+      case APP_COMBO:
       case FUNC_COMBO:
       case NUMB_COMBO:
       case ONESHOT_APP_COMBO:
       case ONESHOT_FUNC_COMBO:
-      case ONESHOT_NAV_COMBO:
       case ONESHOT_SYM_COMBO:
         return 350;
-      case APP_COMBO:
-        return 450;
       default:
         return COMBO_TERM;
     }
@@ -268,12 +271,10 @@ bool caps_word_press_user(uint16_t keycode) {
         case KC_A ... KC_Z:
             add_weak_mods(MOD_BIT(KC_LSFT));  // Apply shift to next key.
             return true;
-
         // Keycodes that continue Caps Word, without shifting.
         case KC_BSPC:
         case KC_DEL:
             return true;
-
         default:
             return false;  // Deactivate Caps Word.
     }
@@ -295,10 +296,14 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
 
 bool check_left_mods(uint16_t keycode, keyrecord_t *record){
   static uint8_t mod_state;
+  if(layer_state_is(_APPCONTROL)) {
+    return false;
+  }
   mod_state = get_mods();
   if (record->event.pressed) {
     if ((mod_state == MOD_BIT(KC_LSFT)) || (mod_state == MOD_BIT(KC_LCTL)) || (mod_state == MOD_BIT(KC_LALT)) || (mod_state == MOD_BIT(KC_LGUI) )
-       || (mod_state == (MOD_LCTL | MOD_LALT | MOD_LSFT | MOD_LGUI))) {
+       || (mod_state == (MOD_LCTL | MOD_LALT | MOD_LSFT | MOD_LGUI))
+       || (mod_state == (MOD_LCTL | MOD_LALT | MOD_LSFT))) {
       clear_mods();
       tap_code(keycode);
       return false;
@@ -309,9 +314,14 @@ bool check_left_mods(uint16_t keycode, keyrecord_t *record){
 
 bool check_right_mods(uint16_t keycode, keyrecord_t *record){
   static uint8_t r_mod_state;
+  if(layer_state_is(_APPCONTROL)) {
+    return false;
+  }
   r_mod_state = get_mods();
   if (record->event.pressed) {
-    if ((r_mod_state == MOD_BIT(KC_RSFT)) || (r_mod_state == MOD_BIT(KC_RCTL)) || (r_mod_state == MOD_BIT(KC_RALT)) || (r_mod_state == MOD_BIT(KC_RGUI) ) ) {
+    if ((r_mod_state == MOD_BIT(KC_RSFT)) || (r_mod_state == MOD_BIT(KC_RCTL)) || (r_mod_state == MOD_BIT(KC_RALT)) || (r_mod_state == MOD_BIT(KC_RGUI) ) 
+       || (r_mod_state == (MOD_RCTL | MOD_RALT | MOD_RSFT | MOD_RGUI))
+       || (r_mod_state == (MOD_RCTL | MOD_RALT | MOD_RSFT))) {
       clear_mods();
       tap_code(keycode);
       return false;
@@ -326,7 +336,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       if (record->event.pressed) {
         key_timer_default = timer_read();
       } else {
-        if ((timer_elapsed(key_timer_default) < TAPPING_TERM) ) {
+        if ((timer_elapsed(key_timer_default) < TAPPING_TERM) || (tabpressed)) {
           if (check_left_mods(keycode, record)){
             tap_code(KC_TAB);
           }
@@ -351,6 +361,24 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
       }
       return false;
+
+    // Apps layer key bypass
+
+    case KA_LINKEDIN:
+    case KA_OUTLOOK:
+    case KA_TEAMS:
+    case KA_FILEMGR:
+    case KA_POWERPT:
+    case KA_WORD:
+    case KA_TASKMGR:
+    case KA_RUN:
+    case KA_EMOJIS:
+    case KA_EXCEL:
+    case KA_SNIP:
+    case KA_CLIPBRD:
+		  backpressed = false;
+      tabpressed = false;
+      return true;
 
     // Mod tap modification - BILATERAL MODIFIER KEYS SET
 
@@ -475,7 +503,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 */
 
   [_MOUSE] = LAYOUT_split_3x5_2(
-    KC_WBAK,   C(KC_T),     KC_VOLD,     KC_MUTE,    KC_VOLU, /*-*/ RSFT_T(KC_HOME), KC_PGUP,     KC_MS_UP,      KC_PGDN,        KC_WSCH,
+    KC_WBAK,   C(KC_T),     KC_VOLD,     KC_MUTE,    KC_VOLU, /*-*/ KC_HOME,         KC_PGUP,     KC_MS_UP,      KC_PGDN,        KC_WSCH,
     KC_WFWD,   KC_MS_BTN1,  KC_MS_BTN3,  KC_MS_BTN2, KC_UP,   /*-*/ RCTL_T(KC_END),  KC_MS_LEFT,  KC_MS_DOWN,    KC_MS_RIGHT,    KC_WREF,
     KC_WHOM,   C(KC_N),     KC_LEFT,     KC_RIGHT,   KC_DOWN, /*-*/ KC_MS_WH_LEFT,   KC_MS_WH_UP, KC_MS_WH_DOWN, KC_MS_WH_RIGHT, KC_WSTP,
                                          KC_TRNS,    KC_TRNS, /*-*/ KC_TRNS,         KC_TRNS
@@ -494,29 +522,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 */
 
   [_APPCONTROL] = LAYOUT_split_3x5_2(
-    KC_NO,  KC_NO,  HYPR_T(KC_L), HYPR_T(KC_O),  HYPR_T(KC_T), /*-*/ RGUI(KC_E),  QK_BOOT,     QK_REBOOT,  KC_WAKE,    KC_NO,
-    KC_NO,  KC_NO,  KC_CPNL,      HYPR_T(KC_P),  HYPR_T(KC_W), /*-*/ KC_CALC,     RCS(KC_ESC), RGUI(KC_R), KC_PWR,     KC_NO,
-    KC_NO,  KC_NO,  KC_NO,        LGUI(KC_DOT),  HYPR_T(KC_X), /*-*/ SGUI(KC_S),  RGUI(KC_V),  KC_MYCM,    KC_SLEP,    KC_NO,
-                                  KC_TRNS,       KC_TRNS,      /*-*/ KC_TRNS,     KC_TRNS
-  ),
-
-/*  Layer 5 Nav
-*   _____________________________________________________________________     _____________________________________________________________________
-*  | KC_TRNS     | KC_TRNS     | KC_TRNS     | HOME        | KC_TRNS     |   | KC_TRNS     | PGUP        | KC_TRNS     | KC_TRNS     | KC_TRNS     |
-*  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
-*  | KC_TRNS     | KC_TRNS     | LEFT        | RIGHT       | KC_TRNS     |   | KC_TRNS     | UP          | DOWN        | KC_TRNS     | KC_TRNS     |
-*  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
-*  | KC_TRNS     | KC_TRNS     | KC_TRNS     | END         | KC_TRNS     |   | KC_TRNS     | PGDN        | KC_TRNS     | KC_TRNS     | KC_TRNS     |
-*  '---------------------------|-------------|-------------|-------------|   |-------------|-------------|-----------------------------------------'
-*                                            | KC_TRNS     | KC_TRNS     |   | KC_TRNS     | KC_TRNS     |
-*                                            |_____________|_____________|   |_____________|_____________|
-*/
-
- [_NAV] = LAYOUT_split_3x5_2(
-    KC_TRNS, KC_TRNS,  KC_TRNS,  KC_HOME,  KC_TRNS, /*-*/ KC_TRNS,  KC_PGUP,  KC_TRNS,  KC_TRNS,  KC_TRNS,
-    KC_TRNS, KC_TRNS,  KC_LEFT,  KC_RIGHT, KC_TRNS, /*-*/ KC_TRNS,  KC_UP,    KC_DOWN,  KC_TRNS,  KC_TRNS,
-    KC_TRNS, KC_TRNS,  KC_TRNS,  KC_END,   KC_TRNS, /*-*/ KC_TRNS,  KC_PGDN,  KC_TRNS,  KC_TRNS,  KC_TRNS,
-                                 KC_TRNS,  KC_TRNS, /*-*/ KC_TRNS,  KC_TRNS
+    KC_NO,  KC_NO,  KA_LINKEDIN, KA_OUTLOOK, KA_TEAMS, /*-*/ KA_FILEMGR,  QK_BOOT,     QK_REBOOT,  KC_WAKE,    KC_NO,
+    KC_NO,  KC_NO,  KC_CPNL,     KA_POWERPT, KA_WORD,  /*-*/ KC_CALC,     KA_TASKMGR,  KA_RUN,     KC_PWR,     KC_NO,
+    KC_NO,  KC_NO,  KC_NO,       KA_EMOJIS,  KA_EXCEL, /*-*/ KA_SNIP,     KA_CLIPBRD,  KC_MYCM,    KC_SLEP,    KC_NO,
+                                 KC_TRNS,    KC_TRNS,  /*-*/ KC_TRNS,     KC_TRNS
   )
 };
 
