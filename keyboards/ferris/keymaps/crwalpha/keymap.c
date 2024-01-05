@@ -73,16 +73,12 @@ enum tapdances {
   TAPDANCE_LENGTH
 };
 
-enum custom_keycodes {
-  TAB_ALPHA,
-  BKSPC_MOUSE,
-  CUSTOM_KEYCODE_LENGTH
-};
-
 enum combos {
     DOUBLEQ_COMBO,
     SINGLEQ_COMBO,
     LESC_COMBO,
+    DEFAULT_COMBO,
+    MOUSE_COMBO,
     NUMB_COMBO,
     FUNC_COMBO,
     APP_COMBO,
@@ -98,6 +94,10 @@ enum combos {
     RIGHTARROW_COMBO,
     UPARROW_COMBO,
     DOWNARROW_COMBO,
+    PAGEUP_COMBO,
+    PAGEDN_COMBO,
+    HOME_COMBO,
+    END_COMBO,
     COMBO_LENGTH
 };
 
@@ -176,6 +176,10 @@ const uint16_t PROGMEM osl_numb_combo[] = {KC_RSHCTRL_H, KC_RCTRL_J, KC_RMEH_K, 
 const uint16_t PROGMEM func_combo[]     = {KC_RSHALT_N, KC_RALT_M, COMBO_END};
 const uint16_t PROGMEM osl_func_combo[] = {KC_RSHALT_N, KC_RALT_M, KC_COMM, COMBO_END};
 
+const uint16_t PROGMEM default_combo[]     = {KC_RCTRL_J, KC_RMEH_K, KC_L, COMBO_END};
+const uint16_t PROGMEM mouse_combo[]       = {KC_RCTRLALT_U, KC_RHYPR_I,  KC_O, COMBO_END};
+
+
 //--------------------------------------------------------------------------------
 // Behavioral combos
 
@@ -194,6 +198,11 @@ const uint16_t PROGMEM rightarrow_combo[] = {KC_LHYPR_E, KC_LCTRLALT_R, KC_LGUI_
 const uint16_t PROGMEM uparrow_combo[]    = {KC_W, KC_LHYPR_E, KC_LCTRLALT_R, COMBO_END};
 const uint16_t PROGMEM downarrow_combo[]  = {KC_S, KC_LMEH_D, KC_LCTRL_F, COMBO_END};
 
+const uint16_t PROGMEM pageup_combo[]     = {KC_LCTRL_F, KC_RCTRL_J, COMBO_END};
+const uint16_t PROGMEM pagedn_combo[]     = {KC_LALT_V, KC_RALT_M, COMBO_END};
+const uint16_t PROGMEM home_combo[]       = {KC_LSHCTRL_G, KC_RSHCTRL_H, COMBO_END};
+const uint16_t PROGMEM end_combo[]        = {KC_LSHALT_B, KC_RSHALT_N, COMBO_END};
+
 // End layer 0 combo definitions
 //--------------------------------------------------------------------------------
 // Combo assignments
@@ -211,6 +220,8 @@ combo_t key_combos[] = {
 [ONESHOT_SYM_COMBO]  = COMBO(osl_numb_combo, OSL(_NUMBSYM)),
 [ONESHOT_FUNC_COMBO] = COMBO(osl_func_combo, OSL(_FUNCTION)),
 [ONESHOT_APP_COMBO]  = COMBO(osl_apps_combo, OSL(_APPCONTROL)),
+[DEFAULT_COMBO]      = COMBO(default_combo, TO(_ALPHA)),
+[MOUSE_COMBO]        = COMBO(mouse_combo, TO(_MOUSE)),
 
 //-------------------------------------------------------------------------------
 
@@ -222,6 +233,10 @@ combo_t key_combos[] = {
 [RIGHTARROW_COMBO]   = COMBO(rightarrow_combo,KC_RIGHT),
 [UPARROW_COMBO]      = COMBO(uparrow_combo, KC_UP),
 [DOWNARROW_COMBO]    = COMBO(downarrow_combo, KC_DOWN),
+[PAGEUP_COMBO]       = COMBO(pageup_combo, KC_PGUP),
+[PAGEDN_COMBO]       = COMBO(pagedn_combo, KC_PGDN),
+[HOME_COMBO]         = COMBO(home_combo, KC_HOME),
+[END_COMBO]          = COMBO(end_combo, KC_END),
 
 //-------------------------------------------------------------------------------
 
@@ -233,11 +248,6 @@ combo_t key_combos[] = {
 //-------------------------------------------------------------------------------
 
 // Functions
-
-static uint16_t key_timer_default;
-static uint16_t key_timer_mouse;
-static bool backpressed   = false;
-static bool tabpressed    = false;
 
 bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
@@ -332,36 +342,7 @@ bool check_right_mods(uint16_t keycode, keyrecord_t *record){
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
-    case TAB_ALPHA:
-      if (record->event.pressed) {
-        key_timer_default = timer_read();
-      } else {
-        if ((timer_elapsed(key_timer_default) < TAPPING_TERM) || (tabpressed)) {
-          if (check_left_mods(keycode, record)){
-            tap_code(KC_TAB);
-          }
-          tabpressed = true;
-        } else {
-            layer_move(_ALPHA);
-        }
-      }
-      return false;
-
-    case BKSPC_MOUSE:
-      if (record->event.pressed) {
-        key_timer_mouse = timer_read(); // Start the timer when the key is pressed.
-      } else {
-        if ((timer_elapsed(key_timer_mouse) < TAPPING_TERM) || (backpressed)) { // The key was tapped or repeated
-          if(check_right_mods(keycode, record)){
-            tap_code(KC_BSPC);
-          }
-          backpressed = true;
-        } else { // The key was held.
-          layer_move(_MOUSE);
-        }
-      }
-      return false;
-
+    
     // Apps layer key bypass
 
     case KA_LINKEDIN:
@@ -376,9 +357,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case KA_EXCEL:
     case KA_SNIP:
     case KA_CLIPBRD:
-		  backpressed = false;
-      tabpressed = false;
-      return true;
+		  return true;
 
     // Mod tap modification - BILATERAL MODIFIER KEYS SET
 
@@ -398,8 +377,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case KC_C:
     case KC_LALT_V:
     case KC_LSHALT_B:
-      backpressed = false;
-      tabpressed = false;
       return check_left_mods(keycode, record);
 
     case RSFT_T(KC_ENTER):
@@ -418,12 +395,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case KC_COMM:
     case KC_DOT:
     case KC_SLSH:
-      backpressed = false;
-      tabpressed = false;
       return check_right_mods(keycode, record);
     default:
-      backpressed = false;
-      tabpressed = false;
       return true; // Process all other keycodes normally.
   }
 }
@@ -449,7 +422,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_Q,  KC_W,   KC_LHYPR_E, KC_LCTRLALT_R, KC_LGUI_T,        /*-*/ KC_RGUI_Y,          KC_RCTRLALT_U,    KC_RHYPR_I,   KC_O,    KC_P,
     KC_A,  KC_S,   KC_LMEH_D,  KC_LCTRL_F,    KC_LSHCTRL_G,     /*-*/ KC_RSHCTRL_H,       KC_RCTRL_J,       KC_RMEH_K,    KC_L,    KC_SCLN,
     KC_Z,  KC_X,   KC_C,       KC_LALT_V,     KC_LSHALT_B,      /*-*/ KC_RSHALT_N,        KC_RALT_M,        KC_COMM,      KC_DOT,  KC_SLSH,
-                               TAB_ALPHA,     LSFT_T(KC_SPACE), /*-*/ RSFT_T(KC_ENTER),   BKSPC_MOUSE
+                               KC_TAB,        LSFT_T(KC_SPACE), /*-*/ RSFT_T(KC_ENTER),   KC_BSPC
   ),
 
 /*  Layer 1 Symbol
