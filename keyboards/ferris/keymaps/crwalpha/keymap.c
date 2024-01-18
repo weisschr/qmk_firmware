@@ -269,6 +269,7 @@ uint16_t get_combo_term(uint16_t index, combo_t *combo) {
       case ONESHOT_APP_COMBO:
       case ONESHOT_FUNC_COMBO:
       case ONESHOT_SYM_COMBO:
+      case MOUSE_COMBO:
         return 350;
       default:
         return COMBO_TERM;
@@ -293,12 +294,16 @@ bool caps_word_press_user(uint16_t keycode) {
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case KC_LHYPR_E:
-        case KC_RHYPR_I:
         case KC_LMEH_D:
-        case KC_RMEH_K:
         case KC_LGUI_T:
-        case KC_RGUI_Y:
             return 500;
+        case KC_RHYPR_I:
+        case KC_RMEH_K:
+        case KC_RGUI_Y:
+            return 750;
+        case KC_RALT_M:
+        case KC_LALT_V:
+            return 400;
         default:
             return TAPPING_TERM;
     }
@@ -329,7 +334,7 @@ bool check_right_mods(uint16_t keycode, keyrecord_t *record){
   }
   r_mod_state = get_mods();
   if (record->event.pressed) {
-    if ((r_mod_state == MOD_BIT(KC_RSFT)) || (r_mod_state == MOD_BIT(KC_RCTL)) || (r_mod_state == MOD_BIT(KC_RALT)) || (r_mod_state == MOD_BIT(KC_RGUI) ) 
+    if ((r_mod_state == MOD_BIT(KC_RSFT)) || (r_mod_state == MOD_BIT(KC_RCTL)) || (r_mod_state == MOD_BIT(KC_RALT)) || (r_mod_state == MOD_BIT(KC_RGUI) )
        || (r_mod_state == (MOD_RCTL | MOD_RALT | MOD_RSFT | MOD_RGUI))
        || (r_mod_state == (MOD_RCTL | MOD_RALT | MOD_RSFT))) {
       clear_mods();
@@ -342,7 +347,7 @@ bool check_right_mods(uint16_t keycode, keyrecord_t *record){
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
-    
+
     // Apps layer key bypass
 
     case KA_LINKEDIN:
