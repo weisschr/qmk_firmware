@@ -76,6 +76,12 @@ enum tapdances {
 enum combos {
     DOUBLEQ_COMBO,
     SINGLEQ_COMBO,
+    LPAR_COMBO,
+    RPAR_COMBO,
+    LBRACE_COMBO,
+    RBRACE_COMBO,
+    LCURLY_COMBO,
+    RCURLY_COMBO,
     LESC_COMBO,
     DEFAULT_COMBO,
     MOUSE_COMBO,
@@ -159,22 +165,28 @@ tap_dance_action_t tap_dance_actions[] = {
 //-------------------------------------------------------------------------------
 // Layer 0 combos
 
-// Quotes
+// Characters
 
 const uint16_t PROGMEM doubleq_combo[]  = {KC_LMEH_D, KC_LCTRL_F, COMBO_END};
 const uint16_t PROGMEM singleq_combo[]  = {KC_RCTRL_J, KC_RMEH_K, COMBO_END};
+const uint16_t PROGMEM lpar_combo[]     = {KC_LHYPR_E, KC_LCTRLALT_R, COMBO_END};
+const uint16_t PROGMEM rpar_combo[]     = {KC_RCTRLALT_U, KC_RHYPR_I, COMBO_END};
+const uint16_t PROGMEM lbrace_combo[]   = {KC_X, KC_C, KC_LALT_V, COMBO_END};
+const uint16_t PROGMEM rbrace_combo[]   = {KC_RALT_M, KC_COMM, KC_DOT, COMBO_END};
+const uint16_t PROGMEM lcurly_combo[]   = {KC_X, KC_LALT_V, COMBO_END};
+const uint16_t PROGMEM rcurly_combo[]   = {KC_RALT_M, KC_DOT, COMBO_END};
 
 //-------------------------------------------------------------------------------
 // Layer control combos
 
-const uint16_t PROGMEM apps_combo[]     = {KC_RGUI_Y, KC_RCTRLALT_U, COMBO_END};
-const uint16_t PROGMEM osl_apps_combo[] = {KC_RGUI_Y, KC_RCTRLALT_U, KC_RHYPR_I, COMBO_END};
+const uint16_t PROGMEM apps_combo[]     = {KC_RGUI_Y, KC_RCTRLALT_U, KC_RHYPR_I, COMBO_END};
+const uint16_t PROGMEM osl_apps_combo[] = {KC_RGUI_Y, KC_RHYPR_I, COMBO_END};
 
-const uint16_t PROGMEM numb_combo[]     = {KC_RSHCTRL_H, KC_RCTRL_J, COMBO_END};
-const uint16_t PROGMEM osl_numb_combo[] = {KC_RSHCTRL_H, KC_RCTRL_J, KC_RMEH_K, COMBO_END};
+const uint16_t PROGMEM numb_combo[]     = {KC_RSHCTRL_H, KC_RCTRL_J, KC_RMEH_K, COMBO_END};
+const uint16_t PROGMEM osl_numb_combo[] = {KC_RSHCTRL_H, KC_RMEH_K, COMBO_END};
 
-const uint16_t PROGMEM func_combo[]     = {KC_RSHALT_N, KC_RALT_M, COMBO_END};
-const uint16_t PROGMEM osl_func_combo[] = {KC_RSHALT_N, KC_RALT_M, KC_COMM, COMBO_END};
+const uint16_t PROGMEM func_combo[]     = {KC_RSHALT_N, KC_RALT_M, KC_COMM, COMBO_END};
+const uint16_t PROGMEM osl_func_combo[] = {KC_RSHALT_N, KC_COMM, COMBO_END};
 
 const uint16_t PROGMEM default_combo[]     = {KC_RCTRL_J, KC_RMEH_K, KC_L, COMBO_END};
 const uint16_t PROGMEM mouse_combo[]       = {KC_RCTRLALT_U, KC_RHYPR_I,  KC_O, COMBO_END};
@@ -188,10 +200,10 @@ const uint16_t PROGMEM winclose_combo[]   = {KC_LCTRLALT_R, KC_LGUI_T, COMBO_END
 const uint16_t PROGMEM appclose_combo[]   = {KC_LALT_V, KC_LSHALT_B, COMBO_END};
 
 const uint16_t PROGMEM del_combo[]        = {KC_LMEH_D, KC_LSHCTRL_G, COMBO_END};
-const uint16_t PROGMEM ins_combo[]        = {KC_C, KC_LSHALT_B, COMBO_END};
+const uint16_t PROGMEM ins_combo[]        = {KC_LHYPR_E, KC_LGUI_T, COMBO_END};
 
-const uint16_t PROGMEM caplock_combo[]    = {KC_C, KC_LALT_V, COMBO_END};
-const uint16_t PROGMEM capsword_combo[]   = {KC_X, KC_LALT_V, COMBO_END};
+const uint16_t PROGMEM caplock_combo[]    = {KC_C, KC_LALT_V, KC_LSHALT_B, COMBO_END};
+const uint16_t PROGMEM capsword_combo[]   = {KC_C, KC_LSHALT_B,  COMBO_END};
 
 const uint16_t PROGMEM leftarrow_combo[]  = {KC_LMEH_D, KC_LCTRL_F, KC_LSHCTRL_G, COMBO_END};
 const uint16_t PROGMEM rightarrow_combo[] = {KC_LHYPR_E, KC_LCTRLALT_R, KC_LGUI_T, COMBO_END};
@@ -211,12 +223,18 @@ combo_t key_combos[] = {
 
 [DOUBLEQ_COMBO]      = COMBO(doubleq_combo, KC_DQUO),
 [SINGLEQ_COMBO]      = COMBO(singleq_combo, KC_QUOT),
+[LPAR_COMBO]         = COMBO(lpar_combo, KC_LPRN),
+[RPAR_COMBO]         = COMBO(rpar_combo, KC_RPRN),
+[LBRACE_COMBO]       = COMBO(lbrace_combo, KC_LBRC),
+[RBRACE_COMBO]       = COMBO(rbrace_combo, KC_RBRC),
+[LCURLY_COMBO]       = COMBO(lcurly_combo, KC_LCBR),
+[RCURLY_COMBO]       = COMBO(rcurly_combo, KC_RCBR),
 
 //-------------------------------------------------------------------------------
 
-[APP_COMBO]          = COMBO(apps_combo, TO(_APPCONTROL)),
-[NUMB_COMBO]         = COMBO(numb_combo, TO(_NUMBSYM)),
-[FUNC_COMBO]         = COMBO(func_combo, TO(_FUNCTION)),
+[APP_COMBO]          = COMBO(apps_combo, TG(_APPCONTROL)),
+[NUMB_COMBO]         = COMBO(numb_combo, TG(_NUMBSYM)),
+[FUNC_COMBO]         = COMBO(func_combo, TG(_FUNCTION)),
 [ONESHOT_SYM_COMBO]  = COMBO(osl_numb_combo, OSL(_NUMBSYM)),
 [ONESHOT_FUNC_COMBO] = COMBO(osl_func_combo, OSL(_FUNCTION)),
 [ONESHOT_APP_COMBO]  = COMBO(osl_apps_combo, OSL(_APPCONTROL)),
@@ -240,8 +258,8 @@ combo_t key_combos[] = {
 
 //-------------------------------------------------------------------------------
 
-[CAPLOCK_COMBO]      = COMBO(caplock_combo,KC_CAPS),
-[CAPSWORD_COMBO]     = COMBO(capsword_combo,CW_TOGG),
+[CAPLOCK_COMBO]      = COMBO(caplock_combo, KC_CAPS),
+[CAPSWORD_COMBO]     = COMBO(capsword_combo, CW_TOGG),
 };
 
 // end combos
@@ -293,17 +311,17 @@ bool caps_word_press_user(uint16_t keycode) {
 
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
+        case KC_RALT_M:
+        case KC_LALT_V:
+            return 500;
         case KC_LHYPR_E:
         case KC_LMEH_D:
         case KC_LGUI_T:
-            return 500;
+            return 600;
         case KC_RHYPR_I:
         case KC_RMEH_K:
         case KC_RGUI_Y:
             return 750;
-        case KC_RALT_M:
-        case KC_LALT_V:
-            return 400;
         default:
             return TAPPING_TERM;
     }
@@ -436,17 +454,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 *  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
 *  |      1      |      2      |      3      |      4      |      5      |   |      6      |      7      |      8      |      9      |      0      |
 *  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
-*  |      ` ~    |      +      |      =      |      -      |      _      |   |     ' "     |      \ |    |      , <    |      . >    |     / ?     |
+*  |      ` ~    |      \ |    |      =+     |      -      |      _      |   |     ' "     |     ;:      |      , <    |      . >    |     / ?     |
 *  '---------------------------|-------------|-------------|-------------|   |-------------|-------------|-------------|---------------------------'
 *                                            | KC_TRNS     | KC_TRNS     |   | KC_TRNS     | KC_TRNS     |
 *                                            |_____________|_____________|   |_____________|_____________|
 */
 
   [_NUMBSYM] = LAYOUT_split_3x5_2(
-    KC_EXLM,      KC_AT,   KC_HASH,       KC_DLR,        KC_PERC, /*-*/ KC_CIRC,      KC_AMPR,          KC_ASTR,   TD(TD_BRACES),  TD(TD_RBRACES),
-    KC_1,         KC_2,    KC_3,          KC_4,          KC_5,    /*-*/ KC_6,         KC_7,             KC_8,      KC_9,           KC_0,
-    TD(TD_GRAVE), KC_PLUS, TD(TD_EQUAL),  TD(TD_MINUS),  KC_UNDS, /*-*/ TD(TD_QUOTE), TD(TD_BACKSLASH), KC_TRNS,   KC_TRNS,        KC_TRNS,
-                                          KC_TRNS,       KC_TRNS, /*-*/ KC_TRNS,  KC_TRNS
+    KC_EXLM,      KC_AT,            KC_HASH,       KC_DLR,        KC_PERC, /*-*/ KC_CIRC,      KC_AMPR,      KC_ASTR,   TD(TD_BRACES),  TD(TD_RBRACES),
+    KC_1,         KC_2,             KC_3,          KC_4,          KC_5,    /*-*/ KC_6,         KC_7,         KC_8,      KC_9,           KC_0,
+    TD(TD_GRAVE), TD(TD_BACKSLASH), TD(TD_EQUAL),  TD(TD_MINUS),  KC_UNDS, /*-*/ TD(TD_QUOTE), TD(TD_SEMI),  KC_TRNS,   KC_TRNS,        KC_TRNS,
+                                                   KC_TRNS,       KC_TRNS, /*-*/ KC_TRNS,      KC_TRNS
   ),
 
 /*  Layer 2 Function
