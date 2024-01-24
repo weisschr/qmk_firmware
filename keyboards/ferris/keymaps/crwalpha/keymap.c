@@ -169,8 +169,8 @@ tap_dance_action_t tap_dance_actions[] = {
 
 const uint16_t PROGMEM doubleq_combo[]  = {KC_LMEH_D, KC_LCTRL_F, COMBO_END};
 const uint16_t PROGMEM singleq_combo[]  = {KC_RCTRL_J, KC_RMEH_K, COMBO_END};
-const uint16_t PROGMEM lpar_combo[]     = {KC_LHYPR_E, KC_LCTRLALT_R, COMBO_END};
-const uint16_t PROGMEM rpar_combo[]     = {KC_RCTRLALT_U, KC_RHYPR_I, COMBO_END};
+const uint16_t PROGMEM lpar_combo[]     = {KC_LCTRLALT_R, KC_RCTRLALT_U, COMBO_END};
+const uint16_t PROGMEM rpar_combo[]     = {KC_LGUI_T, KC_RGUI_Y, COMBO_END};
 const uint16_t PROGMEM lbrace_combo[]   = {KC_X, KC_C, KC_LALT_V, COMBO_END};
 const uint16_t PROGMEM rbrace_combo[]   = {KC_RALT_M, KC_COMM, KC_DOT, COMBO_END};
 const uint16_t PROGMEM lcurly_combo[]   = {KC_X, KC_LALT_V, COMBO_END};
