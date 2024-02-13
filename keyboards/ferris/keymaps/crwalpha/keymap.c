@@ -288,7 +288,10 @@ uint16_t get_combo_term(uint16_t index, combo_t *combo) {
       case ONESHOT_FUNC_COMBO:
       case ONESHOT_SYM_COMBO:
       case MOUSE_COMBO:
-        return 350;
+        return 400;
+      case WINCLOSE_COMBO:
+      case APPCLOSE_COMBO:
+        return 300;
       default:
         return COMBO_TERM;
     }
