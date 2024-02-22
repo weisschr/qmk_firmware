@@ -368,23 +368,7 @@ bool check_right_mods(uint16_t keycode, keyrecord_t *record){
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
-
-    // Apps layer key bypass
-
-    case KA_LINKEDIN:
-    case KA_OUTLOOK:
-    case KA_TEAMS:
-    case KA_FILEMGR:
-    case KA_POWERPT:
-    case KA_WORD:
-    case KA_TASKMGR:
-    case KA_RUN:
-    case KA_EMOJIS:
-    case KA_EXCEL:
-    case KA_SNIP:
-    case KA_CLIPBRD:
-		  return true;
-
+      
     // Mod tap modification - BILATERAL MODIFIER KEYS SET
 
     case LSFT_T(KC_SPACE):
@@ -403,6 +387,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case KC_C:
     case KC_LALT_V:
     case KC_LSHALT_B:
+    case KC_1:
+    case KC_2:
+    case KC_3:
+    case KC_4:
+    case KC_0:
       return check_left_mods(keycode, record);
 
     case RSFT_T(KC_ENTER):
@@ -421,6 +410,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case KC_COMM:
     case KC_DOT:
     case KC_SLSH:
+    case KC_5:
+    case KC_6:
+    case KC_7:
+    case KC_8:
+    case KC_9:
       return check_right_mods(keycode, record);
     default:
       return true; // Process all other keycodes normally.
