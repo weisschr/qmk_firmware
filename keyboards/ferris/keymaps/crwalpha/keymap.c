@@ -169,8 +169,8 @@ tap_dance_action_t tap_dance_actions[] = {
 
 const uint16_t PROGMEM doubleq_combo[]  = {KC_LMEH_D, KC_LCTRL_F, COMBO_END};
 const uint16_t PROGMEM singleq_combo[]  = {KC_RCTRL_J, KC_RMEH_K, COMBO_END};
-const uint16_t PROGMEM lpar_combo[]     = {KC_LCTRLALT_R, KC_RCTRLALT_U, COMBO_END};
-const uint16_t PROGMEM rpar_combo[]     = {KC_LGUI_T, KC_RGUI_Y, COMBO_END};
+const uint16_t PROGMEM lpar_combo[]     = {KC_C, KC_LALT_V, COMBO_END};
+const uint16_t PROGMEM rpar_combo[]     = {KC_RALT_M, KC_COMM, COMBO_END};
 const uint16_t PROGMEM lbrace_combo[]   = {KC_X, KC_C, KC_LALT_V, COMBO_END};
 const uint16_t PROGMEM rbrace_combo[]   = {KC_RALT_M, KC_COMM, KC_DOT, COMBO_END};
 const uint16_t PROGMEM lcurly_combo[]   = {KC_X, KC_LALT_V, COMBO_END};
@@ -202,8 +202,8 @@ const uint16_t PROGMEM appclose_combo[]   = {KC_LALT_V, KC_LSHALT_B, COMBO_END};
 const uint16_t PROGMEM del_combo[]        = {KC_LMEH_D, KC_LSHCTRL_G, COMBO_END};
 const uint16_t PROGMEM ins_combo[]        = {KC_LHYPR_E, KC_LGUI_T, COMBO_END};
 
-const uint16_t PROGMEM caplock_combo[]    = {KC_C, KC_LALT_V, KC_LSHALT_B, COMBO_END};
-const uint16_t PROGMEM capsword_combo[]   = {KC_C, KC_LSHALT_B,  COMBO_END};
+const uint16_t PROGMEM caplock_combo[]    = {KC_Z, KC_X, KC_C,  COMBO_END};
+const uint16_t PROGMEM capsword_combo[]   = {KC_C, KC_LSHALT_B, COMBO_END};
 
 const uint16_t PROGMEM leftarrow_combo[]  = {KC_LMEH_D, KC_LCTRL_F, KC_LSHCTRL_G, COMBO_END};
 const uint16_t PROGMEM rightarrow_combo[] = {KC_LHYPR_E, KC_LCTRLALT_R, KC_LGUI_T, COMBO_END};
@@ -369,22 +369,6 @@ bool check_right_mods(uint16_t keycode, keyrecord_t *record){
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
 
-    // Apps layer key bypass
-
-    case KA_LINKEDIN:
-    case KA_OUTLOOK:
-    case KA_TEAMS:
-    case KA_FILEMGR:
-    case KA_POWERPT:
-    case KA_WORD:
-    case KA_TASKMGR:
-    case KA_RUN:
-    case KA_EMOJIS:
-    case KA_EXCEL:
-    case KA_SNIP:
-    case KA_CLIPBRD:
-		  return true;
-
     // Mod tap modification - BILATERAL MODIFIER KEYS SET
 
     case LSFT_T(KC_SPACE):
@@ -472,21 +456,21 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 /*  Layer 2 Function
 *   _____________________________________________________________________     _____________________________________________________________________
-*  |             |             |             |ctrl-alt-del |      F11    |   |      F12    |             |             |             |             |
+*  |  Play/pause |  Stop       |  Next       | Previous    |      F11    |   |      F12    |  Mute       | Vol Up      | Vol Dn      |  Lock       |
 *  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
 *  |      F1     |      F2     |      F3     |      F4     |      F5     |   |      F6     |      F7     |      F8     |      F9     |      F10    |
 *  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
-*  |             |      GUI    |      ALT    |      CTRL   |      MEH    |   |      HYPER  |      CTRL   |      ALT    |      GUI    |             |
+*  |ctrl-alt-del |      GUI    |      ALT    |      CTRL   |      MEH    |   |      HYPER  |      CTRL   |      ALT    |      GUI    |ctrl-alt-del |
 *  '---------------------------|-------------|-------------|-------------|   |-------------|-------------|-------------|---------------------------'
 *                                            |   KC_TRNS   |   KC_TRNS   |   |   KC_TRNS   |   KC_TRNS   |
 *                                            |_____________|_____________|   |_____________|_____________|
 */
 
   [_FUNCTION] = LAYOUT_split_3x5_2(
-    KC_NO,   KC_NO,   KC_NO,    C(A(KC_DEL)),   KC_F11,  /*-*/  KC_F12,    KC_NO,    KC_NO,     KC_NO,     KC_NO,
-    KC_F1,   KC_F2,   KC_F3,    KC_F4,          KC_F5,   /*-*/  KC_F6,     KC_F7,    KC_F8,     KC_F9,     KC_F10,
-    KC_NO,   KC_LGUI, KC_LALT,  KC_LCTL,        KC_MEH,  /*-*/  KC_HYPR,   KC_RCTL,  KC_RALT,   KC_RGUI,   KC_NO,
-                                KC_TRNS,        KC_TRNS, /*-*/  KC_TRNS,   KC_TRNS
+    KC_MPLY,      KC_MSTP, KC_MEDIA_NEXT_TRACK, KC_MEDIA_PREV_TRACK, KC_F11,  /*-*/  KC_F12,    KC_KB_MUTE, KC_KB_VOLUME_UP, KC_KB_VOLUME_DOWN, RGUI(KC_L),
+    KC_F1,        KC_F2,   KC_F3,               KC_F4,               KC_F5,   /*-*/  KC_F6,     KC_F7,      KC_F8,           KC_F9,             KC_F10,
+    C(A(KC_DEL)), KC_LGUI, KC_LALT,             KC_LCTL,             KC_MEH,  /*-*/  KC_HYPR,   KC_RCTL,    KC_RALT,         KC_RGUI,           C(A(KC_DEL)),
+                                                KC_TRNS,             KC_TRNS, /*-*/  KC_TRNS,   KC_TRNS
   ),
 
 /*  Layer 3 Mouse
@@ -510,21 +494,21 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 /*  Layer 4 APPS AND CONTROL
 *   _____________________________________________________________________     _____________________________________________________________________
-*  |             |             | LINKEDIN    | OUTLOOK     | TEAMS       |   | FILEMNGR    | QK_BOOT     | QK_REBOOT   |  WAKEUP     |             |
+*  |             |             | LINKEDIN    | OUTLOOK     | TEAMS       |   | FILEMNGR    | bright up   | bright dn   |             |             |
 *  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
-*  |             |             | Controlpanel| POWERPOINT  | WORD        |   | KC_CALC     | TASK        | RUN         |  POWEROFF   |             |
+*  |  QK_BOOT    |             | Controlpanel| POWERPOINT  | WORD        |   | KC_CALC     | TASK        | RUN         |             |  QK_BOOT    |
 *  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
-*  |             |             |             | EMOJIS      | EXCEL       |   | SNIP        | CLIPBOARD   | MYCOMPUTER  |  SLEEP      |             |
+*  |  QK_REBOOT  |             |             | EMOJIS      | EXCEL       |   | SNIP        | CLIPBOARD   | MYCOMPUTER  |             |  QK_REBOOT  |
 *  '---------------------------|-------------|-------------|-------------|   |-------------|-------------|-----------------------------------------'
 *                                            | KC_TRNS     | KC_TRNS     |   | KC_TRNS     | KC_TRNS     |
 *                                            |_____________|_____________|   |_____________|_____________|
 */
 
   [_APPCONTROL] = LAYOUT_split_3x5_2(
-    KC_NO,  KC_NO,  KA_LINKEDIN, KA_OUTLOOK, KA_TEAMS, /*-*/ KA_FILEMGR,  QK_BOOT,     QK_REBOOT,  KC_WAKE,    KC_NO,
-    KC_NO,  KC_NO,  KC_CPNL,     KA_POWERPT, KA_WORD,  /*-*/ KC_CALC,     KA_TASKMGR,  KA_RUN,     KC_PWR,     KC_NO,
-    KC_NO,  KC_NO,  KC_NO,       KA_EMOJIS,  KA_EXCEL, /*-*/ KA_SNIP,     KA_CLIPBRD,  KC_MYCM,    KC_SLEP,    KC_NO,
-                                 KC_TRNS,    KC_TRNS,  /*-*/ KC_TRNS,     KC_TRNS
+    KC_NO,     KC_NO,  KA_LINKEDIN, KA_OUTLOOK, KA_TEAMS, /*-*/ KA_FILEMGR,  KC_BRIU,     KC_BRID,    KC_NO,   KC_NO,
+    QK_BOOT,   KC_NO,  KC_CPNL,     KA_POWERPT, KA_WORD,  /*-*/ KC_CALC,     KA_TASKMGR,  KA_RUN,     KC_NO,   QK_BOOT,
+    QK_REBOOT, KC_NO,  KC_NO,       KA_EMOJIS,  KA_EXCEL, /*-*/ KA_SNIP,     KA_CLIPBRD,  KC_MYCM,    KC_NO,   QK_REBOOT,
+                                    KC_TRNS,    KC_TRNS,  /*-*/ KC_TRNS,     KC_TRNS
   )
 };
 
