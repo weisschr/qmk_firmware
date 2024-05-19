@@ -53,24 +53,9 @@ enum layers {
   _ALPHA,
   _NUMBSYM,
   _FUNCTION,
-  _MOUSE,
   _APPCONTROL,
+  _MOUSE,
   LAYER_LENGTH
-};
-
-enum tapdances {
-  TD_QUOTE,
-  TD_SEMI,
-  TD_BACKSLASH,
-  TD_EQUAL,
-  TD_MINUS,
-  TD_COMMA,
-  TD_DOT,
-  TD_SLASH,
-  TD_GRAVE,
-  TD_BRACES,
-  TD_RBRACES,
-  TAPDANCE_LENGTH
 };
 
 enum combos {
@@ -107,61 +92,12 @@ enum combos {
     COMBO_LENGTH
 };
 
-//-------------------------------------------------------------------------------
-// tapdances
-
-void dance_braces_finished(tap_dance_state_t *state, void *user_data) {
-  if (state->count == 1) {
-    register_code16(KC_LPRN); // One tap for Left Parenthesis
-  } else if (state->count == 2) {
-    register_code16(KC_LBRC); // Two taps for Left Bracket
-  } else if (state->count == 3) {
-    register_code16(KC_LCBR); // Three taps for Left Curly Brace
-  }
-}
-
-void dance_braces_reset(tap_dance_state_t *state, void *user_data) {
-  if (state->count == 1) {
-    unregister_code16(KC_LPRN);
-  } else if (state->count == 2) {
-    unregister_code16(KC_LBRC);
-  } else if (state->count == 3) {
-    unregister_code16(KC_LCBR);
-  }
-}
-
-void dance_rbraces_finished(tap_dance_state_t *state, void *user_data) {
-  if (state->count == 1) {
-    register_code16(KC_RPRN); // One tap for Left Parenthesis
-  } else if (state->count == 2) {
-    register_code16(KC_RBRC); // Two taps for Left Bracket
-  } else if (state->count == 3) {
-    register_code16(KC_RCBR); // Three taps for Left Curly Brace
-  }
-}
-
-void dance_rbraces_reset(tap_dance_state_t *state, void *user_data) {
-  if (state->count == 1) {
-    unregister_code16(KC_RPRN);
-  } else if (state->count == 2) {
-    unregister_code16(KC_RBRC);
-  } else if (state->count == 3) {
-    unregister_code16(KC_RCBR);
-  }
-}
-
-tap_dance_action_t tap_dance_actions[] = {
-  [TD_QUOTE]      = ACTION_TAP_DANCE_DOUBLE(KC_QUOTE, KC_DQUO),
-  [TD_SEMI]       = ACTION_TAP_DANCE_DOUBLE(KC_SEMICOLON, KC_COLON),
-  [TD_BACKSLASH]  = ACTION_TAP_DANCE_DOUBLE(KC_BACKSLASH, KC_PIPE),
-  [TD_EQUAL]      = ACTION_TAP_DANCE_DOUBLE(KC_EQUAL, KC_PLUS),
-  [TD_MINUS]      = ACTION_TAP_DANCE_DOUBLE(KC_MINUS, KC_UNDERSCORE),
-  [TD_GRAVE]      = ACTION_TAP_DANCE_DOUBLE(KC_GRAVE, KC_TILDE),
-  [TD_BRACES]     = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_braces_finished, dance_braces_reset),
-  [TD_RBRACES]    = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_rbraces_finished, dance_rbraces_reset),
+enum custom_keycodes {
+    BROWSWEROPEN = SAFE_RANGE,
+    CONTROLPAN,
+    MYCOMPUTER,
 };
 
-// end tapdances
 //-------------------------------------------------------------------------------
 // Layer 0 combos
 
@@ -189,7 +125,8 @@ const uint16_t PROGMEM func_combo[]     = {KC_RSHALT_N, KC_RALT_M, KC_COMM, COMB
 const uint16_t PROGMEM osl_func_combo[] = {KC_RSHALT_N, KC_COMM, COMBO_END};
 
 const uint16_t PROGMEM default_combo[]     = {KC_RCTRL_J, KC_RMEH_K, KC_L, COMBO_END};
-const uint16_t PROGMEM mouse_combo[]       = {KC_RCTRLALT_U, KC_RHYPR_I,  KC_O, COMBO_END};
+
+const uint16_t PROGMEM mouse_combo[]       = {KC_W, KC_LHYPR_E,  KC_LCTRLALT_R, KC_LGUI_T, COMBO_END};
 
 
 //--------------------------------------------------------------------------------
@@ -215,6 +152,9 @@ const uint16_t PROGMEM pagedn_combo[]     = {KC_LALT_V, KC_RALT_M, COMBO_END};
 const uint16_t PROGMEM home_combo[]       = {KC_LSHCTRL_G, KC_RSHCTRL_H, COMBO_END};
 const uint16_t PROGMEM end_combo[]        = {KC_LSHALT_B, KC_RSHALT_N, COMBO_END};
 
+const uint16_t PROGMEM teams_mute[]       = {KC_LCTRLALT_R, KC_RCTRLALT_U, COMBO_END};
+const uint16_t PROGMEM teams_vidtog[]     = {KC_LGUI_T, KC_RGUI_Y, COMBO_END};
+
 // End layer 0 combo definitions
 //--------------------------------------------------------------------------------
 // Combo assignments
@@ -239,7 +179,7 @@ combo_t key_combos[] = {
 [ONESHOT_FUNC_COMBO] = COMBO(osl_func_combo, OSL(_FUNCTION)),
 [ONESHOT_APP_COMBO]  = COMBO(osl_apps_combo, OSL(_APPCONTROL)),
 [DEFAULT_COMBO]      = COMBO(default_combo, TO(_ALPHA)),
-[MOUSE_COMBO]        = COMBO(mouse_combo, TO(_MOUSE)),
+[MOUSE_COMBO]        = COMBO(mouse_combo, TG(_MOUSE)),
 
 //-------------------------------------------------------------------------------
 
@@ -338,6 +278,9 @@ bool check_left_mods(uint16_t keycode, keyrecord_t *record){
   mod_state = get_mods();
   if (record->event.pressed) {
     if ((mod_state == MOD_BIT(KC_LSFT)) || (mod_state == MOD_BIT(KC_LCTL)) || (mod_state == MOD_BIT(KC_LALT)) || (mod_state == MOD_BIT(KC_LGUI) )
+       || (mod_state == (MOD_LCTL | MOD_LSFT ))
+       || (mod_state == (MOD_LCTL | MOD_LALT ))
+       || (mod_state == (MOD_LALT | MOD_LSFT ))
        || (mod_state == (MOD_LCTL | MOD_LALT | MOD_LSFT | MOD_LGUI))
        || (mod_state == (MOD_LCTL | MOD_LALT | MOD_LSFT))) {
       clear_mods();
@@ -356,6 +299,9 @@ bool check_right_mods(uint16_t keycode, keyrecord_t *record){
   r_mod_state = get_mods();
   if (record->event.pressed) {
     if ((r_mod_state == MOD_BIT(KC_RSFT)) || (r_mod_state == MOD_BIT(KC_RCTL)) || (r_mod_state == MOD_BIT(KC_RALT)) || (r_mod_state == MOD_BIT(KC_RGUI) )
+       || (r_mod_state == (MOD_RCTL | MOD_RALT ))
+       || (r_mod_state == (MOD_RCTL | MOD_RSFT ))
+       || (r_mod_state == (MOD_RALT | MOD_RSFT ))
        || (r_mod_state == (MOD_RCTL | MOD_RALT | MOD_RSFT | MOD_RGUI))
        || (r_mod_state == (MOD_RCTL | MOD_RALT | MOD_RSFT))) {
       clear_mods();
@@ -416,9 +362,34 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case KC_8:
     case KC_9:
       return check_right_mods(keycode, record);
+    case BROWSWEROPEN:
+        if (record->event.pressed) {
+            SEND_STRING(SS_DOWN(X_LGUI));
+            SEND_STRING(SS_TAP(X_R));
+            SEND_STRING(SS_UP(X_LGUI));
+            SEND_STRING("CHROME\n");
+        }
+        break;
+    case CONTROLPAN:
+        if (record->event.pressed) {
+            SEND_STRING(SS_DOWN(X_LGUI));
+            SEND_STRING(SS_TAP(X_R));
+            SEND_STRING(SS_UP(X_LGUI));
+            SEND_STRING("CONTROL\n");
+        }
+        break;
+    case MYCOMPUTER:
+        if (record->event.pressed) {
+            SEND_STRING(SS_DOWN(X_LGUI));
+            SEND_STRING(SS_TAP(X_R));
+            SEND_STRING(SS_UP(X_LGUI));
+            SEND_STRING("SHELL:MyComputerFolder\n");
+        }
+        break;
     default:
       return true; // Process all other keycodes normally.
   }
+  return true;
 }
 
 //-------------------------------------------------------------------------------
@@ -434,7 +405,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 *  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
 *  |      Z      |      X      |      C      | V-alt       | B-SHALT     |   |   N-SHALT   |  M-ALT      |      ,<     |      .>     |      /?     |
 *  '-----------------------------------------|-------------|-------------|   |-------------|-------------|-------------|---------------------------'
-*                                            | SPACE       | TAB         |   | BACKSPACE   | ENTER       |
+*                                            | TAB         |  SPACE      |   | ENTER       | BACKSPACE   |
 *                                            |_____________|_____________|   |_____________|_____________|
 */
 
@@ -458,9 +429,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 */
 
   [_NUMBSYM] = LAYOUT_split_3x5_2(
-    KC_EXLM,      KC_AT,            KC_HASH,       KC_DLR,        KC_PERC, /*-*/ KC_CIRC,      KC_AMPR,      KC_ASTR,   TD(TD_BRACES),  TD(TD_RBRACES),
+    KC_EXLM,      KC_AT,            KC_HASH,       KC_DLR,        KC_PERC, /*-*/ KC_CIRC,      KC_AMPR,      KC_ASTR,   KC_LPRN,        KC_RPRN,
     KC_1,         KC_2,             KC_3,          KC_4,          KC_5,    /*-*/ KC_6,         KC_7,         KC_8,      KC_9,           KC_0,
-    TD(TD_GRAVE), TD(TD_BACKSLASH), TD(TD_EQUAL),  TD(TD_MINUS),  KC_UNDS, /*-*/ TD(TD_QUOTE), TD(TD_SEMI),  KC_TRNS,   KC_TRNS,        KC_TRNS,
+    KC_GRV,       KC_BSLS,          KC_EQL,        KC_MINS,       KC_UNDS, /*-*/ KC_QUOT,      KC_SCLN,      KC_TRNS,   KC_TRNS,        KC_TRNS,
                                                    KC_TRNS,       KC_TRNS, /*-*/ KC_TRNS,      KC_TRNS
   ),
 
@@ -483,42 +454,43 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                 KC_TRNS,             KC_TRNS, /*-*/  KC_TRNS,   KC_TRNS
   ),
 
-/*  Layer 3 Mouse
-*   _____________________________________________________________________     _____________________________________________________________________
-*  | WWWBACK     | NEW-TAB     | KC_VOLD     | KC_MUTE     | KC_VOLU     |   | HOME-SHIFT  | PGUP        | MOUSE UP    | PGDN        | WWWSEARCH   |
-*  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
-*  | WWWFWD      | LEFT BUTTON | MID BUTTON  | RIGHT BUTTON| UP          |   | END-CTRL    | MOUSE LEFT  | MOUSE DOWN  | MOUSE RIGHT | WWWREFRESH  |
-*  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
-*  | WWWHOME     | NEW-WIN     | LEFT        | RIGHT       | DOWN        |   | WHEEL LEFT  | WHEEL UP    | WHEEL DOWN  | WHEEL RIGHT | WWWSTOP     |
-*  '---------------------------|-------------|-------------|-------------|   |-------------|-------------|-----------------------------------------'
-*                                            | KC_TRNS     | KC_TRNS     |   | KC_TRNS     | KC_TRNS     |
-*                                            |_____________|_____________|   |_____________|_____________|
-*/
-
-  [_MOUSE] = LAYOUT_split_3x5_2(
-    KC_WBAK,   C(KC_T),     KC_VOLD,     KC_MUTE,    KC_VOLU, /*-*/ KC_HOME,         KC_PGUP,     KC_MS_UP,      KC_PGDN,        KC_WSCH,
-    KC_WFWD,   KC_MS_BTN1,  KC_MS_BTN3,  KC_MS_BTN2, KC_UP,   /*-*/ RCTL_T(KC_END),  KC_MS_LEFT,  KC_MS_DOWN,    KC_MS_RIGHT,    KC_WREF,
-    KC_WHOM,   C(KC_N),     KC_LEFT,     KC_RIGHT,   KC_DOWN, /*-*/ KC_MS_WH_LEFT,   KC_MS_WH_UP, KC_MS_WH_DOWN, KC_MS_WH_RIGHT, KC_WSTP,
-                                         KC_TRNS,    KC_TRNS, /*-*/ KC_TRNS,         KC_TRNS
-  ),
-
-/*  Layer 4 APPS AND CONTROL
+/*  Layer 3 APPS AND CONTROL
 *   _____________________________________________________________________     _____________________________________________________________________
 *  |             |             | LINKEDIN    | OUTLOOK     | TEAMS       |   | FILEMNGR    | bright up   | bright dn   |             |             |
 *  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
 *  |  QK_BOOT    |             | Controlpanel| POWERPOINT  | WORD        |   | KC_CALC     | TASK        | RUN         |             |  QK_BOOT    |
 *  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
-*  |  QK_REBOOT  |             |             | EMOJIS      | EXCEL       |   | SNIP        | CLIPBOARD   | MYCOMPUTER  |             |  QK_REBOOT  |
+*  |  QK_REBOOT  |             | Browser     | EMOJIS      | EXCEL       |   | SNIP        | CLIPBOARD   | MYCOMPUTER  |             |  QK_REBOOT  |
 *  '---------------------------|-------------|-------------|-------------|   |-------------|-------------|-----------------------------------------'
 *                                            | KC_TRNS     | KC_TRNS     |   | KC_TRNS     | KC_TRNS     |
 *                                            |_____________|_____________|   |_____________|_____________|
 */
 
   [_APPCONTROL] = LAYOUT_split_3x5_2(
-    KC_NO,     KC_NO,  KA_LINKEDIN, KA_OUTLOOK, KA_TEAMS, /*-*/ KA_FILEMGR,  KC_BRIU,     KC_BRID,    KC_NO,   KC_NO,
-    QK_BOOT,   KC_NO,  KC_CPNL,     KA_POWERPT, KA_WORD,  /*-*/ KC_CALC,     KA_TASKMGR,  KA_RUN,     KC_NO,   QK_BOOT,
-    QK_REBOOT, KC_NO,  KC_NO,       KA_EMOJIS,  KA_EXCEL, /*-*/ KA_SNIP,     KA_CLIPBRD,  KC_MYCM,    KC_NO,   QK_REBOOT,
-                                    KC_TRNS,    KC_TRNS,  /*-*/ KC_TRNS,     KC_TRNS
+    KC_NO,     KC_NO,  KA_LINKEDIN,  KA_OUTLOOK, KA_TEAMS, /*-*/ KA_FILEMGR,  KC_BRIU,     KC_BRID,    KC_NO,   KC_NO,
+    QK_BOOT,   KC_NO,  CONTROLPAN,   KA_POWERPT, KA_WORD,  /*-*/ KC_CALC,     KA_TASKMGR,  KA_RUN,     KC_NO,   QK_BOOT,
+    QK_REBOOT, KC_NO,  BROWSWEROPEN, KA_EMOJIS,  KA_EXCEL, /*-*/ KA_SNIP,     KA_CLIPBRD,  MYCOMPUTER, KC_NO,   QK_REBOOT,
+                                     KC_TRNS,    KC_TRNS,  /*-*/ KC_TRNS,     KC_TRNS
+  ),
+
+
+  /*  Layer 4 Mouse
+*   _____________________________________________________________________     _____________________________________________________________________
+*  | KC_TRNS     | NEW-TAB     | KC_TRNS     | KC_TRNS     | UP          |   | PGUP        | WHEEL LEFT  | MOUSE UP    | WHEEL RIGHT | KC_TRNS     |
+*  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
+*  | KC_TRNS     | LEFT BUTTON | MID BUTTON  | RIGHT BUTTON| DOWN        |   | PGDN        | MOUSE LEFT  | MOUSE DOWN  | MOUSE RIGHT | KC_TRNS     |
+*  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
+*  | KC_TRNS     | NEW-WIN     | INCOG       | LEFT        | RIGHT       |   | HOME        | WHEEL UP    | WHEEL DOWN  | END         | KC_TRNS     |
+*  '---------------------------|-------------|-------------|-------------|   |-------------|-------------|-----------------------------------------'
+*                                            | KC_TRNS     | KC_TRNS     |   | KC_TRNS     | KC_TRNS     |
+*                                            |_____________|_____________|   |_____________|_____________|
+*/
+
+  [_MOUSE] = LAYOUT_split_3x5_2(
+    KC_TRNS,   C(KC_T),     KC_TRNS,     KC_TRNS,    KC_UP,     /*-*/ KC_PGUP ,  KC_MS_WH_LEFT,  KC_MS_UP,      KC_MS_WH_RIGHT ,   KC_TRNS,
+    KC_TRNS,   KC_MS_BTN1,  KC_MS_BTN3,  KC_MS_BTN2, KC_DOWN,   /*-*/ KC_PGDN,   KC_MS_LEFT,     KC_MS_DOWN,    KC_MS_RIGHT,       KC_TRNS,
+    KC_TRNS,   C(KC_N),     RCS(KC_N),   KC_LEFT,    KC_RIGHT,  /*-*/ KC_HOME ,  KC_MS_WH_UP,    KC_MS_WH_DOWN, KC_END,            KC_TRNS,
+                                         KC_TRNS,    KC_TRNS,   /*-*/ KC_TRNS,   KC_TRNS
   )
 };
 
