@@ -3,26 +3,32 @@
 
 #include QMK_KEYBOARD_H
 
-#define KA_LINKEDIN HYPR(KC_L)
-#define KA_OUTLOOK  HYPR(KC_O)
-#define KA_TEAMS    HYPR(KC_T)
-#define KA_FILEMGR  RGUI(KC_E)
-#define KA_POWERPT  HYPR(KC_P)
+#define KA_LNKIN HYPR(KC_L)
+#define KA_OTLK  HYPR(KC_O)
+#define KA_TMS    HYPR(KC_T)
+#define KA_FLMGR  RGUI(KC_E)
+#define KA_PWRPT  HYPR(KC_P)
 #define KA_WORD     HYPR(KC_W)
-#define KA_TASKMGR  RCS(KC_ESC)
+#define KA_TKMG  RCS(KC_ESC)
 #define KA_RUN      RGUI(KC_R)
-#define KA_EMOJIS   LGUI(KC_DOT)
+#define KA_EMJ   LGUI(KC_DOT)
 #define KA_EXCEL    HYPR(KC_X)
 #define KA_SNIP     SGUI(KC_S)
-#define KA_CLIPBRD  RGUI(KC_V)
+#define KA_CLPB  RGUI(KC_V)
+#define KA_NEWT  LCTL(KC_T)
+#define KA_NWIC  RCS(KC_N)
+#define KA_NEWW  LCTL(KC_N)
+
+// Mod tap
+
 #define KA_GUIL1    LGUI_T(TG(_MOUSE))
 #define KA_GUIL2    LGUI_T(TG(_APPS))
-#define KA_LSFTSP   LSFT_T(KC_SPC)
-#define KA_LALTESC  LALT_T(KC_ESC)
-#define KA_LCTLTB   LCTL_T(KC_TAB)
-#define KA_RSFTENT  RSFT_T(KC_ENT)
-#define KA_RCTLBSP  RCTL_T(KC_BSPC)
-#define KA_RALTDEL  RALT_T(KC_DEL)
+#define KA_LSFP   LSFT_T(KC_SPC)
+#define KA_LALEC  LALT_T(KC_ESC)
+#define KA_LCLTB   LCTL_T(KC_TAB)
+#define KA_RSFEN  RSFT_T(KC_ENT)
+#define KA_RCLBP  RCTL_T(KC_BSPC)
+#define KA_RALDL  RALT_T(KC_DEL)
 
 
 //-------------------------------------------------------------------------------
@@ -51,8 +57,8 @@ enum combos {
 };
 
 enum custom_keycodes {
-    BROWSWEROPEN = SAFE_RANGE,
-    CONTROLPAN,
+    CHROME = SAFE_RANGE,
+    CNTRLPN,
     MYCOMPUTER,
     CUSTOM_LENGTH
 };
@@ -87,10 +93,7 @@ combo_t key_combos[] = {
 [PAGEDN_COMBO]       = COMBO(pagedn_combo, KC_PGDN),
 [HOME_COMBO]         = COMBO(home_combo, KC_HOME),
 [END_COMBO]          = COMBO(end_combo, KC_END),
-[COLEMAK_COMBO]      = COMBO(colemak_combo, TG(_COLEMAKDH)
-
-//-------------------------------------------------------------------------------
-
+[COLEMAK_COMBO]      = COMBO(colemak_combo, TG(_COLEMAKDH)),
 [CAPLOCK_COMBO]      = COMBO(caplock_combo, KC_CAPS),
 
 };
@@ -122,11 +125,9 @@ bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
     }
 }
 
-
-
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
-    case BROWSWEROPEN:
+    case CHROME:
         if (record->event.pressed) {
             SEND_STRING(SS_DOWN(X_LGUI));
             SEND_STRING(SS_TAP(X_R));
@@ -134,7 +135,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             SEND_STRING("CHROME\n");
         }
         break;
-    case CONTROLPAN:
+    case CNTRLPN:
         if (record->event.pressed) {
             SEND_STRING(SS_DOWN(X_LGUI));
             SEND_STRING(SS_TAP(X_R));
@@ -170,7 +171,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      CW_TOGG, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KA_GUIL1,         KA_GUIL2,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_BSLS,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                    KA_LALTESC, KA_LCTLTB, KA_LSFTSP,            KA_RSFTENT, KA_RCTLBSP, KA_RALTDEL
+                                   KA_LALEC, KA_LCLTB, KA_LSFP,                 KA_RSFEN, KA_RCLBP, KA_RALDL
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ),
 
@@ -178,11 +179,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
      KC_NO,    KC_F1,   KC_F2,   KC_F3,   KC_F4,  KC_F5,                               KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10, KC_F11,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_NO,   KC_BRIU, LCTL(KC_N), KC_NO, KC_NO,  KC_UP,                              KC_HOME, KC_PGUP,  KC_MS_U,  KC_PGDN,  KC_VOLU,   KC_F12,
+     KC_NO,   KC_BRIU, KA_NEWW, CHROME, KC_NO,  KC_UP,                              KC_HOME, KC_PGUP,  KC_MS_U,  KC_PGDN,  KC_VOLU,   KC_F12,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_NO,  KC_BRID, KC_BTN1, KC_BTN2, KC_BTN3, KC_DOWN,                             KC_END,   KC_MS_L, KC_MS_D,  KC_MS_R,  KC_VOLD, KC_NO,
+     KC_NO,   KC_BRID, KC_BTN1, KC_BTN2, KC_BTN3, KC_DOWN,                             KC_END,   KC_MS_L, KC_MS_D,  KC_MS_R,  KC_VOLD, KC_NO,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_NO,   KC_NO,  LCTL(KC_T), RCS(KC_N), KC_LEFT, KC_RGHT,  _______,     _______, KC_WH_L,  KC_WH_U, KC_WH_D,  KC_WH_R, KC_MUTE, KC_NO,
+     KC_NO,   KC_NO,   KA_NEWT, KA_NWIC, KC_LEFT, KC_RGHT,  _______,         _______, KC_WH_L,  KC_WH_U, KC_WH_D,  KC_WH_R, KC_MUTE, KC_NO,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
                                     _______, _______, _______,                    _______,  _______, _______
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
@@ -190,13 +191,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_APPS] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
-     KC_NO,  KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,                              KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,  KC_NO,
+     RGB_TOG, RGB_M_P,  RGB_M_B, RGB_M_R,RGB_M_SW,RGB_M_SN,                            RGB_M_K, RGB_M_X, RGB_M_G, RGB_M_T,   KC_NO,  KC_NO,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     QK_BOOT,  KC_NO,  HYPR(KC_L), HYPR(KC_O), HYPR(KC_T), KC_NO,                    KC_NO, RGUI(KC_E), KC_NO, KC_NO, KC_NO, QK_BOOT,
+     QK_BOOT, RGB_HUI, KA_LNKIN, KA_OTLK, KA_TMS, KC_NO,                               KC_NO,  KA_FLMGR, CNTRLPN, KC_NO, KC_NO, QK_BOOT,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     QK_RBT, KC_NO,   KC_NO,        HYPR(KC_P), HYPR(KC_W), KC_NO,                    KC_NO,  SGUI(KC_S), RCS(KC_ESC), KC_NO, KC_NO, QK_RBT,
+     QK_RBT,  RGB_SAI,   KC_NO,    KA_PWRPT, KA_WORD, KC_NO,                           KC_NO,  KA_SNIP, KA_TKMG, KC_NO, KC_NO, QK_RBT,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_NO, KC_NO, KC_NO, KC_NO, LGUI(KC_DOT), HYPR(KC_X), _______,          _______, KC_NO, KC_CALC,  RGUI(KC_V), KC_NO, KC_NO, KC_NO,
+     KC_NO,   RGB_VAI, KC_NO, KC_NO, KA_EMJ, KA_EXCEL, _______,              _______, KC_NO,   KC_CALC,  KA_CLPB, KC_NO, KC_NO, KC_NO,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
                                     _______, _______, _______,                   _______, _______, _______
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
