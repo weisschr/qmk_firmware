@@ -15,6 +15,15 @@
 #define KA_EXCEL    HYPR(KC_X)
 #define KA_SNIP     SGUI(KC_S)
 #define KA_CLIPBRD  RGUI(KC_V)
+#define KA_GUIL1    LGUI_T(TG(_MOUSE))
+#define KA_GUIL2    LGUI_T(TG(_APPS))
+#define KA_LSFTSP   LSFT_T(KC_SPC)
+#define KA_LALTESC  LALT_T(KC_ESC)
+#define KA_LCTLTB   LCTL_T(KC_TAB)
+#define KA_RSFTENT  RSFT_T(KC_ENT)
+#define KA_RCTLBSP  RCTL_T(KC_BSPC)
+#define KA_RALTDEL  RALT_T(KC_DEL)
+
 
 //-------------------------------------------------------------------------------
 
@@ -37,6 +46,7 @@ enum combos {
     PAGEDN_COMBO,
     HOME_COMBO,
     END_COMBO,
+    COLEMAK_COMBO,
     COMBO_LENGTH
 };
 
@@ -63,6 +73,7 @@ const uint16_t PROGMEM end_combo[]        = {KC_B, KC_N, COMBO_END};
 const uint16_t PROGMEM teams_mute[]       = {KC_R, KC_U, COMBO_END};
 const uint16_t PROGMEM teams_vidtog[]     = {KC_T, KC_Y, COMBO_END};
 
+const uint16_t PROGMEM colemak_combo[]     = {KC_U, KC_I, KC_O, COMBO_END};
 
 combo_t key_combos[] = {
 
@@ -76,6 +87,7 @@ combo_t key_combos[] = {
 [PAGEDN_COMBO]       = COMBO(pagedn_combo, KC_PGDN),
 [HOME_COMBO]         = COMBO(home_combo, KC_HOME),
 [END_COMBO]          = COMBO(end_combo, KC_END),
+[COLEMAK_COMBO]      = COMBO(colemak_combo, TG(_COLEMAKDH)
 
 //-------------------------------------------------------------------------------
 
@@ -150,15 +162,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_DEFAULT] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
-     KC_GRV, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                               KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS,
+     KC_GRV, KC_1,      KC_2,    KC_3,    KC_4,    KC_5,                               KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
      KC_LBRC,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                               KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_RBRC,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
      KC_EQL,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                               KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     CW_TOGG, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    LGUI_T(TG(1)),          LGUI_T(TG(2)),  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_BSLS,
+     CW_TOGG, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KA_GUIL1,         KA_GUIL2,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_BSLS,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                    LALT_T(KC_ESC), LCTL_T(KC_TAB), LSFT_T(KC_SPC),                    RSFT_T(KC_ENT),  RCTL_T(KC_BSPC), RALT_T(KC_DEL)
+                                    KA_LALTESC, KA_LCTLTB, KA_LSFTSP,            KA_RSFTENT, KA_RCTLBSP, KA_RALTDEL
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ),
 
@@ -192,15 +204,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 [_COLEMAKDH] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
-     KC_GRV, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                               KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS,
+     KC_GRV,   KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                               KC_6,    KC_7,    KC_8,    KC_9,    KC_0,   KC_MINS,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_LBRC,  KC_Q,    KC_W,    KC_F,    KC_B,    KC_V,                               KC_J,    KC_L,    KC_U,    KC_Y,    KC_SCLN,    KC_RBRC,
+     KC_LBRC,  KC_Q,    KC_W,    KC_F,    KC_B,    KC_V,                               KC_J,    KC_L,    KC_U,    KC_Y,   KC_SCLN, KC_RBRC,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_EQL,  KC_A,    KC_R,    KC_S,    KC_T,    KC_G,                               KC_M,    KC_N,    KC_E,    KC_I,    KC_O, KC_QUOT,
+     KC_EQL,  KC_A,    KC_R,    KC_S,    KC_T,    KC_G,                               KC_M,    KC_N,    KC_E,    KC_I,    KC_O,    KC_QUOT,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     CW_TOGG, KC_Z,    KC_X,    KC_C,    KC_D,    KC_V,    LGUI_T(TG(1)),          LGUI_T(TG(2)),  KC_K,    KC_H,    KC_COMM, KC_DOT,  KC_SLSH, KC_BSLS,
+     CW_TOGG, KC_Z,    KC_X,    KC_C,    KC_D,    KC_V,    _______,          _______,  KC_K,   KC_H,    KC_COMM, KC_DOT, KC_SLSH, KC_BSLS,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                    LALT_T(KC_ESC), LCTL_T(KC_TAB), LSFT_T(KC_SPC),                    RSFT_T(KC_ENT),  RCTL_T(KC_BSPC), RALT_T(KC_DEL)
+                                    _______, _______, _______,                   _______, _______, _______
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ),
 
