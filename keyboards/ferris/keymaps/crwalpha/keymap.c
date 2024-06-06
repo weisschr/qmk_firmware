@@ -89,6 +89,8 @@ enum combos {
     PAGEDN_COMBO,
     HOME_COMBO,
     END_COMBO,
+    TEAMS_MUTE,
+    TEAMS_VIDTOG,
     COMBO_LENGTH
 };
 
@@ -195,6 +197,8 @@ combo_t key_combos[] = {
 [PAGEDN_COMBO]       = COMBO(pagedn_combo, KC_PGDN),
 [HOME_COMBO]         = COMBO(home_combo, KC_HOME),
 [END_COMBO]          = COMBO(end_combo, KC_END),
+[TEAMS_MUTE]         = COMBO(teams_mute, RCS(KC_M)),
+[TEAMS_VIDTOG]       = COMBO(teams_vidtog, RCS(KC_O)),
 
 //-------------------------------------------------------------------------------
 

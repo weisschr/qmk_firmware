@@ -53,13 +53,17 @@ enum combos {
     HOME_COMBO,
     END_COMBO,
     COLEMAK_COMBO,
+    TEAMS_MUTE,
+    TEAMS_VIDTOG,
+    OSL_APPS_COMBO,
+    OSL_MOUSE_COMBO,
     COMBO_LENGTH
 };
 
 enum custom_keycodes {
     CHROME = SAFE_RANGE,
     CNTRLPN,
-    MYCOMPUTER,
+    MYCOMP,
     CUSTOM_LENGTH
 };
 
@@ -79,7 +83,9 @@ const uint16_t PROGMEM end_combo[]        = {KC_B, KC_N, COMBO_END};
 const uint16_t PROGMEM teams_mute[]       = {KC_R, KC_U, COMBO_END};
 const uint16_t PROGMEM teams_vidtog[]     = {KC_T, KC_Y, COMBO_END};
 
-const uint16_t PROGMEM colemak_combo[]     = {KC_U, KC_I, KC_O, COMBO_END};
+const uint16_t PROGMEM osl_mouse_combo[]  = {KC_H, KC_K, COMBO_END};
+const uint16_t PROGMEM osl_apps_combo[]   = {KC_N, KC_COMM, COMBO_END};
+const uint16_t PROGMEM colemak_combo[]    = {KC_U, KC_I, KC_O, COMBO_END};
 
 combo_t key_combos[] = {
 
@@ -95,6 +101,10 @@ combo_t key_combos[] = {
 [END_COMBO]          = COMBO(end_combo, KC_END),
 [COLEMAK_COMBO]      = COMBO(colemak_combo, TG(_COLEMAKDH)),
 [CAPLOCK_COMBO]      = COMBO(caplock_combo, KC_CAPS),
+[TEAMS_MUTE]         = COMBO(teams_mute, RCS(KC_M)),
+[TEAMS_VIDTOG]       = COMBO(teams_vidtog, RCS(KC_O)),
+[OSL_APPS_COMBO]     = COMBO(osl_apps_combo, OSL(_APPS)),
+[OSL_MOUSE_COMBO]    = COMBO(osl_mouse_combo, OSL(_MOUSE)),
 
 };
 
@@ -143,7 +153,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             SEND_STRING("CONTROL\n");
         }
         break;
-    case MYCOMPUTER:
+    case MYCOMP:
         if (record->event.pressed) {
             SEND_STRING(SS_DOWN(X_LGUI));
             SEND_STRING(SS_TAP(X_R));
@@ -195,9 +205,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
      QK_BOOT, RGB_HUI, KA_LNKIN, KA_OTLK, KA_TMS, KC_NO,                               KC_NO,  KA_FLMGR, CNTRLPN, KC_NO, KC_NO, QK_BOOT,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     QK_RBT,  RGB_SAI,   KC_NO,    KA_PWRPT, KA_WORD, KC_NO,                           KC_NO,  KA_SNIP, KA_TKMG, KC_NO, KC_NO, QK_RBT,
+     QK_RBT,  RGB_SAI,   KC_NO,    KA_PWRPT, KA_WORD, KC_NO,                           KC_NO, KC_CALC,  KA_TKMG, KA_RUN, KC_NO, QK_RBT,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_NO,   RGB_VAI, KC_NO, KC_NO, KA_EMJ, KA_EXCEL, _______,              _______, KC_NO,   KC_CALC,  KA_CLPB, KC_NO, KC_NO, KC_NO,
+     KC_NO,   RGB_VAI, KC_NO, KC_NO, KA_EMJ, KA_EXCEL, _______,              _______, KC_NO,  KA_SNIP,   KA_CLPB, MYCOMP, KC_NO, KC_NO,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
                                     _______, _______, _______,                   _______, _______, _______
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
@@ -207,7 +217,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
      KC_GRV,   KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                               KC_6,    KC_7,    KC_8,    KC_9,    KC_0,   KC_MINS,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_LBRC,  KC_Q,    KC_W,    KC_F,    KC_B,    KC_V,                               KC_J,    KC_L,    KC_U,    KC_Y,   KC_SCLN, KC_RBRC,
+     KC_LBRC,  KC_Q,    KC_W,    KC_F,    KC_P,    KC_B,                               KC_J,    KC_L,    KC_U,    KC_Y,   KC_SCLN, KC_RBRC,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
      KC_EQL,  KC_A,    KC_R,    KC_S,    KC_T,    KC_G,                               KC_M,    KC_N,    KC_E,    KC_I,    KC_O,    KC_QUOT,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
