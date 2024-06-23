@@ -20,6 +20,11 @@
 #define KA_NEWT  LCTL(KC_T)
 #define KA_NWIC  RCS(KC_N)
 #define KA_NEWW  LCTL(KC_N)
+#define KA_REOP  RCS(KC_T)
+#define KA_BOOK  RCS(KC_O)
+#define KA_BKMK  LCTL(KC_D)
+#define KA_BKBR  LCTL(KC_B)
+#define KA_HOME  LALT(KC_HOME)
 
 // Mod tap
 
@@ -69,13 +74,19 @@ enum combos {
     OSL_MOUSE_COMBO,
     CHROME,
     MYCOMPUTER,
-    CONTROLPAN
+    CONTROLPAN,
+    EDGE,
+    VSCODE,
+    NOTEPADPP
 };
 
 enum custom_keycodes {
     KM_CHROME = SAFE_RANGE,
     KM_MYCOMPUTER,
-    KM_CONTROLPAN
+    KM_CONTROLPAN,
+    KM_EDGE,
+    KM_VSCODE,
+    KM_NOTEPADPP,
 };
 
 const uint16_t PROGMEM winclose_combo[]   = {KC_R, KA_LGUT, COMBO_END};
@@ -98,12 +109,14 @@ const uint16_t PROGMEM osl_mouse_combo[]  = {KA_RCSH, KC_K, COMBO_END};
 const uint16_t PROGMEM osl_apps_combo[]   = {KA_RSUN, KC_COMM, COMBO_END};
 const uint16_t PROGMEM colemak_combo[]    = {KC_U, KC_I, KC_O, COMBO_END};
 
-
 // Macro Combos
 
 const uint16_t PROGMEM chrome_combo[]     = {KC_C, KA_RCSH, COMBO_END};
 const uint16_t PROGMEM mycomputer_combo[] = {KC_C, KA_RGUY, COMBO_END};
 const uint16_t PROGMEM controlpan_combo[] = {KC_C, KA_RSUN, COMBO_END};
+const uint16_t PROGMEM edge_combo[]       = {KC_C, KC_U, COMBO_END};
+const uint16_t PROGMEM vscode_combo[]     = {KC_C, KC_J, COMBO_END};
+const uint16_t PROGMEM notepadpp_combo[]  = {KC_C, KC_M, COMBO_END};
 
 combo_t key_combos[] = {
 
@@ -125,7 +138,10 @@ combo_t key_combos[] = {
 [OSL_MOUSE_COMBO]    = COMBO(osl_mouse_combo, OSL(_MOUSE)),
 [CHROME]             = COMBO(chrome_combo, KM_CHROME),
 [MYCOMPUTER]         = COMBO(mycomputer_combo, KM_MYCOMPUTER),
-[CONTROLPAN]         = COMBO(controlpan_combo, KM_CONTROLPAN)
+[CONTROLPAN]         = COMBO(controlpan_combo, KM_CONTROLPAN),
+[EDGE]               = COMBO(edge_combo, KM_EDGE),
+[VSCODE]             = COMBO(vscode_combo, KM_VSCODE),
+[NOTEPADPP]          = COMBO(notepadpp_combo, KM_NOTEPADPP)
 };
 
 bool caps_word_press_user(uint16_t keycode) {
@@ -166,7 +182,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             SEND_STRING("chrome" SS_TAP(X_ENTER));
         }
         return false;
- case KM_MYCOMPUTER:
+
+    case KM_MYCOMPUTER:
         if (record->event.pressed) {
                 // Macro action: WIN-R and type "CHROME"
             SEND_STRING(SS_LGUI("r"));
@@ -174,12 +191,40 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             SEND_STRING("Shell:MyComputerFolder" SS_TAP(X_ENTER));
         }
         return false;
-case KM_CONTROLPAN:
+
+    case KM_CONTROLPAN:
         if (record->event.pressed) {
                 // Macro action: WIN-R and type "CHROME"
             SEND_STRING(SS_LGUI("r"));
             wait_ms(500);
             SEND_STRING("Control" SS_TAP(X_ENTER));
+        }
+        return false;
+
+    case KM_EDGE:
+        if (record->event.pressed) {
+                // Macro action: WIN-R and type "CHROME"
+            SEND_STRING(SS_LGUI("r"));
+            wait_ms(500);
+            SEND_STRING("microsoft-edge:" SS_TAP(X_ENTER));
+        }
+        return false;
+
+    case KM_VSCODE:
+        if (record->event.pressed) {
+                // Macro action: WIN-R and type "CHROME"
+            SEND_STRING(SS_LGUI("r"));
+            wait_ms(500);
+            SEND_STRING("code" SS_TAP(X_ENTER));
+        }
+        return false;
+
+    case KM_NOTEPADPP:
+        if (record->event.pressed) {
+                // Macro action: WIN-R and type "CHROME"
+            SEND_STRING(SS_LGUI("r"));
+            wait_ms(500);
+            SEND_STRING("notepad++" SS_TAP(X_ENTER));
         }
         return false;
 
@@ -212,11 +257,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
      KC_NO,    KC_F1,   KC_F2,   KC_F3,   KC_F4,  KC_F5,                               KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_NO,   KC_BRIU, KA_NEWW, KC_NO,  KC_NO,   KC_UP,                              KC_HOME, KC_PGUP,  KC_MS_U, KC_PGDN, KC_VOLU, KC_F12,
+     KC_BRIU, KA_BOOK, KA_NEWW, KA_REOP,  KA_HOME,   KC_UP,                            KC_HOME, KC_PGUP,  KC_MS_U, KC_PGDN, KC_VOLU, KC_F12,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_NO,   KC_BRID, KC_BTN1, KC_BTN2, KC_BTN3, KC_DOWN,                            KC_END,  KC_MS_L, KC_MS_D,  KC_MS_R,  KC_VOLD, KC_NO,
+     KC_BRID, KA_BKMK, KC_BTN1, KC_BTN2, KC_BTN3, KC_DOWN,                            KC_END,  KC_MS_L, KC_MS_D,  KC_MS_R,  KC_VOLD, KC_NO,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_NO,   KC_NO,   KA_NEWT, KA_NWIC, KC_LEFT, KC_RGHT,  _______,         _______, KC_WH_L,  KC_WH_U, KC_WH_D,  KC_WH_R, KC_MUTE, KC_NO,
+     KC_NO,   KA_BKBR, KA_NEWT, KA_NWIC, KC_LEFT, KC_RGHT,  _______,         _______, KC_WH_L,  KC_WH_U, KC_WH_D,  KC_WH_R, KC_MUTE, KC_NO,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
                                     _______, _______, _______,                   _______,  _______, _______
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
