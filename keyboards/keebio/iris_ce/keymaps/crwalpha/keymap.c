@@ -33,7 +33,7 @@
 #define KA_RCSH   RCS_T(KC_H)
 #define KA_RCSM   RCS_T(KC_M)
 #define KA_LGUT   LGUI_T(KC_T)
-#define KA_RGUY   RCS_T(KC_Y)
+#define KA_RGUY   RGUI_T(KC_Y)
 
 #define KA_LME5   MEH_T(KC_5)
 #define KA_RME6   MEH_T(KC_6)
@@ -66,7 +66,16 @@ enum combos {
     TEAMS_MUTE,
     TEAMS_VIDTOG,
     OSL_APPS_COMBO,
-    OSL_MOUSE_COMBO
+    OSL_MOUSE_COMBO,
+    CHROME,
+    MYCOMPUTER,
+    CONTROLPAN
+};
+
+enum custom_keycodes {
+    KM_CHROME = SAFE_RANGE,
+    KM_MYCOMPUTER,
+    KM_CONTROLPAN
 };
 
 const uint16_t PROGMEM winclose_combo[]   = {KC_R, KA_LGUT, COMBO_END};
@@ -89,6 +98,13 @@ const uint16_t PROGMEM osl_mouse_combo[]  = {KA_RCSH, KC_K, COMBO_END};
 const uint16_t PROGMEM osl_apps_combo[]   = {KA_RSUN, KC_COMM, COMBO_END};
 const uint16_t PROGMEM colemak_combo[]    = {KC_U, KC_I, KC_O, COMBO_END};
 
+
+// Macro Combos
+
+const uint16_t PROGMEM chrome_combo[]     = {KC_C, KA_RCSH, COMBO_END};
+const uint16_t PROGMEM mycomputer_combo[] = {KC_C, KA_RGUY, COMBO_END};
+const uint16_t PROGMEM controlpan_combo[] = {KC_C, KA_RSUN, COMBO_END};
+
 combo_t key_combos[] = {
 
 [WINCLOSE_COMBO]     = COMBO(winclose_combo, LCTL(KC_F4)),
@@ -107,6 +123,9 @@ combo_t key_combos[] = {
 [TEAMS_VIDTOG]       = COMBO(teams_vidtog, RCS(KC_O)),
 [OSL_APPS_COMBO]     = COMBO(osl_apps_combo, OSL(_APPS)),
 [OSL_MOUSE_COMBO]    = COMBO(osl_mouse_combo, OSL(_MOUSE)),
+[CHROME]             = COMBO(chrome_combo, KM_CHROME),
+[MYCOMPUTER]         = COMBO(mycomputer_combo, KM_MYCOMPUTER),
+[CONTROLPAN]         = COMBO(controlpan_combo, KM_CONTROLPAN)
 };
 
 bool caps_word_press_user(uint16_t keycode) {
@@ -135,15 +154,42 @@ bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
             return false;
     }
 }
-/*
+
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
+    case KM_CHROME:
+        if (record->event.pressed) {
+                // Macro action: WIN-R and type "CHROME"
+            SEND_STRING(SS_LGUI("r"));
+            wait_ms(500);
+            SEND_STRING("chrome" SS_TAP(X_ENTER));
+        }
+        return false;
+ case KM_MYCOMPUTER:
+        if (record->event.pressed) {
+                // Macro action: WIN-R and type "CHROME"
+            SEND_STRING(SS_LGUI("r"));
+            wait_ms(500);
+            SEND_STRING("Shell:MyComputerFolder" SS_TAP(X_ENTER));
+        }
+        return false;
+case KM_CONTROLPAN:
+        if (record->event.pressed) {
+                // Macro action: WIN-R and type "CHROME"
+            SEND_STRING(SS_LGUI("r"));
+            wait_ms(500);
+            SEND_STRING("Control" SS_TAP(X_ENTER));
+        }
+        return false;
+
     default:
-      return true; // Process all other keycodes normally.
+
+        return true; // Process all other keycodes normally.
   }
   return true;
 }
-*/
+
 //-------------------------------------------------------------------------------
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
