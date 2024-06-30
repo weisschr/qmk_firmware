@@ -3,6 +3,8 @@
 
 #include QMK_KEYBOARD_H
 
+// Shortcuts
+
 #define KA_LNKIN HYPR(KC_L)
 #define KA_OTLK  HYPR(KC_O)
 #define KA_TMS   HYPR(KC_T)
@@ -45,7 +47,6 @@
 #define KA_LSUB   HYPR_T(KC_B)
 #define KA_RSUN   HYPR_T(KC_N)
 
-
 //-------------------------------------------------------------------------------
 
 enum layers {
@@ -77,7 +78,8 @@ enum combos {
     CONTROLPAN,
     EDGE,
     VSCODE,
-    NOTEPADPP
+    NOTEPADPP,
+    DEFAULT_COMBO
 };
 
 enum custom_keycodes {
@@ -99,7 +101,7 @@ const uint16_t PROGMEM downarrow_combo[]  = {KC_S, KC_D, KC_F, COMBO_END};
 
 const uint16_t PROGMEM pageup_combo[]     = {KC_F, KC_J, COMBO_END};
 const uint16_t PROGMEM pagedn_combo[]     = {KC_V, KC_M, COMBO_END};
-const uint16_t PROGMEM home_combo[]       = {KC_G, KC_H, COMBO_END};
+const uint16_t PROGMEM home_combo[]       = {KA_RCSG, KA_RCSH, COMBO_END};
 const uint16_t PROGMEM end_combo[]        = {KA_LSUB, KA_RSUN, COMBO_END};
 
 const uint16_t PROGMEM teams_mute[]       = {KC_R, KC_U, COMBO_END};
@@ -108,14 +110,15 @@ const uint16_t PROGMEM teams_vidtog[]     = {KA_LGUT, KA_RGUY, COMBO_END};
 const uint16_t PROGMEM osl_mouse_combo[]  = {KA_RCSH, KC_K, COMBO_END};
 const uint16_t PROGMEM osl_apps_combo[]   = {KA_RSUN, KC_COMM, COMBO_END};
 const uint16_t PROGMEM colemak_combo[]    = {KC_U, KC_I, KC_O, COMBO_END};
+const uint16_t PROGMEM default_combo[]    = {KC_J, KC_K, KC_L, COMBO_END};
 
 // Macro Combos
 
 const uint16_t PROGMEM chrome_combo[]     = {KC_C, KA_RCSH, COMBO_END};
 const uint16_t PROGMEM mycomputer_combo[] = {KC_C, KA_RGUY, COMBO_END};
 const uint16_t PROGMEM controlpan_combo[] = {KC_C, KA_RSUN, COMBO_END};
-const uint16_t PROGMEM edge_combo[]       = {KC_C, KC_U, COMBO_END};
-const uint16_t PROGMEM vscode_combo[]     = {KC_C, KC_J, COMBO_END};
+const uint16_t PROGMEM edge_combo[]       = {KC_C, KC_J, COMBO_END};
+const uint16_t PROGMEM vscode_combo[]     = {KC_C, KC_U, COMBO_END};
 const uint16_t PROGMEM notepadpp_combo[]  = {KC_C, KC_M, COMBO_END};
 
 combo_t key_combos[] = {
@@ -141,7 +144,8 @@ combo_t key_combos[] = {
 [CONTROLPAN]         = COMBO(controlpan_combo, KM_CONTROLPAN),
 [EDGE]               = COMBO(edge_combo, KM_EDGE),
 [VSCODE]             = COMBO(vscode_combo, KM_VSCODE),
-[NOTEPADPP]          = COMBO(notepadpp_combo, KM_NOTEPADPP)
+[NOTEPADPP]          = COMBO(notepadpp_combo, KM_NOTEPADPP),
+[DEFAULT_COMBO]      = COMBO(default_combo, TO(_DEFAULT)),
 };
 
 bool caps_word_press_user(uint16_t keycode) {
