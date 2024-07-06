@@ -89,6 +89,14 @@ enum custom_keycodes {
     KM_EDGE,
     KM_VSCODE,
     KM_NOTEPADPP,
+    LT_ESC_ALT,
+    LT_TAB_CTL,
+    LT_SPC_SFT,
+    RT_ENT_SFT,
+    RT_BSP_CTL,
+    RT_DEL_ALT,
+    LAYER_MOUSE,
+    LAYER_APP,
 };
 
 const uint16_t PROGMEM winclose_combo[]   = {KC_R, KA_LGUT, COMBO_END};
@@ -175,12 +183,26 @@ bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
     }
 }
 
+uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case KA_LGUT:
+        case KA_RGUY:
+        case KA_LME5:
+        case KA_RME6:
+        case KA_LSUB:
+        case KA_RSUN:
+            return 500;
+        case LT(1, KC_GRV):
+            return 130;
+        default:
+            return TAPPING_TERM;
+    }
+}
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     case KM_CHROME:
         if (record->event.pressed) {
-                // Macro action: WIN-R and type "CHROME"
             SEND_STRING(SS_LGUI("r"));
             wait_ms(500);
             SEND_STRING("chrome" SS_TAP(X_ENTER));
@@ -189,7 +211,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     case KM_MYCOMPUTER:
         if (record->event.pressed) {
-                // Macro action: WIN-R and type "CHROME"
             SEND_STRING(SS_LGUI("r"));
             wait_ms(500);
             SEND_STRING("Shell:MyComputerFolder" SS_TAP(X_ENTER));
@@ -198,7 +219,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     case KM_CONTROLPAN:
         if (record->event.pressed) {
-                // Macro action: WIN-R and type "CHROME"
             SEND_STRING(SS_LGUI("r"));
             wait_ms(500);
             SEND_STRING("Control" SS_TAP(X_ENTER));
@@ -207,7 +227,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     case KM_EDGE:
         if (record->event.pressed) {
-                // Macro action: WIN-R and type "CHROME"
             SEND_STRING(SS_LGUI("r"));
             wait_ms(500);
             SEND_STRING("microsoft-edge:" SS_TAP(X_ENTER));
@@ -216,7 +235,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     case KM_VSCODE:
         if (record->event.pressed) {
-                // Macro action: WIN-R and type "CHROME"
             SEND_STRING(SS_LGUI("r"));
             wait_ms(500);
             SEND_STRING("code" SS_TAP(X_ENTER));
@@ -225,7 +243,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     case KM_NOTEPADPP:
         if (record->event.pressed) {
-                // Macro action: WIN-R and type "CHROME"
             SEND_STRING(SS_LGUI("r"));
             wait_ms(500);
             SEND_STRING("notepad++" SS_TAP(X_ENTER));
