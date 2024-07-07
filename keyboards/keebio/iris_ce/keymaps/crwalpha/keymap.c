@@ -71,8 +71,6 @@ enum combos {
     COLEMAK_COMBO,
     TEAMS_MUTE,
     TEAMS_VIDTOG,
-    OSL_APPS_COMBO,
-    OSL_MOUSE_COMBO,
     CHROME,
     MYCOMPUTER,
     CONTROLPAN,
@@ -95,9 +93,34 @@ enum custom_keycodes {
     RT_ENT_SFT,
     RT_BSP_CTL,
     RT_DEL_ALT,
-    LAYER_MOUSE,
-    LAYER_APP,
 };
+
+enum tap_dances {
+    TD_MOUSE,
+    TD_APPS
+};
+
+enum {
+  SINGLE_TAP = 1,
+  SINGLE_HOLD = 2,
+  DOUBLE_TAP = 3
+};
+
+typedef struct {
+  bool is_press_action;
+  int state;
+} tap;
+
+//Declare the functions to be used with your tap dance key(s)
+
+//Function associated with all tap dances
+int cur_dance (tap_dance_state_t *state);
+
+//Functions associated with individual tap dances
+void ms_finished (tap_dance_state_t *state, void *user_data);
+void ms_reset (tap_dance_state_t *state, void *user_data);
+void ap_finished (tap_dance_state_t *state, void *user_data);
+void ap_reset (tap_dance_state_t *state, void *user_data);
 
 const uint16_t PROGMEM winclose_combo[]   = {KC_R, KA_LGUT, COMBO_END};
 const uint16_t PROGMEM appclose_combo[]   = {KC_V, KA_LSUB, COMBO_END};
@@ -115,8 +138,6 @@ const uint16_t PROGMEM end_combo[]        = {KA_LSUB, KA_RSUN, COMBO_END};
 const uint16_t PROGMEM teams_mute[]       = {KC_R, KC_U, COMBO_END};
 const uint16_t PROGMEM teams_vidtog[]     = {KA_LGUT, KA_RGUY, COMBO_END};
 
-const uint16_t PROGMEM osl_mouse_combo[]  = {KA_RCSH, KC_K, COMBO_END};
-const uint16_t PROGMEM osl_apps_combo[]   = {KA_RSUN, KC_COMM, COMBO_END};
 const uint16_t PROGMEM colemak_combo[]    = {KC_U, KC_I, KC_O, COMBO_END};
 const uint16_t PROGMEM default_combo[]    = {KC_J, KC_K, KC_L, COMBO_END};
 
@@ -145,8 +166,6 @@ combo_t key_combos[] = {
 [CAPLOCK_COMBO]      = COMBO(caplock_combo, KC_CAPS),
 [TEAMS_MUTE]         = COMBO(teams_mute, RCS(KC_M)),
 [TEAMS_VIDTOG]       = COMBO(teams_vidtog, RCS(KC_O)),
-[OSL_APPS_COMBO]     = COMBO(osl_apps_combo, OSL(_APPS)),
-[OSL_MOUSE_COMBO]    = COMBO(osl_mouse_combo, OSL(_MOUSE)),
 [CHROME]             = COMBO(chrome_combo, KM_CHROME),
 [MYCOMPUTER]         = COMBO(mycomputer_combo, KM_MYCOMPUTER),
 [CONTROLPAN]         = COMBO(controlpan_combo, KM_CONTROLPAN),
@@ -192,8 +211,6 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
         case KA_LSUB:
         case KA_RSUN:
             return 500;
-        case LT(1, KC_GRV):
-            return 130;
         default:
             return TAPPING_TERM;
     }
@@ -268,7 +285,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
      KC_EQL,  KC_A,    KC_S,    KC_D,    KC_F,    KA_RCSG,                            KA_RCSH,  KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     CW_TOGG, KC_Z,    KC_X,    KC_C,    KC_V,    KA_LSUB, TG(_MOUSE),       TG(_APPS), KA_RSUN, KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_BSLS,
+     CW_TOGG, KC_Z,    KC_X,    KC_C,    KC_V,    KA_LSUB, TD(TD_MOUSE),     TD(TD_APPS), KA_RSUN, KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_BSLS,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
                                    KA_LALEC, KA_LCLTB, KA_LSFP,                 KA_RSFEN, KA_RCLBP, KA_RALDL
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
@@ -316,4 +333,106 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ),
 
+};
+
+//Determine the current tap dance state
+int cur_dance (tap_dance_state_t *state) {
+  if (state->count == 1) {
+    if (!state->pressed) {
+      return SINGLE_TAP;
+    } else {
+      return SINGLE_HOLD;
+    }
+  } else if (state->count == 2) {
+    return DOUBLE_TAP;
+  }
+  else return 8;
+}
+
+//Initialize tap structure
+static tap ms_tap_state = {
+  .is_press_action = true,
+  .state = 0
+};
+
+static tap ap_tap_state = {
+  .is_press_action = true,
+  .state = 0
+};
+
+//Functions that control tap dance behavior
+
+void ms_finished (tap_dance_state_t *state, void *user_data) {
+  ms_tap_state.state = cur_dance(state);
+  switch (ms_tap_state.state) {
+    case SINGLE_TAP:
+        // Return to default if any other layer active
+        if (!layer_state_is(_DEFAULT)) {
+            layer_clear();
+        } else {
+            // One shot layer key otherwise
+            set_oneshot_layer(_MOUSE, ONESHOT_OTHER_KEY_PRESSED);
+            clear_oneshot_layer_state(ONESHOT_PRESSED);
+        }
+      break;
+    case SINGLE_HOLD:
+      layer_on(_MOUSE);
+      break;
+    case DOUBLE_TAP:
+      //check to see if the layer is default
+      if (!layer_state_is(_DEFAULT)) {
+            layer_clear();
+      } else {
+        //if not set, then switch the layer on
+        layer_on(_MOUSE);
+      }
+      break;
+  }
+}
+
+void ms_reset (tap_dance_state_t *state, void *user_data) {
+  //if the key was held down and now is released then switch off the layer
+  if (ms_tap_state.state==SINGLE_HOLD) {
+    layer_off(_MOUSE);
+  }
+  ms_tap_state.state = 0;
+}
+
+void ap_finished (tap_dance_state_t *state, void *user_data) {
+  ap_tap_state.state = cur_dance(state);
+  switch (ap_tap_state.state) {
+    case SINGLE_TAP:
+        if (!layer_state_is(_DEFAULT)) {
+            layer_clear();
+        } else {
+            set_oneshot_layer(_APPS, ONESHOT_OTHER_KEY_PRESSED);
+            clear_oneshot_layer_state(ONESHOT_PRESSED);
+        }
+      break;
+    case SINGLE_HOLD:
+      layer_on(_APPS);
+      break;
+    case DOUBLE_TAP:
+      //check to see if the layer is already set
+     if (!layer_state_is(_DEFAULT)) {
+            layer_clear();
+      } else {
+        //if not already set, then switch the layer on
+        layer_on(_APPS);
+      }
+      break;
+  }
+}
+
+void ap_reset (tap_dance_state_t *state, void *user_data) {
+  //if the key was held down and now is released then switch off the layer
+  if (ap_tap_state.state==SINGLE_HOLD) {
+    layer_off(_APPS);
+  }
+  ap_tap_state.state = 0;
+}
+
+tap_dance_action_t tap_dance_actions[] = {
+  [TD_MOUSE] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, ms_finished, ms_reset),
+  [TD_APPS] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, ap_finished, ap_reset)
 };
