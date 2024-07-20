@@ -47,6 +47,14 @@
 #define KA_SNIP     SGUI(KC_S)
 #define KA_CLIPBRD  RGUI(KC_V)
 
+const uint16_t lf_keylist[] = {KC_1, KC_2, KC_3, KC_4, KC_5, KC_Q, KC_W, KC_E, KC_R, KC_T, KC_A, KC_S, KC_D, KC_F, KC_G, KC_Z, KC_X, KC_C, KC_V, KC_B, KC_TAB, KC_SPACE};
+const uint16_t rt_keylist[] = {KC_6, KC_7, KC_8, KC_9, KC_0, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_H, KC_J, KC_K, KC_L, KC_SCLN, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, KC_ENTER, KC_BSPC};
+
+
+const int rt_keylist_size = sizeof(rt_keylist) / sizeof(rt_keylist[0]);
+const int lf_keylist_size = sizeof(lf_keylist) / sizeof(lf_keylist[0]);
+
+
 //-------------------------------------------------------------------------------
 
 enum layers {
@@ -74,6 +82,8 @@ enum combos {
     FUNC_COMBO,
     APP_COMBO,
     ONESHOT_SYM_COMBO,
+    ONESHOT_SYM_LSHIFT_COMBO,
+    ONESHOT_SYM_RSHIFT_COMBO,
     ONESHOT_FUNC_COMBO,
     ONESHOT_APP_COMBO,
     DEL_COMBO,
@@ -97,8 +107,16 @@ enum combos {
 enum custom_keycodes {
     BROWSWEROPEN = SAFE_RANGE,
     CONTROLPAN,
+    ONESHOT_SYM_LSHIFT,
+    ONESHOT_SYM_RSHIFT,
     MYCOMPUTER,
 };
+
+// Functions for bilateral combos
+bool is_left(uint16_t keycode);
+bool is_right(uint16_t keycode);
+bool is_left_mod(uint8_t mod_state);
+bool is_right_mod(uint8_t mod_state);
 
 //-------------------------------------------------------------------------------
 // Layer 0 combos
@@ -122,6 +140,8 @@ const uint16_t PROGMEM osl_apps_combo[] = {KC_RGUI_Y, KC_RHYPR_I, COMBO_END};
 
 const uint16_t PROGMEM numb_combo[]     = {KC_RSHCTRL_H, KC_RCTRL_J, KC_RMEH_K, COMBO_END};
 const uint16_t PROGMEM osl_numb_combo[] = {KC_RSHCTRL_H, KC_RMEH_K, COMBO_END};
+const uint16_t PROGMEM osl_numb_lshift_combo[] = {KC_RSHCTRL_H, KC_RCTRL_J, COMBO_END};
+const uint16_t PROGMEM osl_numb_rshift_combo[] = {KC_S, KC_LCTRL_F, COMBO_END};
 
 const uint16_t PROGMEM func_combo[]     = {KC_RSHALT_N, KC_RALT_M, KC_COMM, COMBO_END};
 const uint16_t PROGMEM osl_func_combo[] = {KC_RSHALT_N, KC_COMM, COMBO_END};
@@ -178,6 +198,8 @@ combo_t key_combos[] = {
 [NUMB_COMBO]         = COMBO(numb_combo, TG(_NUMBSYM)),
 [FUNC_COMBO]         = COMBO(func_combo, TG(_FUNCTION)),
 [ONESHOT_SYM_COMBO]  = COMBO(osl_numb_combo, OSL(_NUMBSYM)),
+[ONESHOT_SYM_LSHIFT_COMBO]  = COMBO(osl_numb_lshift_combo, ONESHOT_SYM_LSHIFT),
+[ONESHOT_SYM_RSHIFT_COMBO]  = COMBO(osl_numb_rshift_combo, ONESHOT_SYM_RSHIFT),
 [ONESHOT_FUNC_COMBO] = COMBO(osl_func_combo, OSL(_FUNCTION)),
 [ONESHOT_APP_COMBO]  = COMBO(osl_apps_combo, OSL(_APPCONTROL)),
 [DEFAULT_COMBO]      = COMBO(default_combo, TO(_ALPHA)),
@@ -274,98 +296,68 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     }
 }
 
-bool check_left_mods(uint16_t keycode, keyrecord_t *record){
-  static uint8_t mod_state;
-  if(layer_state_is(_APPCONTROL)) {
-    return false;
-  }
-  mod_state = get_mods();
-  if (record->event.pressed) {
-    if ((mod_state == MOD_BIT(KC_LSFT)) || (mod_state == MOD_BIT(KC_LCTL)) || (mod_state == MOD_BIT(KC_LALT)) || (mod_state == MOD_BIT(KC_LGUI) )
-       || (mod_state == (MOD_LCTL | MOD_LSFT ))
-       || (mod_state == (MOD_LCTL | MOD_LALT ))
-       || (mod_state == (MOD_LALT | MOD_LSFT ))
-       || (mod_state == (MOD_LCTL | MOD_LALT | MOD_LSFT | MOD_LGUI))
-       || (mod_state == (MOD_LCTL | MOD_LALT | MOD_LSFT))) {
-      clear_mods();
-      tap_code(keycode);
-      return false;
+
+bool is_left(uint16_t keycode) {
+    for (int i = 0; i < lf_keylist_size; i++) {
+        if (keycode == lf_keylist[i]) {
+            return true;
+        }
     }
-  }
-  return true;
+    return false;
 }
 
-bool check_right_mods(uint16_t keycode, keyrecord_t *record){
-  static uint8_t r_mod_state;
-  if(layer_state_is(_APPCONTROL)) {
-    return false;
-  }
-  r_mod_state = get_mods();
-  if (record->event.pressed) {
-    if ((r_mod_state == MOD_BIT(KC_RSFT)) || (r_mod_state == MOD_BIT(KC_RCTL)) || (r_mod_state == MOD_BIT(KC_RALT)) || (r_mod_state == MOD_BIT(KC_RGUI) )
-       || (r_mod_state == (MOD_RCTL | MOD_RALT ))
-       || (r_mod_state == (MOD_RCTL | MOD_RSFT ))
-       || (r_mod_state == (MOD_RALT | MOD_RSFT ))
-       || (r_mod_state == (MOD_RCTL | MOD_RALT | MOD_RSFT | MOD_RGUI))
-       || (r_mod_state == (MOD_RCTL | MOD_RALT | MOD_RSFT))) {
-      clear_mods();
-      tap_code(keycode);
-      return false;
+bool is_right(uint16_t keycode) {
+    for (int i = 0; i < rt_keylist_size; i++) {
+        if (keycode == rt_keylist[i]) {
+            return true;
+        }
     }
-  }
-  return true;
+    return false;
 }
+
+
+bool is_left_mod(uint8_t mod_state){
+    if ((mod_state & MOD_BIT(KC_LALT)) ||
+        (mod_state & MOD_BIT(KC_LSFT)) ||
+        (mod_state & MOD_BIT(KC_LCTL)) ||
+        (mod_state & MOD_BIT(KC_LGUI))) {
+            return true;
+        };
+
+    return false;
+}
+
+bool is_right_mod(uint8_t mod_state){
+    if ((mod_state & MOD_BIT(KC_RALT)) ||
+        (mod_state & MOD_BIT(KC_RSFT)) ||
+        (mod_state & MOD_BIT(KC_RCTL)) ||
+        (mod_state & MOD_BIT(KC_RGUI))) {
+            return true;
+        };
+
+    return false;
+}
+
+uint8_t mod_state;
+bool duo_key_combo;
+
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+
+    mod_state = get_mods();
+
+    if (mod_state) {
+        if (record->event.pressed) {
+            if((is_left(keycode) && is_left_mod(mod_state)) ||
+               (is_right(keycode) && is_right_mod(mod_state)))
+               {
+                    clear_mods();
+               }
+        }
+    }
+
   switch (keycode) {
 
-    // Mod tap modification - BILATERAL MODIFIER KEYS SET
-
-    case LSFT_T(KC_SPACE):
-    case KC_Q:
-    case KC_W:
-    case KC_LHYPR_E:
-    case KC_LCTRLALT_R:
-    case KC_LGUI_T:
-    case KC_A:
-    case KC_S:
-    case KC_LMEH_D:
-    case KC_LCTRL_F:
-    case KC_LSHCTRL_G:
-    case KC_Z:
-    case KC_X:
-    case KC_C:
-    case KC_LALT_V:
-    case KC_LSHALT_B:
-    case KC_1:
-    case KC_2:
-    case KC_3:
-    case KC_4:
-    case KC_0:
-      return check_left_mods(keycode, record);
-
-    case RSFT_T(KC_ENTER):
-    case KC_RGUI_Y:
-    case KC_RCTRLALT_U:
-    case KC_RHYPR_I:
-    case KC_O:
-    case KC_P:
-    case KC_RSHCTRL_H:
-    case KC_RCTRL_J:
-    case KC_RMEH_K:
-    case KC_L:
-    case KC_SCLN:
-    case KC_RSHALT_N:
-    case KC_RALT_M:
-    case KC_COMM:
-    case KC_DOT:
-    case KC_SLSH:
-    case KC_5:
-    case KC_6:
-    case KC_7:
-    case KC_8:
-    case KC_9:
-      return check_right_mods(keycode, record);
     case BROWSWEROPEN:
         if (record->event.pressed) {
             SEND_STRING(SS_DOWN(X_LGUI));
@@ -390,7 +382,25 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             SEND_STRING("SHELL:MyComputerFolder\n");
         }
         break;
+    case ONESHOT_SYM_RSHIFT:
+        if (record->event.pressed) {
+            set_oneshot_layer(_NUMBSYM, ONESHOT_START);
+            set_oneshot_mods(MOD_RSFT);
+            duo_key_combo = true;
+        }
+        break;
+    case ONESHOT_SYM_LSHIFT:
+        if (record->event.pressed) {
+            set_oneshot_layer(_NUMBSYM, ONESHOT_START);
+            set_oneshot_mods(MOD_LSFT);
+            duo_key_combo = true;
+        }
+        break;
     default:
+        if (duo_key_combo) {
+            clear_oneshot_layer_state(ONESHOT_PRESSED);
+            duo_key_combo = false;
+        }
       return true; // Process all other keycodes normally.
   }
   return true;
