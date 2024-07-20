@@ -99,8 +99,8 @@ led_config_t g_led_config = { {
 void matrix_init_kb(void) {
 
     // Turn status LED on
-    gpio_set_pin_output(D6);
-    gpio_write_pin_high(D6);
+    DDRD |= (1<<6);
+    PORTD |= (1<<6);
 
     matrix_init_user();
 }

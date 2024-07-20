@@ -16,9 +16,7 @@
 
 #pragma once
 
-#include <stdint.h>
-#include <stdbool.h>
-#include "color.h"
+#include "quantum.h"
 
 enum layer_names {
     _CONTROL,

@@ -15,11 +15,8 @@
  */
 
 #include "keycode_lookup.h"
-#include "quantum_keycodes.h"
-#include "keymap_us.h"
 #include "print.h"
 #include "via.h"
-#include "util.h"
 
 #define num_keycodes ARRAY_SIZE(lookup_table)
 static char UNKNOWN_KEYCODE[] = "UNKNOWN";
@@ -292,7 +289,7 @@ lookup_table_t lookup_table[333] =
  {"KC_QUES", KC_QUES},
  {"QK_BOOT", QK_BOOT},
  {"DB_TOGG", DB_TOGG},
- {"NK_TOGG", NK_TOGG},
+ {"MAGIC_TOGGLE_NKRO", MAGIC_TOGGLE_NKRO},
  {"QK_GESC", QK_GESC},
  {"AU_ON", AU_ON},
  {"AU_OFF", AU_OFF},

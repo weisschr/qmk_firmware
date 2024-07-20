@@ -15,8 +15,7 @@
  */
 
 #include "matrix.h"
-#include "atomic_util.h"
-#include <string.h>
+#include "quantum.h"
 
 // Pin connected to DS of 74HC595
 #define DATA_PIN A7
@@ -36,27 +35,27 @@ static pin_t col_pins[MATRIX_COLS] = MATRIX_COL_PINS;
 
 static inline void setPinOutput_writeLow(pin_t pin) {
     ATOMIC_BLOCK_FORCEON {
-        gpio_set_pin_output(pin);
-        gpio_write_pin_low(pin);
+        setPinOutput(pin);
+        writePinLow(pin);
     }
 }
 
 static inline void setPinOutput_writeHigh(pin_t pin) {
     ATOMIC_BLOCK_FORCEON {
-        gpio_set_pin_output(pin);
-        gpio_write_pin_high(pin);
+        setPinOutput(pin);
+        writePinHigh(pin);
     }
 }
 
 static inline void setPinInputHigh_atomic(pin_t pin) {
     ATOMIC_BLOCK_FORCEON {
-        gpio_set_pin_input_high(pin);
+        setPinInputHigh(pin);
     }
 }
 
 static inline uint8_t readMatrixPin(pin_t pin) {
     if (pin != NO_PIN) {
-        return gpio_read_pin(pin);
+        return readPin(pin);
     } else {
         return 1;
     }

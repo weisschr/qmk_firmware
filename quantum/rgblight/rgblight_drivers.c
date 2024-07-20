@@ -7,7 +7,6 @@
 #    include "ws2812.h"
 
 const rgblight_driver_t rgblight_driver = {
-    .init    = ws2812_init,
     .setleds = ws2812_setleds,
 };
 
@@ -15,7 +14,6 @@ const rgblight_driver_t rgblight_driver = {
 #    include "apa102.h"
 
 const rgblight_driver_t rgblight_driver = {
-    .init    = apa102_init,
     .setleds = apa102_setleds,
 };
 

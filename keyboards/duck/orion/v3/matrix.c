@@ -14,10 +14,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "matrix.h"
-#include "debug.h"
-#include "bitwise.h"
-#include "wait.h"
+#include "quantum.h"
 
 #ifndef DEBOUNCE
 #    define DEBOUNCE 5
@@ -56,13 +53,13 @@ void matrix_scan_user(void) {
 void indicator_init_ports(void) {
 
   // Num LED
-  gpio_set_pin_output(B4); 
+  setPinOutput(B4); 
 
   // Caps Lock
-  gpio_set_pin_output(B0); 
+  setPinOutput(B0); 
 
   // Scroll Lock
-  gpio_set_pin_output(D7); 
+  setPinOutput(D7); 
 }
 
 void matrix_init(void) {

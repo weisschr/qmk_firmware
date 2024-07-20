@@ -56,26 +56,26 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 layer_state_t layer_state_set_user(layer_state_t state) {
     switch (get_highest_layer(state)) {
     case _FN:
-        gpio_write_pin_high(D3);
-        gpio_write_pin_low(D2);
+        writePinHigh(D3);
+        writePinLow(D2);
         break;
     case _FNCHAR:
-        gpio_write_pin_low(D3);
-        gpio_write_pin_high(D2);
+        writePinLow(D3);
+        writePinHigh(D2);
         break;
     case _FKEYS:
-        gpio_write_pin_high(D3);
-        gpio_write_pin_high(D2);
+        writePinHigh(D3);
+        writePinHigh(D2);
         break;
     default: //  for any other layers, or the default layer
-        gpio_write_pin_low(D3);
-        gpio_write_pin_low(D2);
+        writePinLow(D3);
+        writePinLow(D2);
         break;
     }
   return state;
 }
 
 bool led_update_user(led_t led_state) {
-    gpio_write_pin(D0, led_state.caps_lock);
+    writePin(D0, led_state.caps_lock);
     return false;
 }

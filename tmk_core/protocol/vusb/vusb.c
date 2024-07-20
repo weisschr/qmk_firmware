@@ -162,12 +162,6 @@ __attribute__((weak)) void raw_hid_receive(uint8_t *data, uint8_t length) {
 }
 
 void raw_hid_task(void) {
-    usbPoll();
-
-    if (!usbConfiguration || !usbInterruptIsReady4()) {
-        return;
-    }
-
     if (raw_output_received_bytes == RAW_BUFFER_SIZE) {
         raw_hid_receive(raw_output_buffer, RAW_BUFFER_SIZE);
         raw_output_received_bytes = 0;
@@ -188,9 +182,7 @@ int8_t sendchar(uint8_t c) {
 }
 
 void console_task(void) {
-    usbPoll();
-
-    if (!usbConfiguration || !usbInterruptIsReady3()) {
+    if (!usbConfiguration) {
         return;
     }
 

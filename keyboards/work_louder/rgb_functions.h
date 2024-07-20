@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include "keycodes.h"
+#include "quantum.h"
 
 #ifndef VIA_ENABLE
 #    ifndef RGB_MATRIX_TOGGLE

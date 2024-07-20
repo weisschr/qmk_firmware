@@ -258,8 +258,8 @@ endif
 
 # HAL-OSAL files (optional).
 include $(CHIBIOS)/os/hal/hal.mk
-include $(CHIBIOS)/os/oslib/oslib.mk
-include $(CHIBIOS)/os/hal/osal/rt-nil/osal.mk
+-include $(CHIBIOS)/os/hal/osal/rt/osal.mk         # ChibiOS <= 19.x
+-include $(CHIBIOS)/os/hal/osal/rt-nil/osal.mk     # ChibiOS >= 20.x
 # RTOS files (optional).
 include $(CHIBIOS)/os/rt/rt.mk
 # Other files (optional).
@@ -270,7 +270,6 @@ PLATFORM_SRC = \
         $(KERNSRC) \
         $(PORTSRC) \
         $(OSALSRC) \
-        $(OSLIBSRC) \
         $(HALSRC) \
         $(PLATFORMSRC) \
         $(BOARDSRC) \
@@ -286,11 +285,11 @@ QUANTUM_LIB_SRC += $(STARTUPASM) $(PORTASM) $(OSALASM) $(PLATFORMASM)
 
 PLATFORM_SRC := $(patsubst $(TOP_DIR)/%,%,$(PLATFORM_SRC))
 
-EXTRAINCDIRS += $(CHIBIOS)/os/license \
+EXTRAINCDIRS += $(CHIBIOS)/os/license $(CHIBIOS)/os/oslib/include \
          $(TOP_DIR)/platforms/chibios/boards/$(BOARD)/configs \
          $(TOP_DIR)/platforms/chibios/boards/common/configs \
          $(HALCONFDIR) $(CHCONFDIR) \
-         $(STARTUPINC) $(KERNINC) $(PORTINC) $(OSALINC) $(OSLIBINC) \
+         $(STARTUPINC) $(KERNINC) $(PORTINC) $(OSALINC) \
          $(HALINC) $(PLATFORMINC) $(BOARDINC) $(TESTINC) \
          $(STREAMSINC) $(CHIBIOS)/os/various $(COMMON_VPATH)
 

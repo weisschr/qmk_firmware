@@ -9,7 +9,6 @@ from qmk.userspace import UserspaceDefs
 from qmk.build_targets import JsonKeymapBuildTarget
 from qmk.search import search_keymap_targets
 from qmk.cli.mass_compile import mass_compile_targets
-from qmk.util import maybe_exit_config
 
 
 @cli.argument('-t', '--no-temp', arg_only=True, action='store_true', help="Remove temporary files during build.")
@@ -22,8 +21,6 @@ def userspace_compile(cli):
     if not HAS_QMK_USERSPACE:
         cli.log.error('Could not determine QMK userspace location. Please run `qmk doctor` or `qmk userspace-doctor` to diagnose.')
         return False
-
-    maybe_exit_config(should_exit=False, should_reraise=True)
 
     userspace = UserspaceDefs(QMK_USERSPACE / 'qmk.json')
 

@@ -1,10 +1,10 @@
-# `info.json` Reference {#info-json-reference}
+# `info.json` Reference :id=info-json-reference
 
-The information contained in `info.json` is combined with the `config.h` and `rules.mk` files, dynamically generating the necessary configuration for your keyboard at compile time. It is also used by the [QMK API](https://github.com/qmk/qmk_api), and contains the information [QMK Configurator](https://config.qmk.fm/) needs to display a representation of your keyboard. Its key/value pairs are ruled by the [`data/schemas/keyboard.jsonschema`](https://github.com/qmk/qmk_firmware/blob/master/data/schemas/keyboard.jsonschema) file. To learn more about the why and how of the schema file see the [Data Driven Configuration](data_driven_config) page.
+The information contained in `info.json` is combined with the `config.h` and `rules.mk` files, dynamically generating the necessary configuration for your keyboard at compile time. It is also used by the [QMK API](https://github.com/qmk/qmk_api), and contains the information [QMK Configurator](https://config.qmk.fm/) needs to display a representation of your keyboard. Its key/value pairs are ruled by the [`data/schemas/keyboard.jsonschema`](https://github.com/qmk/qmk_firmware/blob/master/data/schemas/keyboard.jsonschema) file. To learn more about the why and how of the schema file see the [Data Driven Configuration](https://docs.qmk.fm/#/data_driven_config) page.
 
 You can create `info.json` files at every level under `qmk_firmware/keyboards/<keyboard_name>`. These files are combined, with more specific files overriding keys in less specific files. This means you do not need to duplicate your metadata information. For example, `qmk_firmware/keyboards/clueboard/info.json` specifies information common to all Clueboard products, such as `manufacturer` and `maintainer`, while `qmk_firmware/keyboards/clueboard/66/info.json` contains more specific information about Clueboard 66%.
 
-## General Metadata {#general-metadata}
+## General Metadata :id=general-metadata
 
 * `keyboard_name` (Required)
     * A free-form text string describing the keyboard. This will be used as the USB product string. Can include Unicode characters, escaped to ASCII eg. `\u03A8` (Ψ).
@@ -25,7 +25,7 @@ You can create `info.json` files at every level under `qmk_firmware/keyboards/<k
     * A list of tags describing the keyboard.
     * Example: `["ortho", "split", "rgb"]`
 
-## Hardware Configuration {#hardware-configuration}
+## Hardware Configuration :id=hardware-configuration
 
 * `board`
     * Override the default ChibiOS board name (ARM-based keyboards only).
@@ -40,7 +40,7 @@ You can create `info.json` files at every level under `qmk_firmware/keyboards/<k
 * `processor`
     * The microcontroller in use on the keyboard. Required if `development_board` is not specified.
 
-## Firmware Configuration {#firmware-configuration}
+## Firmware Configuration :id=firmware-configuration
 
 * `build`
     * `debounce_type`
@@ -93,9 +93,9 @@ You can create `info.json` files at every level under `qmk_firmware/keyboards/<k
     * `toggle`
         * Default: `5`
 
-## APA102 {#apa102}
+## APA102 :id=apa102
 
-Configures the [APA102](drivers/apa102) driver.
+Configures the [APA102](apa102_driver.md) driver.
 
 * `apa102`
     * `clock_pin` (Required)
@@ -106,9 +106,9 @@ Configures the [APA102](drivers/apa102) driver.
         * The initial global brightness level (independent of the RGB data), from 0 to 31.
         * Default: `31`
 
-## Audio {#audio}
+## Audio :id=audio
 
-Configures the [Audio](features/audio) feature.
+Configures the [Audio](feature_audio.md) feature.
 
 * `audio`
     * `default`
@@ -118,27 +118,18 @@ Configures the [Audio](features/audio) feature.
         * `clicky`
             * The default audio clicky enabled state.
             * Default: `true`
-    * `driver`
-        * The driver to use. Must be one of `dac_additive`, `dac_basic`, `pwm_software`, `pwm_hardware`.
     * `macro_beep`
         * Play a short beep for `\a` (ASCII `BEL`) characters in Send String macros.
         * Default: `false`
     * `pins` (Required)
         * The GPIO pin(s) connected to the speaker(s).
-    * `power_control`
-        * `on_state`
-            * The logical GPIO state required to turn the speaker on.
-            * Default: `1` (on = high)
-        * `pin`
-            * The GPIO pin connected to speaker power circuit.
     * `voices`
         * Use multiple audio voices.
         * Default: `false`
 
+## Backlight :id=backlight
 
-## Backlight {#backlight}
-
-Configures the [Backlight](features/backlight) feature.
+Configures the [Backlight](feature_backlight.md) feature.
 
 * `backlight`
     * `as_caps_lock`
@@ -177,17 +168,17 @@ Configures the [Backlight](features/backlight) feature.
     * `pins`
         * A list of GPIO pins connected to the backlight LEDs (`software` and `timer` drivers only).
 
-## Bluetooth {#bluetooth}
+## Bluetooth :id=bluetooth
 
-Configures the [Bluetooth](features/bluetooth) feature.
+Configures the [Bluetooth](feature_bluetooth.md) feature.
 
 * `bluetooth`
     * `driver`
         * The driver to use. Must be one of `custom`, `bluefruit_le`, `rn42`.
 
-## Bootmagic {#bootmagic}
+## Bootmagic :id=bootmagic
 
-Configures the [Bootmagic](features/bootmagic) feature.
+Configures the [Bootmagic](feature_bootmagic.md) feature.
 
 * `bootmagic`
     * `enabled`
@@ -197,9 +188,9 @@ Configures the [Bootmagic](features/bootmagic) feature.
         * The matrix position of the key to check during startup. This should generally be set to the (physically) top left key.
         * Default: `[0, 0]`
 
-## Caps Word {#caps-word}
+## Caps Word :id=caps-word
 
-Configures the [Caps Word](features/caps_word) feature.
+Configures the [Caps Word](feature_caps_word.md) feature.
 
 * `caps_word`
     * `both_shifts_turns_on`
@@ -218,18 +209,18 @@ Configures the [Caps Word](features/caps_word) feature.
         * Invert shift state instead of deactivating Caps Word when Shift is pressed.
         * Default: `false`
 
-## Combo {#combo}
+## Combo :id=combo
 
-Configures the [Combo](features/combo) feature.
+Configures the [Combo](feature_combo.md) feature.
 
 * `combo`
     * `term`
         * The amount of time to recognize a combo in milliseconds.
         * Default: `50` (50 ms)
 
-## DIP Switches {#dip-switch}
+## DIP Switches :id=dip-switch
 
-Configures the [DIP Switches](features/dip_switch) feature.
+Configures the [DIP Switches](feature_dip_switch.md) feature.
 
 * `dip_switch`
     * `enabled`
@@ -241,9 +232,9 @@ Configures the [DIP Switches](features/dip_switch) feature.
         * A list of matrix locations in the key matrix.
         * Example: `[ [0,6], [1,6], [2,6] ]`
 
-## EEPROM {#eeprom}
+## EEPROM :id=eeprom
 
-Configures the [EEPROM](drivers/eeprom) driver.
+Configures the [EEPROM](eeprom_driver.md) driver.
 
 * `eeprom`
     * `driver`
@@ -257,9 +248,9 @@ Configures the [EEPROM](drivers/eeprom) driver.
         * `logical_size`
             * Number of bytes “exposed” to the rest of QMK and denotes the size of the usable EEPROM.
 
-## Encoder {#encoder}
+## Encoder :id=encoder
 
-Configures the [Encoder](features/encoders) feature.
+Configures the [Encoder](feature_encoders.md) feature.
 
 * `encoder`
     * `rotary`
@@ -272,9 +263,9 @@ Configures the [Encoder](features/encoders) feature.
                 * The number of edge transitions on both pins required to register an input.
                 * Default: `4`
 
-## Indicators {#indicators}
+## Indicators :id=indicators
 
-Configures the [LED Indicators](features/led_indicators) feature.
+Configures the [LED Indicators](feature_led_indicators.md) feature.
 
 * `indicators`
     * `caps_lock`
@@ -291,7 +282,7 @@ Configures the [LED Indicators](features/led_indicators) feature.
     * `scroll_lock`
         * The GPIO pin connected to the Scroll Lock LED.
 
-## Layouts {#layouts}
+## Layouts :id=layouts
 
 The `layouts` portion of the dictionary contains several nested dictionaries. The outer layer consists of QMK layout names, for example `LAYOUT_60_ansi` or `LAYOUT_60_iso`.
 
@@ -344,9 +335,9 @@ The ISO enter key is represented by a 1.25u×2uh key. Renderers which utilize in
                     * The index of an encoder this key should be linked to
                 * Example: `{"label": "Shift", "matrix": [4, 0], "x": 0, "y": 4.25, "w": 2.25}`
 
-## Leader Key {#leader-key}
+## Leader Key :id=leader-key
 
-Configures the [Leader Key](features/leader_key) feature.
+Configures the [Leader Key](feature_leader_key.md) feature.
 
 * `leader_key`
     * `timing`
@@ -359,9 +350,9 @@ Configures the [Leader Key](features/leader_key) feature.
         * The amount of time to complete a leader sequence in milliseconds.
         * Default: `300` (300 ms)
 
-## LED Matrix {#led-matrix}
+## LED Matrix :id=led-matrix
 
-Configures the [LED Matrix](features/led_matrix) feature.
+Configures the [LED Matrix](feature_led_matrix.md) feature.
 
 * `led_matrix`
     * `animations`
@@ -432,7 +423,7 @@ Configures the [LED Matrix](features/led_matrix) feature.
         * The number of brightness adjustment steps.
         * Default: `8`
 
-## Matrix {#matrix}
+## Matrix :id=matrix
 
 * `debounce`
     * The debounce time in milliseconds.
@@ -472,9 +463,9 @@ Configures the [LED Matrix](features/led_matrix) feature.
         * A list of GPIO pins connected to the matrix rows.
         * Example: `["B0", "B1", "B2"]`
 
-## Mouse Keys {#mouse-keys}
+## Mouse Keys :id=mouse-keys
 
-Configures the [Mouse Keys](features/mouse_keys) feature.
+Configures the [Mouse Keys](feature_mouse_keys.md) feature.
 
 * `mouse_key`
     * `delay`
@@ -486,9 +477,9 @@ Configures the [Mouse Keys](features/mouse_keys) feature.
     * `time_to_max`
     * `wheel_delay`
 
-## One Shot {#one-shot}
+## One Shot :id=one-shot
 
-Configures [One Shot keys](one_shot_keys).
+Configures [One Shot keys](one_shot_keys.md).
 
 * `oneshot`
     * `tap_toggle`
@@ -496,9 +487,9 @@ Configures [One Shot keys](one_shot_keys).
     * `timeout`
         * The amount of time before the key is released in milliseconds.
 
-## PS/2 {#ps2}
+## PS/2 :id=ps2
 
-Configures the [PS/2](features/ps2_mouse) feature.
+Configures the [PS/2](feature_ps2_mouse.md) feature.
 
 * `ps2`
     * `clock_pin`
@@ -515,7 +506,7 @@ Configures the [PS/2](features/ps2_mouse) feature.
         * Enable the PS/2 mouse handling.
         * Default: `false`
 
-## QMK LUFA Bootloader {#qmk-lufa-bootloader}
+## QMK LUFA Bootloader :id=qmk-lufa-bootloader
 
 * `qmk_lufa_bootloader`
     * `esc_input` (Required)
@@ -527,9 +518,9 @@ Configures the [PS/2](features/ps2_mouse) feature.
     * `speaker`
         * The GPIO pin connected to a speaker to click (can also be used for a second LED).
 
-## RGBLight {#rgblight}
+## RGBLight :id=rgblight
 
-Configures the [RGB Lighting](features/rgblight) feature.
+Configures the [RGB Lighting](feature_rgblight.md) feature.
 
 * `rgblight`
     * `led_count` (Required)
@@ -588,6 +579,9 @@ Configures the [RGB Lighting](features/rgblight) feature.
     * `max_brightness`
         * The maximum value which the HSV "V" component is scaled to, from 0 to 255.
         * Default: `255`
+    * `rgbw`
+        * Enable RGBW LEDs.
+        * Default: `false`
     * `saturation_steps`
         * The number of saturation adjustment steps.
         * Default: `17`
@@ -601,9 +595,9 @@ Configures the [RGB Lighting](features/rgblight) feature.
         * When `rgblight.split` is enabled, the number of LEDs on each half.
         * Example: `[10, 10]`
 
-## RGB Matrix {#rgb-matrix}
+## RGB Matrix :id=rgb-matrix
 
-Configures the [RGB Matrix](features/rgb_matrix) feature.
+Configures the [RGB Matrix](feature_rgb_matrix.md) feature.
 
 * `rgb_matrix`
     * `animations`
@@ -639,7 +633,7 @@ Configures the [RGB Matrix](features/rgb_matrix) feature.
             * The default animation speed.
             * Default: `128`
     * `driver` (Required)
-        * The driver to use. Must be one of `aw20216s`, `custom`, `is31fl3218`, `is31fl3236`, `is31fl3729`, `is31fl3731`, `is31fl3733`, `is31fl3736`, `is31fl3737`, `is31fl3741`, `is31fl3742a`, `is31fl3743a`, `is31fl3745`, `is31fl3746a`, `snled27351`, `ws2812`.
+        * The driver to use. Must be one of `aw20216s`, `custom`, `is31fl3218`, `is31fl3729`, `is31fl3731`, `is31fl3733`, `is31fl3736`, `is31fl3737`, `is31fl3741`, `is31fl3742a`, `is31fl3743a`, `is31fl3745`, `is31fl3746a`, `snled27351`, `ws2812`.
     * `hue_steps`
         * The number of hue adjustment steps.
         * Default: `8`
@@ -686,9 +680,9 @@ Configures the [RGB Matrix](features/rgb_matrix) feature.
         * The number of brightness adjustment steps.
         * Default: `16`
 
-## Secure {#secure}
+## Secure :id=secure
 
-Configures the [Secure](features/secure) feature.
+Configures the [Secure](feature_secure.md) feature.
 
 * `secure`
     * `enabled`
@@ -704,9 +698,9 @@ Configures the [Secure](features/secure) feature.
         * Timeout for the user to perform the unlock sequence. Set to `0` to disable.
         * Default: `5000` (5 seconds)
 
-## Split Keyboard {#split-keyboard}
+## Split Keyboard :id=split-keyboard
 
-Configures the [Split Keyboard](features/split_keyboard) feature.
+Configures the [Split Keyboard](feature_split_keyboard.md) feature.
 
 * `split`
     * `bootmagic`
@@ -739,13 +733,13 @@ Configures the [Split Keyboard](features/split_keyboard) feature.
         * Default: `1`
     * `transport`
         * `protocol`
-            * The split transport protocol to use. Must be one of `custom`, `i2c`, `serial`.
+            * The split transport protocol to use. Must be one of `custom`, `i2c`, `serial`, `serial_usart`.
         * `sync`
             * `activity`
                 * Mirror the activity timestamps to the secondary half.
                 * Default: `false`
             * `detected_os`
-                * Mirror the [detected OS](features/os_detection) to the secondary half.
+                * Mirror the [detected OS](feature_os_detection.md) to the secondary half.
                 * Default: `false`
             * `haptic`
                 * Mirror the haptic state and process haptic feedback to the secondary half.
@@ -786,9 +780,9 @@ Configures the [Split Keyboard](features/split_keyboard) feature.
             * The amount of time to wait for a USB connection in milliseconds.
             * Default: `2000` (2 seconds)
 
-## Stenography {#stenography}
+## Stenography :id=stenography
 
-Configures the [Stenography](features/stenography) feature.
+Configures the [Stenography](feature_stenography.md) feature.
 
 * `stenography`
     * `enabled`
@@ -798,7 +792,7 @@ Configures the [Stenography](features/stenography) feature.
         * The Steno protocol to use. Must be one of `all`, `geminipr`, `txbolt`.
         * Default: `"all"`
 
-## USB {#usb}
+## USB :id=usb
 
 * `usb`
     * `device_version` (Required)
@@ -832,13 +826,13 @@ Configures the [Stenography](features/stenography) feature.
     * `suspend_wakeup_delay`
         * The amount of time to wait after sending a wakeup packet, in milliseconds.
         * Default: `0` (disabled)
-    * `wait_for_enumeration`
+    * `wait_for`
         * Force the keyboard to wait for USB enumeration before starting up.
         * Default: `false`
 
-## WS2812 {#ws2812}
+## WS2812 :id=ws2812
 
-Configures the [WS2812](drivers/ws2812) driver.
+Configures the [WS2812](ws2812_driver.md) driver.
 
 * `ws2812`
     * `driver`
@@ -852,6 +846,3 @@ Configures the [WS2812](drivers/ws2812) driver.
     * `i2c_timeout`
         * The I²C timeout in milliseconds (`i2c` driver only).
         * Default: `100` (100 ms)
-    * `rgbw`
-        * Enable RGBW LEDs.
-        * Default: `false`

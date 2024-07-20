@@ -15,7 +15,7 @@
  */
 
 #include "ec_switch_matrix.h"
-#include "keyboard.h"
+#include "quantum.h"
 
 void eeconfig_init_kb(void) {
     // Default values

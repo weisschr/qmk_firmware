@@ -16,10 +16,31 @@
 #include QMK_KEYBOARD_H
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-[0] = LAYOUT( /* Base */
+[0] = LAYOUT_all( /* Base */
     KC_INS,  KC_HOME,  KC_PGUP,
     KC_DEL,  KC_END,   KC_PGDN,
 
              KC_UP,
-    KC_LEFT, KC_DOWN,  KC_RIGHT)
+    KC_LEFT, KC_DOWN,  KC_RIGHT),
+
+[1] = LAYOUT_all( /* Empty for Dynamic keymap */
+    KC_TRNS,  KC_TRNS,  KC_TRNS,
+    KC_TRNS,  KC_TRNS,  KC_TRNS,
+
+              KC_TRNS,
+    KC_TRNS,  KC_TRNS,  KC_TRNS),
+
+[2] = LAYOUT_all( /* Empty for Dynamic keymap */
+    KC_TRNS,  KC_TRNS,  KC_TRNS,
+    KC_TRNS,  KC_TRNS,  KC_TRNS,
+
+              KC_TRNS,
+    KC_TRNS,  KC_TRNS,  KC_TRNS),
+
+[3] = LAYOUT_all( /* Empty for Dynamic keymap */
+    KC_TRNS,  KC_TRNS,  KC_TRNS,
+    KC_TRNS,  KC_TRNS,  KC_TRNS,
+
+              KC_TRNS,
+    KC_TRNS,  KC_TRNS,  KC_TRNS)
 };

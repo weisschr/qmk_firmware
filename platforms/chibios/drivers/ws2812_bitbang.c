@@ -82,6 +82,12 @@ void ws2812_init(void) {
 
 // Setleds for standard RGB
 void ws2812_setleds(rgb_led_t *ledarray, uint16_t leds) {
+    static bool s_init = false;
+    if (!s_init) {
+        ws2812_init();
+        s_init = true;
+    }
+
     // this code is very time dependent, so we need to disable interrupts
     chSysLock();
 
@@ -101,7 +107,7 @@ void ws2812_setleds(rgb_led_t *ledarray, uint16_t leds) {
         sendByte(ledarray[i].r);
 #endif
 
-#ifdef WS2812_RGBW
+#ifdef RGBW
         sendByte(ledarray[i].w);
 #endif
     }

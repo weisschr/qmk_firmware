@@ -17,21 +17,21 @@
 
 void keyboard_pre_init_kb(void) {
     // Set our LED pins as output
-    gpio_set_pin_output(B5);
-    gpio_set_pin_output(C0);
+    setPinOutput(B5);
+    setPinOutput(C0);
     keyboard_pre_init_user();
 }
 
 bool led_update_kb(led_t led_state) {
     bool res = led_update_user(led_state);
     if(res) {
-        // gpio_write_pin sets the pin high for 1 and low for 0.
+        // writePin sets the pin high for 1 and low for 0.
         // In this example the pins are inverted, setting
         // it low/0 turns it on, and high/1 turns the LED off.
         // This behavior depends on whether the LED is between the pin
         // and VCC or the pin and GND.
-        gpio_write_pin(B5, led_state.caps_lock);
-        gpio_write_pin(C0, led_state.num_lock);
+        writePin(B5, led_state.caps_lock);
+        writePin(C0, led_state.num_lock);
     }
     return res;
 }

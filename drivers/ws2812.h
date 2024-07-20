@@ -62,8 +62,6 @@
 #    define WS2812_LED_COUNT RGB_MATRIX_LED_COUNT
 #endif
 
-void ws2812_init(void);
-
 /* User Interface
  *
  * Input:

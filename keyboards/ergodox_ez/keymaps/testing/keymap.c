@@ -29,7 +29,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 void matrix_init_user(void) {
-#if defined(RGBLIGHT_ENABLE) && defined(RGBLIGHT_COLOR_LAYER_0)
+#ifdef RGBLIGHT_COLOR_LAYER_0
   rgblight_setrgb(RGBLIGHT_COLOR_LAYER_0);
 #endif
 };
@@ -42,18 +42,19 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         eeconfig_init();
       }
       return false;
+      break;
     case VRSN:
       if (record->event.pressed) {
         SEND_STRING (QMK_KEYBOARD "/" QMK_KEYMAP " @ " QMK_VERSION);
       }
       return false;
-#ifdef RGBLIGHT_ENABLE
+      break;
     case RGB_SLD:
       if (record->event.pressed) {
         rgblight_mode(1);
       }
       return false;
-#endif
+      break;
 
   }
   return true;
@@ -69,50 +70,48 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     ergodox_right_led_3_off();
     switch (layer) {
       case 0:
-        #ifdef RGBLIGHT_ENABLE
-          #ifdef RGBLIGHT_COLOR_LAYER_0
+        #ifdef RGBLIGHT_COLOR_LAYER_0
           rgblight_setrgb(RGBLIGHT_COLOR_LAYER_0);
-          #else
+        #else
           rgblight_init();
-          #endif
         #endif
         break;
       case 1:
         ergodox_right_led_1_on();
-        #if defined(RGBLIGHT_ENABLE) && defined(RGBLIGHT_COLOR_LAYER_1)
+        #ifdef RGBLIGHT_COLOR_LAYER_1
           rgblight_setrgb(RGBLIGHT_COLOR_LAYER_1);
         #endif
         break;
       case 2:
         ergodox_right_led_2_on();
-        #if defined(RGBLIGHT_ENABLE) && defined(RGBLIGHT_COLOR_LAYER_2)
+        #ifdef RGBLIGHT_COLOR_LAYER_2
           rgblight_setrgb(RGBLIGHT_COLOR_LAYER_2);
         #endif
         break;
       case 3:
         ergodox_right_led_3_on();
-        #if defined(RGBLIGHT_ENABLE) && defined(RGBLIGHT_COLOR_LAYER_3)
+        #ifdef RGBLIGHT_COLOR_LAYER_3
           rgblight_setrgb(RGBLIGHT_COLOR_LAYER_3);
         #endif
         break;
       case 4:
         ergodox_right_led_1_on();
         ergodox_right_led_2_on();
-        #if defined(RGBLIGHT_ENABLE) && defined(RGBLIGHT_COLOR_LAYER_4)
+        #ifdef RGBLIGHT_COLOR_LAYER_4
           rgblight_setrgb(RGBLIGHT_COLOR_LAYER_4);
         #endif
         break;
       case 5:
         ergodox_right_led_1_on();
         ergodox_right_led_3_on();
-        #if defined(RGBLIGHT_ENABLE) && defined(RGBLIGHT_COLOR_LAYER_5)
+        #ifdef RGBLIGHT_COLOR_LAYER_5
           rgblight_setrgb(RGBLIGHT_COLOR_LAYER_5);
         #endif
         break;
       case 6:
         ergodox_right_led_2_on();
         ergodox_right_led_3_on();
-        #if defined(RGBLIGHT_ENABLE) && defined(RGBLIGHT_COLOR_LAYER_6)
+        #ifdef RGBLIGHT_COLOR_LAYER_6
           rgblight_setrgb(RGBLIGHT_COLOR_LAYER_6);
         #endif
         break;
@@ -120,7 +119,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
         ergodox_right_led_1_on();
         ergodox_right_led_2_on();
         ergodox_right_led_3_on();
-        #if defined(RGBLIGHT_ENABLE) && defined(RGBLIGHT_COLOR_LAYER_7)
+        #ifdef RGBLIGHT_COLOR_LAYER_7
           rgblight_setrgb(RGBLIGHT_COLOR_LAYER_6);
         #endif
         break;

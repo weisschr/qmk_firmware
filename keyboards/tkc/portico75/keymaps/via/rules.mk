@@ -10,4 +10,3 @@ SRC += keyboards/wilba_tech/wt_main.c \
        drivers/led/issi/is31fl3741.c
 
 I2C_DRIVER_REQUIRED = yes
-CIE1931_CURVE = yes

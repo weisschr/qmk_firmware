@@ -3,15 +3,15 @@
 #include "quantum.h"
 
 void matrix_init_user(void) {
-  gpio_set_pin_output(GP9); //init gpio
-  gpio_write_pin_low(GP9);
-  gpio_set_pin_output(GP11); //init and turn off inverted power led
-  gpio_write_pin_high(GP11);
+  setPinOutput(GP9); //init gpio
+  writePinLow(GP9);
+  setPinOutput(GP11); //init and turn off inverted power led
+  writePinHigh(GP11);
 }
 
 //layer, capslock and numlock
 layer_state_t layer_state_set_user(layer_state_t state) {
-	gpio_write_pin(GP9, layer_state_cmp(state, 1));
+	writePin(GP9, layer_state_cmp(state, 1));
     return state;
 }
 

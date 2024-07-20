@@ -11,7 +11,6 @@ import jsonschema
 from qmk.constants import QMK_USERSPACE, HAS_QMK_USERSPACE
 from qmk.json_schema import json_load, validate
 from qmk.keyboard import keyboard_alias_definitions
-from qmk.util import maybe_exit
 
 
 def find_make():
@@ -53,7 +52,7 @@ def parse_configurator_json(configurator_file):
 
     except jsonschema.ValidationError as e:
         cli.log.error(f'Invalid JSON keymap: {configurator_file} : {e.message}')
-        maybe_exit(1)
+        exit(1)
 
     keyboard = user_keymap['keyboard']
     aliases = keyboard_alias_definitions()

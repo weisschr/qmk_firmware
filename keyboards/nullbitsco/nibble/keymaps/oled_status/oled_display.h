@@ -15,8 +15,6 @@
  */
 #pragma once
 
-#include <stdint.h>
-
 typedef enum {
     OLED_MODE_IDLE = 0,
     OLED_MODE_VOLUME_UP = 1,

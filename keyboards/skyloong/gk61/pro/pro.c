@@ -213,14 +213,14 @@ bool rgb_matrix_indicators_advanced_kb(uint8_t led_min, uint8_t led_max) {
 
 void suspend_power_down_kb() {
 #    ifdef RGB_MATRIX_ENABLE
-    gpio_write_pin_low(IS31FL3743A_SDB_PIN);
+    writePinLow(IS31FL3743A_SDB_PIN);
 #    endif
      suspend_power_down_user();
 }
 
 void suspend_wakeup_init_kb() {
 #    ifdef RGB_MATRIX_ENABLE
-    gpio_write_pin_high(IS31FL3743A_SDB_PIN);
+    writePinHigh(IS31FL3743A_SDB_PIN);
 #    endif
      suspend_wakeup_init_user();
 }

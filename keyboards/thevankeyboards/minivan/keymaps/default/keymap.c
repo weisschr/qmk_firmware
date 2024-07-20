@@ -63,21 +63,26 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   )
 };
 
+void persistent_default_layer_set(uint16_t default_layer) {
+  eeconfig_update_default_layer(default_layer);
+  default_layer_set(default_layer);
+}
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       switch(keycode) {
         case DVORAK:
           if (record->event.pressed) {
-            set_single_persistent_default_layer(_DV);
+            persistent_default_layer_set(1UL<<_DV);
           }
           return false;
         case QWERTY:
           if (record->event.pressed) {
-            set_single_persistent_default_layer(_QW);
+            persistent_default_layer_set(1UL<<_QW);
           }
           return false;
         case COLEMAK:
           if (record->event.pressed) {
-            set_single_persistent_default_layer(_CM);
+            persistent_default_layer_set(1UL<<_CM);
           }
           return false;
         default:

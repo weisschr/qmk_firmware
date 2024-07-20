@@ -35,6 +35,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "host.h"
 #include "keyboard.h"
 
+extern "C" {
+#include "quantum.h"
+}
+
 /* KEY CODE to Matrix
  *
  * HID keycode(1 byte):
