@@ -1,107 +1,250 @@
 #include QMK_KEYBOARD_H
 
+//-------------------------------------------------------------------------------
+// Modifier defines to simplify mapping and combo references
+
+// BASE
+
+// Thumbs
+#define KA_LSFP   LSFT_T(KC_SPC)
+#define KA_LALEC  LALT_T(KC_ESC)
+#define KA_LCLTB  LCTL_T(KC_TAB)
+#define KA_RSFEN  RSFT_T(KC_ENT)
+#define KA_RCLBP  RCTL_T(KC_BSPC)
+#define KA_RALDL  RALT_T(KC_DEL)
+
+//Fingers
+
+#define KC_LCTRL_F    MT(MOD_LCTL, KC_F)
+#define KC_RCTRL_J    MT(MOD_RCTL, KC_J)
+#define KC_LALT_V     MT(MOD_LALT, KC_V)
+#define KC_RALT_M     MT(MOD_RALT, KC_M)
+#define KC_LGUI_T     MT(MOD_LGUI, KC_T)
+#define KC_RGUI_Y     MT(MOD_RGUI, KC_Y)
+
+// DUO
+
+#define KC_LSHCTRL_G  MT(MOD_LCTL | MOD_LSFT, KC_G)
+#define KC_RSHCTRL_H  MT(MOD_RCTL | MOD_RSFT, KC_H)
+#define KC_LSHALT_B   MT(MOD_LALT | MOD_LSFT, KC_B)
+#define KC_RSHALT_N   MT(MOD_RALT | MOD_RSFT, KC_N)
+
+#define KC_LCTRLALT_R MT(MOD_LCTL | MOD_LALT, KC_R)
+#define KC_RCTRLALT_U MT(MOD_RCTL | MOD_RALT, KC_U)
+
+// MEH
+
+#define KC_LMEH_D     MT(MOD_LCTL | MOD_LALT | MOD_LSFT, KC_D)
+#define KC_RMEH_K     MT(MOD_RCTL | MOD_RALT | MOD_RSFT, KC_K)
+
+// HYPER
+
+#define KC_LHYPR_E    MT(MOD_LCTL | MOD_LALT | MOD_LSFT | MOD_LGUI, KC_E)
+#define KC_RHYPR_I    MT(MOD_RCTL | MOD_RALT | MOD_RSFT | MOD_RGUI, KC_I)
+
+// APPS Mapping
+
+#define KA_LINKEDIN HYPR(KC_L)
+#define KA_OUTLOOK  HYPR(KC_O)
+#define KA_TEAMS    HYPR(KC_T)
+#define KA_FILEMGR  RGUI(KC_E)
+#define KA_POWERPT  HYPR(KC_P)
+#define KA_WORD     HYPR(KC_W)
+#define KA_TASKMGR  RCS(KC_ESC)
+#define KA_RUN      RGUI(KC_R)
+#define KA_EMOJIS   LGUI(KC_DOT)
+#define KA_EXCEL    HYPR(KC_X)
+#define KA_SNIP     SGUI(KC_S)
+#define KA_CLIPBRD  RGUI(KC_V)
+
+const uint16_t lf_keylist[] = {KC_1, KC_2, KC_3, KC_4, KC_5, KC_Q, KC_W, KC_E, KC_R, KC_T, KC_A, KC_S, KC_D, KC_F, KC_G, KC_Z, KC_X, KC_C, KC_V, KC_B, KC_TAB, KC_SPACE};
+const uint16_t rt_keylist[] = {KC_6, KC_7, KC_8, KC_9, KC_0, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_H, KC_J, KC_K, KC_L, KC_SCLN, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, KC_ENTER, KC_BSPC};
+
+
+const int rt_keylist_size = sizeof(rt_keylist) / sizeof(rt_keylist[0]);
+const int lf_keylist_size = sizeof(lf_keylist) / sizeof(lf_keylist[0]);
+
+
+//-------------------------------------------------------------------------------
+
 enum layers {
   _ALPHA,
   _NUMBSYM,
   _FUNCTION,
-  _MOUSE,
   _APPCONTROL,
-  _NAV,
+  _MOUSE,
   LAYER_LENGTH
-};
-
-enum tapdances {
-  TD_LBRACE,
-  TD_RBRACE,
-  TD_QUOTE,
-  TD_SEMI,
-  TD_BACKSLASH,
-  TD_EQUAL,
-  TD_MINUS,
-  TD_COMMA,
-  TD_DOT,
-  TD_SLASH,
-  TD_GRAVE,
-  TAPDANCE_LENGTH
-};
-
-enum custom_keycodes {
-  TAB_ALPHA,
-  BKSPC_MOUSE,
-  CUSTOM_KEYCODE_LENGTH
 };
 
 enum combos {
     DOUBLEQ_COMBO,
     SINGLEQ_COMBO,
-    NAV_COMBO,
+    LPAR_COMBO,
+    RPAR_COMBO,
+    LBRACE_COMBO,
+    RBRACE_COMBO,
+    LCURLY_COMBO,
+    RCURLY_COMBO,
     LESC_COMBO,
-    RESC_COMBO,
+    DEFAULT_COMBO,
+    MOUSE_COMBO,
+    NUMB_COMBO,
+    FUNC_COMBO,
+    APP_COMBO,
+    ONESHOT_SYM_COMBO,
+    ONESHOT_SYM_LSHIFT_COMBO,
+    ONESHOT_SYM_RSHIFT_COMBO,
+    ONESHOT_FUNC_COMBO,
+    ONESHOT_APP_COMBO,
     DEL_COMBO,
-    INS_COMBO,
     WINCLOSE_COMBO,
     APPCLOSE_COMBO,
     CAPLOCK_COMBO,
     CAPSWORD_COMBO,
-    ONESHOT_SYM_COMBO,
-    ONESHOT_FUNC_COMBO,
-    ONESHOT_APP_COMBO,
+    LEFTARROW_COMBO,
+    RIGHTARROW_COMBO,
+    UPARROW_COMBO,
+    DOWNARROW_COMBO,
+    PAGEUP_COMBO,
+    PAGEDN_COMBO,
+    HOME_COMBO,
+    END_COMBO,
+    TEAMS_MUTE,
+    TEAMS_VIDTOG,
     COMBO_LENGTH
 };
 
-// tapdances
-tap_dance_action_t tap_dance_actions[] = {
-  [TD_LBRACE]    = ACTION_TAP_DANCE_DOUBLE(KC_LBRC, KC_LCBR),
-  [TD_RBRACE]    = ACTION_TAP_DANCE_DOUBLE(KC_RBRC, KC_RCBR),
-  [TD_QUOTE]     = ACTION_TAP_DANCE_DOUBLE(KC_QUOTE, KC_DQUO),
-  [TD_SEMI]      = ACTION_TAP_DANCE_DOUBLE(KC_SEMICOLON, KC_COLON),
-  [TD_BACKSLASH] = ACTION_TAP_DANCE_DOUBLE(KC_BACKSLASH, KC_PIPE),
-  [TD_EQUAL]     = ACTION_TAP_DANCE_DOUBLE(KC_EQUAL, KC_PLUS),
-  [TD_MINUS]     = ACTION_TAP_DANCE_DOUBLE(KC_MINUS, KC_UNDERSCORE),
-  [TD_GRAVE]     = ACTION_TAP_DANCE_DOUBLE(KC_GRAVE, KC_TILDE),
+enum custom_keycodes {
+    BROWSWEROPEN = SAFE_RANGE,
+    CONTROLPAN,
+    ONESHOT_SYM_LSHIFT,
+    ONESHOT_SYM_RSHIFT,
+    MYCOMPUTER,
 };
-// end tapdances
 
+// Functions for bilateral combos
+bool is_left(uint16_t keycode);
+bool is_right(uint16_t keycode);
+bool is_left_mod(uint8_t mod_state);
+bool is_right_mod(uint8_t mod_state);
+
+//-------------------------------------------------------------------------------
 // Layer 0 combos
 
-// Need to test if shift-enter and control-enter still work
+// Characters
 
-const uint16_t PROGMEM doubleq_combo[]    = {MEH_T(KC_D), LCTL_T(KC_F), COMBO_END};
-const uint16_t PROGMEM singleq_combo[]    = {RCTL_T(KC_J), MEH_T(KC_K), COMBO_END};
-const uint16_t PROGMEM nav_combo[]        = {KC_S, LCTL_T(KC_F), COMBO_END};
-const uint16_t PROGMEM lesc_combo[]       = {LCTL_T(KC_F), RCS_T(KC_G), COMBO_END};
-const uint16_t PROGMEM resc_combo[]       = {RCS_T(KC_H), RCTL_T(KC_J), COMBO_END};
-const uint16_t PROGMEM del_combo[]        = {RGUI_T(KC_Y), LCA_T(KC_U), COMBO_END};
-const uint16_t PROGMEM ins_combo[]        = {RSA_T(KC_N), RALT_T(KC_M), COMBO_END};
-const uint16_t PROGMEM winclose_combo[]   = {LCA_T(KC_R), LGUI_T(KC_T), COMBO_END};
-const uint16_t PROGMEM appclose_combo[]   = {LALT_T(KC_V), LSA_T(KC_B), COMBO_END};
-const uint16_t PROGMEM caplock_combo[]    = {KC_C, LALT_T(KC_V), COMBO_END};
-const uint16_t PROGMEM osl_sym_combo[]    = {KC_COMM, KC_DOT, COMBO_END};
-const uint16_t PROGMEM osl_func_combo[]   = {KC_X, KC_C, COMBO_END};
-const uint16_t PROGMEM osl_aspp_combo[]   = {KC_X, LALT_T(KC_V), COMBO_END};
+const uint16_t PROGMEM doubleq_combo[]  = {KC_LMEH_D, KC_LCTRL_F, COMBO_END};
+const uint16_t PROGMEM singleq_combo[]  = {KC_RCTRL_J, KC_RMEH_K, COMBO_END};
+const uint16_t PROGMEM lpar_combo[]     = {KC_C, KC_LALT_V, COMBO_END};
+const uint16_t PROGMEM rpar_combo[]     = {KC_RALT_M, KC_COMM, COMBO_END};
+const uint16_t PROGMEM lbrace_combo[]   = {KC_X, KC_C, KC_LALT_V, COMBO_END};
+const uint16_t PROGMEM rbrace_combo[]   = {KC_RALT_M, KC_COMM, KC_DOT, COMBO_END};
+const uint16_t PROGMEM lcurly_combo[]   = {KC_X, KC_LALT_V, COMBO_END};
+const uint16_t PROGMEM rcurly_combo[]   = {KC_RALT_M, KC_DOT, COMBO_END};
 
-// layer 0 combos
-combo_t key_combos[] = {  
-[DOUBLEQ_COMBO] =	  	 COMBO(doubleq_combo, KC_DQUO),
-[SINGLEQ_COMBO] =      COMBO(singleq_combo, KC_QUOT),
-[NAV_COMBO] =	      	 COMBO(nav_combo, TO(_NAV)),
-[LESC_COMBO] =         COMBO(lesc_combo, KC_ESC),
-[RESC_COMBO] =         COMBO(resc_combo, KC_ESC),
-[DEL_COMBO] =          COMBO(del_combo, KC_DEL),
-[INS_COMBO] =          COMBO(ins_combo, KC_INS),
-[WINCLOSE_COMBO] =     COMBO(winclose_combo, LCTL(KC_F4)),
-[APPCLOSE_COMBO] =     COMBO(appclose_combo, LALT(KC_F4)),
-[CAPLOCK_COMBO] =      COMBO(caplock_combo,KC_CAPS),
-[ONESHOT_SYM_COMBO] =  COMBO(osl_sym_combo, OSL(_NUMBSYM)),
+//-------------------------------------------------------------------------------
+// Layer control combos
+
+const uint16_t PROGMEM apps_combo[]     = {KC_RGUI_Y, KC_RCTRLALT_U, KC_RHYPR_I, COMBO_END};
+const uint16_t PROGMEM osl_apps_combo[] = {KC_RGUI_Y, KC_RHYPR_I, COMBO_END};
+
+const uint16_t PROGMEM numb_combo[]     = {KC_RSHCTRL_H, KC_RCTRL_J, KC_RMEH_K, COMBO_END};
+const uint16_t PROGMEM osl_numb_combo[] = {KC_RSHCTRL_H, KC_RMEH_K, COMBO_END};
+
+const uint16_t PROGMEM osl_numb_lshift_combo[] = {KC_RSHCTRL_H, KC_RCTRL_J, COMBO_END};
+const uint16_t PROGMEM osl_numb_rshift_combo[] = {KC_S, KC_LCTRL_F, COMBO_END};
+
+const uint16_t PROGMEM func_combo[]     = {KC_RSHALT_N, KC_RALT_M, KC_COMM, COMBO_END};
+const uint16_t PROGMEM osl_func_combo[] = {KC_RSHALT_N, KC_COMM, COMBO_END};
+
+const uint16_t PROGMEM default_combo[]     = {KC_RCTRL_J, KC_RMEH_K, KC_L, COMBO_END};
+
+const uint16_t PROGMEM mouse_combo[]       = {KC_W, KC_LHYPR_E,  KC_LCTRLALT_R, KC_LGUI_T, COMBO_END};
+
+
+//--------------------------------------------------------------------------------
+// Behavioral combos
+
+const uint16_t PROGMEM lesc_combo[]       = {KC_LCTRL_F, KC_LSHCTRL_G, COMBO_END};
+const uint16_t PROGMEM winclose_combo[]   = {KC_LCTRLALT_R, KC_LGUI_T, COMBO_END};
+const uint16_t PROGMEM appclose_combo[]   = {KC_LALT_V, KC_LSHALT_B, COMBO_END};
+
+const uint16_t PROGMEM del_combo[]        = {KC_LMEH_D, KC_LSHCTRL_G, COMBO_END};
+const uint16_t PROGMEM ins_combo[]        = {KC_LHYPR_E, KC_LGUI_T, COMBO_END};
+
+const uint16_t PROGMEM caplock_combo[]    = {KC_Z, KC_X, KC_C,  COMBO_END};
+const uint16_t PROGMEM capsword_combo[]   = {KC_C, KC_LSHALT_B, COMBO_END};
+
+const uint16_t PROGMEM leftarrow_combo[]  = {KC_LMEH_D, KC_LCTRL_F, KC_LSHCTRL_G, COMBO_END};
+const uint16_t PROGMEM rightarrow_combo[] = {KC_LHYPR_E, KC_LCTRLALT_R, KC_LGUI_T, COMBO_END};
+const uint16_t PROGMEM uparrow_combo[]    = {KC_W, KC_LHYPR_E, KC_LCTRLALT_R, COMBO_END};
+const uint16_t PROGMEM downarrow_combo[]  = {KC_S, KC_LMEH_D, KC_LCTRL_F, COMBO_END};
+
+const uint16_t PROGMEM pageup_combo[]     = {KC_LCTRL_F, KC_RCTRL_J, COMBO_END};
+const uint16_t PROGMEM pagedn_combo[]     = {KC_LALT_V, KC_RALT_M, COMBO_END};
+const uint16_t PROGMEM home_combo[]       = {KC_LSHCTRL_G, KC_RSHCTRL_H, COMBO_END};
+const uint16_t PROGMEM end_combo[]        = {KC_LSHALT_B, KC_RSHALT_N, COMBO_END};
+
+const uint16_t PROGMEM teams_mute[]       = {KC_LCTRLALT_R, KC_RCTRLALT_U, COMBO_END};
+const uint16_t PROGMEM teams_vidtog[]     = {KC_LGUI_T, KC_RGUI_Y, COMBO_END};
+
+// End layer 0 combo definitions
+//--------------------------------------------------------------------------------
+// Combo assignments
+
+combo_t key_combos[] = {
+
+[DOUBLEQ_COMBO]      = COMBO(doubleq_combo, KC_DQUO),
+[SINGLEQ_COMBO]      = COMBO(singleq_combo, KC_QUOT),
+[LPAR_COMBO]         = COMBO(lpar_combo, KC_LPRN),
+[RPAR_COMBO]         = COMBO(rpar_combo, KC_RPRN),
+[LBRACE_COMBO]       = COMBO(lbrace_combo, KC_LBRC),
+[RBRACE_COMBO]       = COMBO(rbrace_combo, KC_RBRC),
+[LCURLY_COMBO]       = COMBO(lcurly_combo, KC_LCBR),
+[RCURLY_COMBO]       = COMBO(rcurly_combo, KC_RCBR),
+
+//-------------------------------------------------------------------------------
+
+[APP_COMBO]          = COMBO(apps_combo, TG(_APPCONTROL)),
+[NUMB_COMBO]         = COMBO(numb_combo, TG(_NUMBSYM)),
+[FUNC_COMBO]         = COMBO(func_combo, TG(_FUNCTION)),
+[ONESHOT_SYM_COMBO]  = COMBO(osl_numb_combo, OSL(_NUMBSYM)),
+[ONESHOT_SYM_LSHIFT_COMBO]  = COMBO(osl_numb_lshift_combo, ONESHOT_SYM_LSHIFT),
+[ONESHOT_SYM_RSHIFT_COMBO]  = COMBO(osl_numb_rshift_combo, ONESHOT_SYM_RSHIFT),
 [ONESHOT_FUNC_COMBO] = COMBO(osl_func_combo, OSL(_FUNCTION)),
-[ONESHOT_APP_COMBO] =  COMBO(osl_aspp_combo, OSL(_APPCONTROL)),
+[ONESHOT_APP_COMBO]  = COMBO(osl_apps_combo, OSL(_APPCONTROL)),
+[DEFAULT_COMBO]      = COMBO(default_combo, TO(_ALPHA)),
+[MOUSE_COMBO]        = COMBO(mouse_combo, TG(_MOUSE)),
+
+//-------------------------------------------------------------------------------
+
+[LESC_COMBO]         = COMBO(lesc_combo, KC_ESC),
+[DEL_COMBO]          = COMBO(del_combo, KC_DEL),
+[WINCLOSE_COMBO]     = COMBO(winclose_combo, LCTL(KC_F4)),
+[APPCLOSE_COMBO]     = COMBO(appclose_combo, LALT(KC_F4)),
+[LEFTARROW_COMBO]    = COMBO(leftarrow_combo,KC_LEFT),
+[RIGHTARROW_COMBO]   = COMBO(rightarrow_combo,KC_RIGHT),
+[UPARROW_COMBO]      = COMBO(uparrow_combo, KC_UP),
+[DOWNARROW_COMBO]    = COMBO(downarrow_combo, KC_DOWN),
+[PAGEUP_COMBO]       = COMBO(pageup_combo, KC_PGUP),
+[PAGEDN_COMBO]       = COMBO(pagedn_combo, KC_PGDN),
+[HOME_COMBO]         = COMBO(home_combo, KC_HOME),
+[END_COMBO]          = COMBO(end_combo, KC_END),
+[TEAMS_MUTE]         = COMBO(teams_mute, RCS(KC_M)),
+[TEAMS_VIDTOG]       = COMBO(teams_vidtog, RCS(KC_O)),
+
+//-------------------------------------------------------------------------------
+
+[CAPLOCK_COMBO]      = COMBO(caplock_combo, KC_CAPS),
+[CAPSWORD_COMBO]     = COMBO(capsword_combo, CW_TOGG),
 };
+
 // end combos
+//-------------------------------------------------------------------------------
 
-static uint16_t key_timer_default;
-static uint16_t key_timer_mouse;
+// Functions
 
-bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
+bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case LSFT_T(KC_SPACE):
         case RSFT_T(KC_ENTER):
@@ -113,39 +256,175 @@ bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
     }
 }
 
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  switch (keycode) {
-    
-    case TAB_ALPHA:
-      if (record->event.pressed) {
-        key_timer_default = timer_read(); // Start the timer on key press.
-      } else {
-        if (timer_elapsed(key_timer_default) < TAPPING_TERM) { // Key was tapped.
-          tap_code(KC_TAB);
-        } else { // Key was held.
-          layer_move(_ALPHA);
-        }
-      }
-      return false;
-
-    case BKSPC_MOUSE:
-      if (record->event.pressed) {
-        key_timer_mouse = timer_read(); // Start the timer when the key is pressed.
-      } else {
-        if (timer_elapsed(key_timer_mouse) < TAPPING_TERM) { // The key was tapped.
-          tap_code(KC_BSPC);
-        } else { // The key was held.
-          layer_move(_MOUSE);
-        }
-      }
-      return false;
-        
-    default:
-      return true; // Process all other keycodes normally.
-  }
+uint16_t get_combo_term(uint16_t index, combo_t *combo) {
+  switch (index) {
+      case APP_COMBO:
+      case FUNC_COMBO:
+      case NUMB_COMBO:
+      case ONESHOT_APP_COMBO:
+      case ONESHOT_FUNC_COMBO:
+      case ONESHOT_SYM_COMBO:
+      case MOUSE_COMBO:
+        return 400;
+      case WINCLOSE_COMBO:
+      case APPCLOSE_COMBO:
+        return 300;
+      default:
+        return COMBO_TERM;
+    }
 }
 
+bool caps_word_press_user(uint16_t keycode) {
+    switch (keycode) {
+        // Keycodes that continue Caps Word, with shift applied.
+        case KC_A ... KC_Z:
+            add_weak_mods(MOD_BIT(KC_LSFT));  // Apply shift to next key.
+            return true;
+        // Keycodes that continue Caps Word, without shifting.
+        case KC_BSPC:
+        case KC_DEL:
+            return true;
+        default:
+            return false;  // Deactivate Caps Word.
+    }
+}
+
+uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case KC_RALT_M:
+        case KC_LALT_V:
+            return 500;
+        case KC_LHYPR_E:
+        case KC_LMEH_D:
+        case KC_LGUI_T:
+            return 600;
+        case KC_RHYPR_I:
+        case KC_RMEH_K:
+        case KC_RGUI_Y:
+            return 750;
+        default:
+            return TAPPING_TERM;
+    }
+}
+
+
+bool is_left(uint16_t keycode) {
+    for (int i = 0; i < lf_keylist_size; i++) {
+        if (keycode == lf_keylist[i]) {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool is_right(uint16_t keycode) {
+    for (int i = 0; i < rt_keylist_size; i++) {
+        if (keycode == rt_keylist[i]) {
+            return true;
+        }
+    }
+    return false;
+}
+
+
+bool is_left_mod(uint8_t mod_state){
+    if ((mod_state & MOD_BIT(KC_LALT)) ||
+        (mod_state & MOD_BIT(KC_LSFT)) ||
+        (mod_state & MOD_BIT(KC_LCTL)) ||
+        (mod_state & MOD_BIT(KC_LGUI))) {
+            return true;
+        };
+
+    return false;
+}
+
+bool is_right_mod(uint8_t mod_state){
+    if ((mod_state & MOD_BIT(KC_RALT)) ||
+        (mod_state & MOD_BIT(KC_RSFT)) ||
+        (mod_state & MOD_BIT(KC_RCTL)) ||
+        (mod_state & MOD_BIT(KC_RGUI))) {
+            return true;
+        };
+
+    return false;
+}
+
+uint8_t mod_state;
+bool duo_key_combo_left;
+bool duo_key_combo_right;
+
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+
+    mod_state = get_mods();
+
+    if (mod_state) {
+        if (record->event.pressed) {
+            if((is_left(keycode) && is_left_mod(mod_state)) ||
+               (is_right(keycode) && is_right_mod(mod_state)))
+               {
+                    clear_mods();
+               }
+        }
+    }
+
+  switch (keycode) {
+
+    case BROWSWEROPEN:
+        if (record->event.pressed) {
+            SEND_STRING(SS_DOWN(X_LGUI));
+            SEND_STRING(SS_TAP(X_R));
+            SEND_STRING(SS_UP(X_LGUI));
+            SEND_STRING("CHROME\n");
+        }
+        break;
+    case CONTROLPAN:
+        if (record->event.pressed) {
+            SEND_STRING(SS_DOWN(X_LGUI));
+            SEND_STRING(SS_TAP(X_R));
+            SEND_STRING(SS_UP(X_LGUI));
+            SEND_STRING("CONTROL\n");
+        }
+        break;
+    case MYCOMPUTER:
+        if (record->event.pressed) {
+            SEND_STRING(SS_DOWN(X_LGUI));
+            SEND_STRING(SS_TAP(X_R));
+            SEND_STRING(SS_UP(X_LGUI));
+            SEND_STRING("SHELL:MyComputerFolder\n");
+        }
+        break;
+    case ONESHOT_SYM_RSHIFT:
+        if (record->event.pressed) {
+            set_oneshot_layer(_NUMBSYM, ONESHOT_START);
+            set_oneshot_mods(MOD_RSFT);
+            duo_key_combo_right = true;
+        }
+        break;
+    case ONESHOT_SYM_LSHIFT:
+        if (record->event.pressed) {
+            set_oneshot_layer(_NUMBSYM, ONESHOT_START);
+            set_oneshot_mods(MOD_LSFT);
+            duo_key_combo_left = true;
+        }
+        break;
+    default:
+        if (duo_key_combo_left && !record->event.pressed && (keycode != ONESHOT_SYM_LSHIFT)) {
+          clear_oneshot_layer_state(ONESHOT_PRESSED);
+          duo_key_combo_left = false;
+        }
+        if (duo_key_combo_right && !record->event.pressed && (keycode != ONESHOT_SYM_RSHIFT)) {
+          clear_oneshot_layer_state(ONESHOT_PRESSED);
+          duo_key_combo_right = false;
+        }
+      return true; // Process all other keycodes normally.
+  }
+  return true;
+}
+
+//-------------------------------------------------------------------------------
 // begin layers
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 /*  Layer 0 Alpha
@@ -155,16 +434,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 *  |      A      |      S      |  D-MEH      | F-ctrl      | G-ctrlshift |   | H-ctrlshift |  J-ctrl     |   K-MEH     |      L      |      ;:     |
 *  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
 *  |      Z      |      X      |      C      | V-alt       | B-SHALT     |   |   N-SHALT   |  M-ALT      |      ,<     |      .>     |      /?     |
-*  '---------------------------|-------------|-------------|-------------|   |-------------|-------------|-------------|---------------------------'
-*                              | UPLAYER-1   | SPACE       | TAB         |   | BACKSPACE   | ENTER       | DOWNLAYER-4 |
-*                              |_____________|_____________|_____________|   |_____________|_____________|_____________|
+*  '-----------------------------------------|-------------|-------------|   |-------------|-------------|-------------|---------------------------'
+*                                            | TAB         |  SPACE      |   | ENTER       | BACKSPACE   |
+*                                            |_____________|_____________|   |_____________|_____________|
 */
 
   [_ALPHA] = LAYOUT_split_3x5_3(
-    KC_Q,  KC_W,   HYPR_T(KC_E), LCA_T(KC_R),      LGUI_T(KC_T),    RGUI_T(KC_Y), LCA_T(KC_U),      HYPR_T(KC_I),   KC_O,    KC_P,
-    KC_A,  KC_S,   MEH_T(KC_D),  LCTL_T(KC_F),     RCS_T(KC_G),     RCS_T(KC_H),  RCTL_T(KC_J),     MEH_T(KC_K),    KC_L,    KC_SCLN,
-    KC_Z,  KC_X,   KC_C,         LALT_T(KC_V),     LSA_T(KC_B),     RSA_T(KC_N),  RALT_T(KC_M),     KC_COMM,        KC_DOT,  KC_SLSH,
-                   TO(_NUMBSYM), LSFT_T(KC_SPACE), TAB_ALPHA,       BKSPC_MOUSE,  RSFT_T(KC_ENTER), TO(_APPCONTROL)
+    KC_Q,  KC_W,   KC_LHYPR_E, KC_LCTRLALT_R, KC_LGUI_T,     /*-*/ KC_RGUI_Y,      KC_RCTRLALT_U,    KC_RHYPR_I,   KC_O,    KC_P,
+    KC_A,  KC_S,   KC_LMEH_D,  KC_LCTRL_F,    KC_LSHCTRL_G,  /*-*/ KC_RSHCTRL_H,   KC_RCTRL_J,       KC_RMEH_K,    KC_L,    KC_SCLN,
+    KC_Z,  KC_X,   KC_C,       KC_LALT_V,     KC_LSHALT_B,   /*-*/ KC_RSHALT_N,    KC_RALT_M,        KC_COMM,      KC_DOT,  KC_SLSH,
+                    KA_LALEC,  KA_LCLTB,      KA_LSFP,       /*-*/ KA_RSFEN,      KA_RCLBP,         KA_RALDL
   ),
 
 /*  Layer 1 Symbol
@@ -173,95 +452,76 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 *  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
 *  |      1      |      2      |      3      |      4      |      5      |   |      6      |      7      |      8      |      9      |      0      |
 *  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
-*  |      ` ~    |      +      |      =      |      -      |      _      |   |      "      |      '      |      \ |    |      [ {    |     ] }     |
+*  |      ` ~    |      \ |    |      =+     |      -      |      _      |   |     ' "     |     ;:      |      , <    |      . >    |     / ?     |
 *  '---------------------------|-------------|-------------|-------------|   |-------------|-------------|-------------|---------------------------'
-*                              | UPLAYER     | KC_TRNS     | KC_TRNS     |   | KC_TRNS     | KC_TRNS     | DOWNLAYER   |
-*                              |_____________|_____________|_____________|   |_____________|_____________|_____________|
+*                                            | KC_TRNS     | KC_TRNS     |   | KC_TRNS     | KC_TRNS     |
+*                                            |_____________|_____________|   |_____________|_____________|
 */
 
   [_NUMBSYM] = LAYOUT_split_3x5_3(
-    KC_EXLM,      KC_AT,   KC_HASH,       KC_DLR,        KC_PERC,         KC_CIRC,  KC_AMPR,      KC_ASTR,          KC_LEFT_PAREN,  KC_RIGHT_PAREN,
-    KC_1,         KC_2,    KC_3,          KC_4,          KC_5,            KC_6,     KC_7,         KC_8,             KC_9,          KC_0,
-    TD(TD_GRAVE), KC_PLUS, TD(TD_EQUAL),  TD(TD_MINUS),  KC_UNDS,         KC_DQUO,  TD(TD_QUOTE), TD(TD_BACKSLASH), TD(TD_LBRACE), TD(TD_RBRACE),
-                           TO(_FUNCTION), KC_TRNS,       KC_TRNS,         KC_TRNS,  KC_TRNS,      TO(_ALPHA)
+    KC_EXLM,      KC_AT,            KC_HASH,       KC_DLR,        KC_PERC, /*-*/ KC_CIRC,      KC_AMPR,      KC_ASTR,   KC_LPRN,        KC_RPRN,
+    KC_1,         KC_2,             KC_3,          KC_4,          KC_5,    /*-*/ KC_6,         KC_7,         KC_8,      KC_9,           KC_0,
+    KC_GRV,       KC_BSLS,          KC_EQL,        KC_MINS,       KC_UNDS, /*-*/ KC_QUOT,      KC_SCLN,      KC_TRNS,   KC_TRNS,        KC_TRNS,
+                                     KC_TRNS,     KC_TRNS,    KC_TRNS,   /*-*/ KC_TRNS,   KC_TRNS, KC_TRNS
   ),
 
 /*  Layer 2 Function
-
---- This needs more thought
 *   _____________________________________________________________________     _____________________________________________________________________
-*  |             |             |             |             |      F11    |   |      F12    |             |             |             |             |
+*  |  Play/pause |  Stop       |  Next       | Previous    |      F11    |   |      F12    |  Mute       | Vol Up      | Vol Dn      |  Lock       |
 *  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
 *  |      F1     |      F2     |      F3     |      F4     |      F5     |   |      F6     |      F7     |      F8     |      F9     |      F10    |
 *  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
-*  |             |   GUI       |    ALT      |  CTRL       |  MEH        |   | HYPER       | CTRL        | ALT         | GUI         |             |
+*  |ctrl-alt-del |      GUI    |      ALT    |      CTRL   |      MEH    |   |      HYPER  |      CTRL   |      ALT    |      GUI    |ctrl-alt-del |
 *  '---------------------------|-------------|-------------|-------------|   |-------------|-------------|-------------|---------------------------'
-*                              | UPLAYER     | KC_TRNS     | KC_TRNS     |   | KC_TRNS     | KC_TRNS     | DOWNLAYER   |
-*                              |_____________|_____________|_____________|   |_____________|_____________|_____________|
+*                                            |   KC_TRNS   |   KC_TRNS   |   |   KC_TRNS   |   KC_TRNS   |
+*                                            |_____________|_____________|   |_____________|_____________|
 */
 
   [_FUNCTION] = LAYOUT_split_3x5_3(
-    KC_NO,   KC_NO,   KC_NO,      KC_NO,     KC_F11,      KC_F12,    KC_NO,    KC_NO,     KC_NO,     KC_NO,
-    KC_F1,   KC_F2,   KC_F3,      KC_F4,     KC_F5,       KC_F6,     KC_F7,    KC_F8,     KC_F9,     KC_F10,
-    KC_NO,   KC_LGUI, KC_LALT,    KC_LCTL,   KC_MEH,      KC_HYPR,   KC_RCTL,  KC_RALT,   KC_RGUI,   KC_NO,
-                      TO(_MOUSE), KC_TRNS,   KC_TRNS,     KC_TRNS,   KC_TRNS,  TO(_NUMBSYM)
+    KC_MPLY,      KC_MSTP, KC_MEDIA_NEXT_TRACK, KC_MEDIA_PREV_TRACK, KC_F11,  /*-*/  KC_F12,    KC_KB_MUTE, KC_KB_VOLUME_UP, KC_KB_VOLUME_DOWN, RGUI(KC_L),
+    KC_F1,        KC_F2,   KC_F3,               KC_F4,               KC_F5,   /*-*/  KC_F6,     KC_F7,      KC_F8,           KC_F9,             KC_F10,
+    C(A(KC_DEL)), KC_LGUI, KC_LALT,             KC_LCTL,             KC_MEH,  /*-*/  KC_HYPR,   KC_RCTL,    KC_RALT,         KC_RGUI,           C(A(KC_DEL)),
+                                          KC_TRNS,     KC_TRNS,    KC_TRNS,   /*-*/ KC_TRNS,   KC_TRNS, KC_TRNS
   ),
 
-/*  Layer 3 Mouse
+/*  Layer 3 APPS AND CONTROL
 *   _____________________________________________________________________     _____________________________________________________________________
-*  | WWWBACK     | NEW-TAB     | KC_VOLD     | KC_MUTE     | KC_VOLU     |   | HOME-SHIFT  | PGUP        | MOUSE UP    | PGDN        | WWWSEARCH   |
+*  |             |             | LINKEDIN    | OUTLOOK     | TEAMS       |   | FILEMNGR    | bright up   | bright dn   |             |             |
 *  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
-*  | WWWFWD      | LEFT BUTTON | MID BUTTON  | RIGHT BUTTON| UP          |   | END-CTRL    | MOUSE LEFT  | MOUSE DOWN  | MOUSE RIGHT | WWWREFRESH  |
+*  |  QK_BOOT    |             | Controlpanel| POWERPOINT  | WORD        |   | KC_CALC     | TASK        | RUN         |             |  QK_BOOT    |
 *  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
-*  | WWWHOME     | NEW-WIN     | LEFT        | RIGHT       | DOWN        |   | WHEEL LEFT  | WHEEL UP    | WHEEL DOWN  | WHEEL RIGHT | WWWSTOP     |
-*  '---------------------------|-------------|-------------|-------------|   |-------------|-------------|-------------|---------------------------'
-*                              | UPLAYER     | KC_TRNS     | KC_TRNS     |   | KC_TRNS     | KC_TRNS     | DOWNLAYER   |
-*                              |_____________|_____________|_____________|   |_____________|_____________|_____________|
-*/
-
-  [_MOUSE] = LAYOUT_split_3x5_3(
-    KC_WBAK,   C(KC_T),     KC_VOLD,          KC_MUTE,    KC_VOLU,      RSFT_T(KC_HOME), KC_PGUP,     KC_MS_UP,      KC_PGDN,        KC_WSCH,
-    KC_WFWD,   KC_MS_BTN1,  KC_MS_BTN3,       KC_MS_BTN2, KC_UP,        RCTL_T(KC_END),  KC_MS_LEFT,  KC_MS_DOWN,    KC_MS_RIGHT,    KC_WREF,
-    KC_WHOM,   C(KC_N),     KC_LEFT,          KC_RIGHT,   KC_DOWN,      KC_MS_WH_LEFT,   KC_MS_WH_UP, KC_MS_WH_DOWN, KC_MS_WH_RIGHT, KC_WSTP,
-                            TO(_APPCONTROL),  KC_TRNS,    KC_TRNS,      KC_TRNS,         KC_TRNS,     TO(_FUNCTION)
-  ),
-
-/*  Layer 4 APPS AND CONTROL
-*   _____________________________________________________________________     _____________________________________________________________________
-*  |             |             | LINKEDIN    | OUTLOOK     | TEAMS       |   | FILEMNGR    | QK_BOOT     | QK_REBOOT   |  WAKEUP     |             |
-*  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
-*  |             |             |             | POWERPOINT  | WORD        |   | KC_CALC     | TASK        | RUN         |  POWEROFF   |             |
-*  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
-*  |             |             |             | EMOJIS      | EXCEL       |   | SNIP        | CLIPBOARD   | MYCOMPUTER  |  SLEEP      |             |
-*  '---------------------------|-------------|-------------|-------------|   |-------------|-------------|-------------|---------------------------'
-*                              | UPLAYER     | KC_TRNS     | KC_TRNS     |   | KC_TRNS     | KC_TRNS     | DOWNLAYER   |
-*                              |_____________|_____________|_____________|   |_____________|_____________|_____________|
+*  |  QK_REBOOT  |             | Browser     | EMOJIS      | EXCEL       |   | SNIP        | CLIPBOARD   | MYCOMPUTER  |             |  QK_REBOOT  |
+*  '---------------------------|-------------|-------------|-------------|   |-------------|-------------|-----------------------------------------'
+*                                            | KC_TRNS     | KC_TRNS     |   | KC_TRNS     | KC_TRNS     |
+*                                            |_____________|_____________|   |_____________|_____________|
 */
 
   [_APPCONTROL] = LAYOUT_split_3x5_3(
-    KC_NO,      KC_NO,   HYPR_T(KC_L), HYPR_T(KC_O),   HYPR_T(KC_T),     RGUI(KC_E),  QK_BOOT,     QK_REBOOT,  KC_WAKE,    KC_NO,
-    KC_NO,      KC_NO,   KC_NO,        HYPR_T(KC_P),   HYPR_T(KC_W),     KC_CALC,     RCS(KC_ESC), RGUI(KC_R), KC_PWR,     KC_NO,
-    KC_NO,      KC_NO,   KC_NO,        LGUI(KC_DOT),   HYPR_T(KC_X),     SGUI(KC_S),  RGUI(KC_V),  KC_MYCM,    KC_SLEP,    KC_NO,
-                         TO(_ALPHA),   KC_TRNS,        KC_TRNS,          KC_TRNS,     KC_TRNS,     TO(_MOUSE)
+    KC_NO,     KC_NO,  KA_LINKEDIN,  KA_OUTLOOK, KA_TEAMS, /*-*/ KA_FILEMGR,  KC_BRIU,     KC_BRID,    KC_NO,   KC_NO,
+    QK_BOOT,   KC_NO,  CONTROLPAN,   KA_POWERPT, KA_WORD,  /*-*/ KC_CALC,     KA_TASKMGR,  KA_RUN,     KC_NO,   QK_BOOT,
+    QK_REBOOT, KC_NO,  BROWSWEROPEN, KA_EMOJIS,  KA_EXCEL, /*-*/ KA_SNIP,     KA_CLIPBRD,  MYCOMPUTER, KC_NO,   QK_REBOOT,
+                       KC_TRNS,     KC_TRNS,    KC_TRNS,   /*-*/ KC_TRNS,   KC_TRNS, KC_TRNS
   ),
 
-/*  Layer 5 Nav
+
+  /*  Layer 4 Mouse
 *   _____________________________________________________________________     _____________________________________________________________________
-*  | KC_TRNS     | KC_TRNS     | KC_TRNS     | HOME        | KC_TRNS     |   | KC_TRNS     | PGUP        | KC_TRNS     | KC_TRNS     | KC_TRNS     |
+*  | KC_TRNS     | NEW-TAB     | KC_TRNS     | KC_TRNS     | UP          |   | PGUP        | WHEEL LEFT  | MOUSE UP    | WHEEL RIGHT | KC_TRNS     |
 *  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
-*  | KC_TRNS     | KC_TRNS     | LEFT        | RIGHT       | KC_TRNS     |   | KC_TRNS     | UP          | DOWN        | KC_TRNS     | KC_TRNS     |
+*  | KC_TRNS     | LEFT BUTTON | MID BUTTON  | RIGHT BUTTON| DOWN        |   | PGDN        | MOUSE LEFT  | MOUSE DOWN  | MOUSE RIGHT | KC_TRNS     |
 *  |-------------|-------------|-------------|-------------|-------------|   |-------------|-------------|-------------|-------------|-------------|
-*  | KC_TRNS     | KC_TRNS     | KC_TRNS     | END         | KC_TRNS     |   | KC_TRNS     | PGDN        | KC_TRNS     | KC_TRNS     | KC_TRNS     |
-*  '---------------------------|-------------|-------------|-------------|   |-------------|-------------|-------------|---------------------------'
-*                              | ALPHA       | KC_TRNS     | KC_TRNS     |   | KC_TRNS     | KC_TRNS     | MOUSE       |
-*                              |_____________|_____________|_____________|   |_____________|_____________|_____________|
+*  | KC_TRNS     | NEW-WIN     | INCOG       | LEFT        | RIGHT       |   | HOME        | WHEEL UP    | WHEEL DOWN  | END         | KC_TRNS     |
+*  '---------------------------|-------------|-------------|-------------|   |-------------|-------------|-----------------------------------------'
+*                                            | KC_TRNS     | KC_TRNS     |   | KC_TRNS     | KC_TRNS     |
+*                                            |_____________|_____________|   |_____________|_____________|
 */
 
- [_NAV] = LAYOUT_split_3x5_3(
-    KC_TRNS,     KC_TRNS,     KC_TRNS,       KC_HOME,     KC_TRNS,       KC_TRNS,     KC_PGUP,     KC_TRNS,     KC_TRNS,     KC_TRNS,    
-    KC_TRNS,     KC_TRNS,     KC_LEFT,       KC_RIGHT,    KC_TRNS,       KC_TRNS,     KC_UP,       KC_DOWN,     KC_TRNS,     KC_TRNS,    
-    KC_TRNS,     KC_TRNS,     KC_TRNS,       KC_END,      KC_TRNS,       KC_TRNS,     KC_PGDN,     KC_TRNS,     KC_TRNS,     KC_TRNS,    
-                              TO(_ALPHA),    KC_TRNS,     KC_TRNS,       KC_TRNS,     KC_TRNS,     TO(_MOUSE)
+  [_MOUSE] = LAYOUT_split_3x5_3(
+    KC_TRNS,   C(KC_T),     KC_TRNS,     KC_TRNS,    KC_UP,     /*-*/ KC_PGUP ,  KC_MS_WH_LEFT,  KC_MS_UP,      KC_MS_WH_RIGHT ,   KC_TRNS,
+    KC_TRNS,   KC_MS_BTN1,  KC_MS_BTN3,  KC_MS_BTN2, KC_DOWN,   /*-*/ KC_PGDN,   KC_MS_LEFT,     KC_MS_DOWN,    KC_MS_RIGHT,       KC_TRNS,
+    KC_TRNS,   C(KC_N),     RCS(KC_N),   KC_LEFT,    KC_RIGHT,  /*-*/ KC_HOME ,  KC_MS_WH_UP,    KC_MS_WH_DOWN, KC_END,            KC_TRNS,
+                            KC_TRNS,     KC_TRNS,    KC_TRNS,   /*-*/ KC_TRNS,   KC_TRNS, KC_TRNS
   )
-
 };
+
+//-------------------------------------------------------------------------------

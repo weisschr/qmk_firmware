@@ -339,8 +339,8 @@ bool is_right_mod(uint8_t mod_state){
 }
 
 uint8_t mod_state;
-bool duo_key_combo;
-
+bool duo_key_combo_left;
+bool duo_key_combo_right;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
@@ -386,20 +386,24 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         if (record->event.pressed) {
             set_oneshot_layer(_NUMBSYM, ONESHOT_START);
             set_oneshot_mods(MOD_RSFT);
-            duo_key_combo = true;
+            duo_key_combo_right = true;
         }
         break;
     case ONESHOT_SYM_LSHIFT:
         if (record->event.pressed) {
             set_oneshot_layer(_NUMBSYM, ONESHOT_START);
             set_oneshot_mods(MOD_LSFT);
-            duo_key_combo = true;
+            duo_key_combo_left = true;
         }
         break;
     default:
-        if (duo_key_combo) {
-            clear_oneshot_layer_state(ONESHOT_PRESSED);
-            duo_key_combo = false;
+        if (duo_key_combo_left && !record->event.pressed && (keycode != ONESHOT_SYM_LSHIFT)) {
+          clear_oneshot_layer_state(ONESHOT_PRESSED);
+          duo_key_combo_left = false;
+        }
+        if (duo_key_combo_right && !record->event.pressed && (keycode != ONESHOT_SYM_RSHIFT)) {
+          clear_oneshot_layer_state(ONESHOT_PRESSED);
+          duo_key_combo_right = false;
         }
       return true; // Process all other keycodes normally.
   }
