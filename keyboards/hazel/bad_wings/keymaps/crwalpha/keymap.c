@@ -57,13 +57,11 @@
 #define KA_SNIP     SGUI(KC_S)
 #define KA_CLIPBRD  RGUI(KC_V)
 
-const uint16_t lf_keylist[] = {KC_1, KC_2, KC_3, KC_4, KC_5, KC_Q, KC_W, KC_E, KC_R, KC_T, KC_A, KC_S, KC_D, KC_F, KC_G, KC_Z, KC_X, KC_C, KC_V, KC_B, KC_TAB, KC_SPACE};
-const uint16_t rt_keylist[] = {KC_6, KC_7, KC_8, KC_9, KC_0, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_H, KC_J, KC_K, KC_L, KC_SCLN, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, KC_ENTER, KC_BSPC};
-
+const uint16_t lf_keylist[] = {KC_1, KC_2, KC_3, KC_4, KC_5, KC_Q, KC_W, KC_LHYPR_E, KC_LCTRLALT_R, KC_LGUI_T, KC_A, KC_S, KC_LMEH_D, KC_LCTRL_F, KC_LSHCTRL_G, KC_Z, KC_X, KC_C, KC_LALT_V, KC_LSHALT_B, KA_LCLTB, KA_LSFP};
+const uint16_t rt_keylist[] = {KC_6, KC_7, KC_8, KC_9, KC_0, KC_RGUI_Y, KC_RCTRLALT_U, KC_RHYPR_I, KC_O, KC_P, KC_RSHCTRL_H, KC_RCTRL_J, KC_RMEH_K, KC_L, KC_SCLN, KC_RSHALT_N, KC_RALT_M, KC_COMM, KC_DOT, KC_SLSH, KA_RSFEN, KA_RCLBP};
 
 const int rt_keylist_size = sizeof(rt_keylist) / sizeof(rt_keylist[0]);
 const int lf_keylist_size = sizeof(lf_keylist) / sizeof(lf_keylist[0]);
-
 
 //-------------------------------------------------------------------------------
 
@@ -160,7 +158,6 @@ const uint16_t PROGMEM osl_func_combo[] = {KC_RSHALT_N, KC_COMM, COMBO_END};
 const uint16_t PROGMEM default_combo[]     = {KC_RCTRL_J, KC_RMEH_K, KC_L, COMBO_END};
 
 const uint16_t PROGMEM mouse_combo[]       = {KC_W, KC_LHYPR_E,  KC_LCTRLALT_R, KC_LGUI_T, COMBO_END};
-
 
 //--------------------------------------------------------------------------------
 // Behavioral combos
@@ -307,7 +304,6 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     }
 }
 
-
 bool is_left(uint16_t keycode) {
     for (int i = 0; i < lf_keylist_size; i++) {
         if (keycode == lf_keylist[i]) {
@@ -325,7 +321,6 @@ bool is_right(uint16_t keycode) {
     }
     return false;
 }
-
 
 bool is_left_mod(uint8_t mod_state){
     if ((mod_state & MOD_BIT(KC_LALT)) ||
@@ -352,7 +347,6 @@ bool is_right_mod(uint8_t mod_state){
 uint8_t mod_state;
 bool duo_key_combo_left;
 bool duo_key_combo_right;
-
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
@@ -396,15 +390,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         break;
     case ONESHOT_SYM_RSHIFT:
         if (record->event.pressed) {
-            set_oneshot_layer(_NUMBSYM, ONESHOT_START);
             set_oneshot_mods(MOD_RSFT);
+            set_oneshot_layer(_NUMBSYM, ONESHOT_START);
             duo_key_combo_right = true;
         }
         break;
     case ONESHOT_SYM_LSHIFT:
         if (record->event.pressed) {
-            set_oneshot_layer(_NUMBSYM, ONESHOT_START);
             set_oneshot_mods(MOD_LSFT);
+            set_oneshot_layer(_NUMBSYM, ONESHOT_START);
             duo_key_combo_left = true;
         }
         break;
@@ -502,7 +496,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     QK_REBOOT, KC_NO,  BROWSWEROPEN, KA_EMOJIS,  KA_EXCEL, /*-*/ KA_SNIP,     KA_CLIPBRD,  MYCOMPUTER, KC_NO,   QK_REBOOT,
                        KC_TRNS,     KC_TRNS,    KC_TRNS,   /*-*/ KC_TRNS,   KC_TRNS, KC_TRNS
   ),
-
 
   /*  Layer 4 Mouse
 *   _____________________________________________________________________     _____________________________________________________________________
